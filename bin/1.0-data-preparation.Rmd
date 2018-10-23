@@ -1,5 +1,5 @@
 ---
-title: "data_preparation"
+title: "Take in raw DEG data from the two stains, clean it and store as an object for downstream analysis."
 output: html_document
 ---
 #Data preparation
