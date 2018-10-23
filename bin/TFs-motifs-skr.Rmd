@@ -1,0 +1,39 @@
+---
+title: "Transcription factors that regulate skr genes"
+output: html_document
+---
+
+## Visualize enriched TF binding sites in *skr* genes' promoters
+Obtain all *skr* gene IDs. 
+```{r}
+skr <- mRNA.seqs.promoter$ensembl_gene_id[grep("skr-",mRNA.seqs.promoter$external_gene_name)]
+```
+
+Iterate and combine each *skr* sequences scores to a single data-frame, along with the *skr* gene ID and name (e.g. "WBGene00004815" and "skr-9").
+```{r}
+
+lappy(res$N2.dn,sequenceReport,seq.id = gene)
+
+skr.score <- data.frame()
+
+goi <- intersect(reg.genes$N2.dn,skr)
+
+for (gene in goi) {
+  seq <- sequenceReport(res$N2.dn,seq.id = gene)
+  seq <- as.data.frame(seq)
+  seq$ensembl_gene_id <- gene
+  seq$external_gene_name <- mRNA.seqs.promoter$external_gene_name[mRNA.seqs.promoter$ensembl_gene_id == gene]
+  skr.score <- rbind(skr.score,seq)
+}
+
+PWMEnrich::plotMultipleMotifs(res)
+
+```
+
+
+```{r}
+skr.score %>% 
+  filter(p.value < 0.05) %>%
+  count(id,sort=TRUE) %>% View()
+  ggplot(aes(x = id,y = n)) + geom_point()
+```

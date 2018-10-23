@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GraphPadPrismFile xmlns="http://graphpad.com/prism/Prism.htm" PrismXMLVersion="5.00">
+<Created>
+<OriginalVersion CreatedByProgram="GraphPad Prism" CreatedByVersion="6.0.1.298" RegisteredTo="      " Login="levam" DateTime="2018-04-18T14:40:06+02:00"/>
+<MostRecentVersion CreatedByProgram="GraphPad Prism" CreatedByVersion="6.0.1.298" RegisteredTo="      " Login="levam" DateTime="2018-04-18T16:15:16+02:00"/>
+</Created>
+<InfoSequence>
+<Ref ID="Info0" Selected="1"/>
+</InfoSequence>
+<Info ID="Info0">
+<Title>Project info 1</Title>
+<Notes>
+</Notes>
+<Constant><Name>Experiment Date</Name><Value>2018-04-18</Value></Constant>
+<Constant><Name>Experiment ID</Name><Value/></Constant>
+<Constant><Name>Notebook ID</Name><Value/></Constant>
+<Constant><Name>Project</Name><Value/></Constant>
+<Constant><Name>Experimenter</Name><Value/></Constant>
+<Constant><Name>Protocol</Name><Value/></Constant>
+</Info>
+
+<TableSequence>
+
+<Ref ID="Table0"/>
+<Ref ID="Table2" Selected="1"/>
+<Ref ID="Table4"/>
+<Ref ID="Table6"/>
+<Ref ID="Table8"/>
+</TableSequence>
+<Table ID="Table0" XFormat="none" YFormat="replicates" Replicates="1" TableType="TwoWay" EVFormat="AsteriskAfterNumber">
+<Title>PANTHER-proteinClass</Title>
+<RowTitlesColumn Width="354">
+<Subcolumn>
+<d>Rel homology transcription factor (PC00252)</d>
+<d>immunoglobulin fold transcription factor (PC00251)</d>
+<d>transcription factor (PC00218)</d>
+<d>ubiquitin-protein ligase (PC00234)</d>
+<d>ligase (PC00142)</d>
+<d Excluded="1">Unclassified (UNCLASSIFIED)</d>
+</Subcolumn>
+</RowTitlesColumn>
+<YColumn Width="137" Decimals="2" Subcolumns="1">
+<Title>AM140 downregulated</Title>
+<Subcolumn>
+<d>0.000489</d>
+<d>0.000612</d>
+<d>0.0579</d>
+<d>0.000547</d>
+<d>0.0935</d>
+<d Excluded="1">0</d>
+</Subcolumn>
+</YColumn>
+<YColumn Width="120" Decimals="2" Subcolumns="1">
+<Title>AM140 upregulated</Title>
+<Subcolumn>
+<d Excluded="1">1</d>
+<d Excluded="1">1</d>
+<d Excluded="1">1</d>
+<d Excluded="1">1</d>
+<d Excluded="1">1</d>
+<d Excluded="1">0</d>
+</Subcolumn>
+</YColumn>
+<YColumn Width="96" Decimals="2" Subcolumns="1">
+<Title>N2 upregulated</Title>
+<Subcolumn>
+<d Excluded="1">1</d>
+<d Excluded="1">1</d>
+<d Excluded="1">1</d>
+<d Excluded="1">1</d>
+<d Excluded="1">1</d>
+<d Excluded="1">0</d>
+</Subcolumn>
+</YColumn>
+<YColumn Width="113" Decimals="2" Subcolumns="1">
+<Title>N2 downregulated</Title>
+<Subcolumn>
+<d>5.38e-005</d>
+<d>6.75e-005</d>
+<d>9.3e-005</d>
+<d>2.69e-005</d>
+<d>0.000508</d>
+<d Excluded="1">0</d>
+</Subcolumn>
+</YColumn>
+</Table>
+<Table ID="Table2" XFormat="none" YFormat="replicates" Replicates="1" TableType="TwoWay" EVFormat="AsteriskAfterNumber">
+<Title>PANTHER-proteinClass-downregulated</Title>
+<RowTitlesColumn Width="354">
+<Subcolumn>
+<d>Rel homology
+transcription factor</d>
+<d>immunoglobulin fold 
+transcription factor</d>
+<d>transcription factor</d>
+<d>ubiquitin-protein ligase </d>
+<d>ligase</d>
+<d Excluded="1">Unclassified (UNCLASSIFIED)</d>
+</Subcolumn>
+</RowTitlesColumn>
+<YColumn Width="113" Decimals="2" Subcolumns="1">
+<Title>N2 downregulated</Title>
+<Subcolumn>
+<d>5.38e-005</d>
+<d>6.75e-005</d>
+<d>9.3e-005</d>
+<d>2.69e-005</d>
+<d>0.000508</d>
+<d Excluded="1">0</d>
+</Subcolumn>
+</YColumn>
+<YColumn Width="137" Decimals="6" Subcolumns="1">
+<Title>AM140 downregulated</Title>
+<Subcolumn>
+<d>0.000489</d>
+<d>0.000612</d>
+<d>0.0579</d>
+<d>0.000547</d>
+<d>0.0935</d>
+<d Excluded="1">0</d>
+</Subcolumn>
+</YColumn>
+</Table>
+<Table ID="Table4" XFormat="none" YFormat="replicates" Replicates="1" TableType="TwoWay" EVFormat="AsteriskAfterNumber">
+<Title>PANTHER-GO-Slim.BiologicalProce</Title>
+<RowTitlesColumn Width="508">
+<Subcolumn>
+<d>regulation of transcription from 
+RNA polymerase II promoter</d>
+<d>metabolic process</d>
+<d>primary metabolic process</d>
+<d>biological regulation</d>
+<d Excluded="1">Unclassified (UNCLASSIFIED)</d>
+<d>cellular process</d>
+<d>immune response</d>
+<d>immune system process</d>
+</Subcolumn>
+</RowTitlesColumn>
+<YColumn Width="113" Decimals="2" Subcolumns="1">
+<Title>N2 downregulated</Title>
+<Subcolumn>
+<d>0.179</d>
+<d>1</d>
+<d>1</d>
+<d>1</d>
+<d Excluded="1">0</d>
+<d>0.667</d>
+<d>1</d>
+<d>1</d>
+</Subcolumn>
+</YColumn>
+<YColumn Width="137" Decimals="6" Subcolumns="1">
+<Title>AM140 downregulated</Title>
+<Subcolumn>
+<d>0.0321</d>
+<d>1</d>
+<d>1</d>
+<d>1</d>
+<d Excluded="1">0</d>
+<d>1</d>
+<d>1</d>
+<d>1</d>
+</Subcolumn>
+</YColumn>
+<YColumn Width="96" Decimals="2" Subcolumns="1">
+<Title>N2 upregulated</Title>
+<Subcolumn>
+<d>1</d>
+<d>0.0799</d>
+<d>0.103</d>
+<d>0.0166</d>
+<d Excluded="1">0</d>
+<d>0.00202</d>
+<d>0.003</d>
+<d>0.0145</d>
+</Subcolumn>
+</YColumn>
+<YColumn Width="120" Decimals="2" Subcolumns="1">
+<Title>AM140 upregulated</Title>
+<Subcolumn>
+<d>1</d>
+<d>3.68e-006</d>
+<d>0.000109</d>
+<d>0.0842</d>
+<d Excluded="1">0</d>
+<d>2.04e-006</d>
+<d>0.315</d>
+<d>1</d>
+</Subcolumn>
+</YColumn>
+</Table>
+<Table ID="Table6" XFormat="none" YFormat="replicates" Replicates="1" TableType="TwoWay" EVFormat="AsteriskAfterNumber">
+<Title>PANTHER-GO-Slim.MolecularFuncti</Title>
+<RowTitlesColumn Width="508">
+<Subcolumn>
+<d>ubiquitin-protein ligase activity</d>
+<d>ligase activity</d>
+<d>sequence-specific DNA binding transcription factor activity</d>
+<d>catalytic activity</d>
+<d Excluded="1">Unclassified (UNCLASSIFIED)</d>
+</Subcolumn>
+</RowTitlesColumn>
+<YColumn Width="113" Decimals="2" Subcolumns="1">
+<Title>N2 downregulated</Title>
+<Subcolumn>
+<d>1.58e-006</d>
+<d>4.83e-005</d>
+<d>0.00794</d>
+<d>1</d>
+<d Excluded="1">0</d>
+</Subcolumn>
+</YColumn>
+<YColumn Width="137" Decimals="6" Subcolumns="1">
+<Title>AM140 downregulated</Title>
+<Subcolumn>
+<d>2.06e-007</d>
+<d>0.000421</d>
+<d>0.0198</d>
+<d>1</d>
+<d Excluded="1">0</d>
+</Subcolumn>
+</YColumn>
+<YColumn Width="96" Decimals="2" Subcolumns="1">
+<Title>N2 upregulated</Title>
+<Subcolumn>
+<d>1</d>
+<d>1</d>
+<d>1</d>
+<d>1</d>
+<d Excluded="1">0</d>
+</Subcolumn>
+</YColumn>
+<YColumn Width="120" Decimals="2" Subcolumns="1">
+<Title>AM140 upregulated</Title>
+<Subcolumn>
+<d>1</d>
+<d>1</d>
+<d>1</d>
+<d>0.0451</d>
+<d Excluded="1">0</d>
+</Subcolumn>
+</YColumn>
+</Table>
+<Table ID="Table8" XFormat="none" YFormat="replicates" Replicates="1" TableType="TwoWay" EVFormat="AsteriskAfterNumber">
+<Title>PANTHER-GO-Slim.MolecularFuncti-downregulated</Title>
+<RowTitlesColumn Width="508">
+<Subcolumn>
+<d>ubiquitin-protein 
+ligase activity</d>
+<d>ligase activity</d>
+<d>sequence-specific DNA binding 
+transcription factor activity</d>
+<d>catalytic activity</d>
+<d Excluded="1">Unclassified (UNCLASSIFIED)</d>
+</Subcolumn>
+</RowTitlesColumn>
+<YColumn Width="113" Decimals="2" Subcolumns="1">
+<Title>N2 downregulated</Title>
+<Subcolumn>
+<d>1.58e-006</d>
+<d>4.83e-005</d>
+<d>0.00794</d>
+<d>1</d>
+<d Excluded="1">0</d>
+</Subcolumn>
+</YColumn>
+<YColumn Width="137" Decimals="6" Subcolumns="1">
+<Title>AM140 downregulated</Title>
+<Subcolumn>
+<d>2.06e-007</d>
+<d>0.000421</d>
+<d>0.0198</d>
+<d>1</d>
+<d Excluded="1">0</d>
+</Subcolumn>
+</YColumn>
+</Table>
+
+<!--Analyses, graphs and layouts as compressed binary. Don't edit this part of the file.-->
+
+<Template xmlns:dt="urn:schemas-microsoft-com:datatypes" dt:dt="bin.base64">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</Template></GraphPadPrismFile>

@@ -1,0 +1,745 @@
+TF_ID	TF_Name	Species_Name	Status	Gene_ID	Family	Motif_ID
+T007916_1.02	cfi-1	Caenorhabditis_elegans	D	T23D8.8	ARID/BRIGHT	M0114_1.02,
+T008768_1.02	hmg-12	Caenorhabditis_elegans	D	Y17G7A.1	AT hook	M0141_1.02,
+T008767_1.02	Y116A8C.22	Caenorhabditis_elegans	D	Y116A8C.22	AT hook	M0140_1.02,
+T011238_1.02	bed-3	Caenorhabditis_elegans	D	F25H8.6	BED ZF	M0148_1.02,
+T012499_1.02	hlh-1	Caenorhabditis_elegans	D	B0304.1	bHLH	M0168_1.02,	M2338_1.02,
+T018425_1.02	hlh-10	Caenorhabditis_elegans	D	ZK682.4	bHLH	M0249_1.02,
+T016867_1.02	hlh-11	Caenorhabditis_elegans	D	F58A4.7	bHLH	M0228_1.02,
+T012794_1.02	hlh-12	Caenorhabditis_elegans	D	C28C12.8	bHLH	M0172_1.02,
+T013113_1.02	hlh-16	Caenorhabditis_elegans	D	DY3.3	bHLH	M0173_1.02,
+T012790_1.02	hlh-25	Caenorhabditis_elegans	D	C17C3.7	bHLH	M0170_1.02,
+T012791_1.02	hlh-26	Caenorhabditis_elegans	D	C17C3.8	bHLH	M0171_1.02,
+T012789_1.02	hlh-27	Caenorhabditis_elegans	D	C17C3.10	bHLH	M0169_1.02,
+T016860_1.02	hlh-29	Caenorhabditis_elegans	D	F31A3.4	bHLH	M0226_1.02,
+T018410_1.02	hlh-30	Caenorhabditis_elegans	D	W02C12.3	bHLH	M0240_1.02,
+T018211_1.02	mdl-1	Caenorhabditis_elegans	D	R03E9.1	bHLH	M4709_1.02,
+T016864_1.02	mxl-3	Caenorhabditis_elegans	D	F46G10.6	bHLH	M0227_1.02,
+T018398_1.02	ref-1	Caenorhabditis_elegans	D	T01E8.2	bHLH	M0239_1.02,
+T022239_1.02	Y44A6D.3	Caenorhabditis_elegans	D	Y44A6D.3	Brinker	M0254_1.02,
+T027587_1.02	atf-2	Caenorhabditis_elegans	D	K08F8.2	bZIP	M0326_1.02,
+T028059_1.02	atf-5	Caenorhabditis_elegans	D	T04C10.4	bZIP	M0342_1.02,
+T027136_1.02	atf-6	Caenorhabditis_elegans	D	F45E6.2	bZIP	M0325_1.02,
+T024084_1.02	atf-7	Caenorhabditis_elegans	D	C07G2.2	bZIP	M0275_1.02,
+T024086_1.02	C27D6.4	Caenorhabditis_elegans	D	C27D6.4	bZIP	M0276_1.02,
+T028113_1.02	ces-2	Caenorhabditis_elegans	D	ZK909.4	bZIP	M0358_1.02,	M2594_1.02,
+T024492_1.02	D1005.3	Caenorhabditis_elegans	D	D1005.3	bZIP	M0281_1.02,
+T027131_1.02	F17A9.3	Caenorhabditis_elegans	D	F17A9.3	bZIP	M0323_1.02,
+T027133_1.02	F23F12.9	Caenorhabditis_elegans	D	F23F12.9	bZIP	M0324_1.02,
+T028061_1.02	jun-1	Caenorhabditis_elegans	D	T24H10.7	bZIP	M0344_1.02,
+T027926_1.02	R07H5.10	Caenorhabditis_elegans	D	R07H5.10	bZIP	M0339_1.02,
+T028060_1.02	skn-1	Caenorhabditis_elegans	D	T19E7.2	bZIP	M0343_1.02,	M2340_1.02,	M2596_1.02,	M2597_1.02,
+T028062_1.02	T27F2.4	Caenorhabditis_elegans	D	T27F2.4	bZIP	M0345_1.02,
+T028086_1.02	W08E12.1	Caenorhabditis_elegans	D	W08E12.1	bZIP	M0347_1.02,
+T027927_1.02	xbp-1	Caenorhabditis_elegans	D	R74.3	bZIP	M0340_1.02,
+T028090_1.02	Y51H4A.4	Caenorhabditis_elegans	D	Y51H4A.4	bZIP	M0349_1.02,
+T028092_1.02	Y61A9LA.9	Caenorhabditis_elegans	D	Y61A9LA.9	bZIP	M0350_1.02,
+T028085_1.02	zip-3	Caenorhabditis_elegans	D	W07G1.3	bZIP	M0346_1.02,
+T037065_1.02	B0310.2	Caenorhabditis_elegans	D	B0310.2	C2H2 ZF	M0379_1.02,
+T057638_1.02	blmp-1	Caenorhabditis_elegans	D	F25D7.3	C2H2 ZF	M2331_1.02,	M4710_1.02,
+T037191_1.02	C46E10.8	Caenorhabditis_elegans	D	C46E10.8	C2H2 ZF	M0385_1.02,
+T057644_1.02	ces-1	Caenorhabditis_elegans	D	F43G9.11	C2H2 ZF	M0450_1.02,
+T037195_1.02	che-1	Caenorhabditis_elegans	D	C55B7.12	C2H2 ZF	M0388_1.02,	M2066_1.02,
+T037185_1.02	die-1	Caenorhabditis_elegans	D	C18D1.1	C2H2 ZF	M0382_1.02,
+T061409_1.02	egl-43	Caenorhabditis_elegans	D	R53.3	C2H2 ZF	M0489_1.02,
+T037189_1.02	egrh-1	Caenorhabditis_elegans	D	C27C12.2	C2H2 ZF	M0383_1.02,
+T061528_1.02	egrh-3	Caenorhabditis_elegans	D	Y94H6A.11	C2H2 ZF	M0499_1.02,
+T061408_1.02	eor-1	Caenorhabditis_elegans	D	R11E3.6	C2H2 ZF	M0488_1.02,	M2336_1.02,
+T057631_1.02	F10B5.3	Caenorhabditis_elegans	D	F10B5.3	C2H2 ZF	M0445_1.02,
+T057635_1.02	F13H6.1	Caenorhabditis_elegans	D	F13H6.1	C2H2 ZF	M0447_1.02,
+T057651_1.02	F52B5.7	Caenorhabditis_elegans	D	F52B5.7	C2H2 ZF	M0454_1.02,
+T057656_1.02	F55C5.11	Caenorhabditis_elegans	D	F55C5.11	C2H2 ZF	M0457_1.02,
+T037182_1.02	ham-2	Caenorhabditis_elegans	D	C07A12.1	C2H2 ZF	M0380_1.02,
+T060869_1.02	K02D7.2	Caenorhabditis_elegans	D	K02D7.2	C2H2 ZF	M0458_1.02,
+T060871_1.02	K11D2.4	Caenorhabditis_elegans	D	K11D2.4	C2H2 ZF	M0459_1.02,
+T057655_1.02	klf-3	Caenorhabditis_elegans	D	F54H5.4	C2H2 ZF	M0456_1.02,
+T061509_1.02	lin-29	Caenorhabditis_elegans	D	W03C9.4	C2H2 ZF	M0493_1.02,
+T057640_1.02	lin-48	Caenorhabditis_elegans	D	F34D10.5	C2H2 ZF	M0448_1.02,
+T057653_1.02	lsl-1	Caenorhabditis_elegans	D	F52F12.4	C2H2 ZF	M0455_1.02,
+T057650_1.02	lsy-2	Caenorhabditis_elegans	D	F49H12.1	C2H2 ZF	M0453_1.02,
+T057649_1.02	lsy-27	Caenorhabditis_elegans	D	F47H4.1	C2H2 ZF	M0452_1.02,
+T060933_1.02	M03D4.4	Caenorhabditis_elegans	D	M03D4.4	C2H2 ZF	M0460_1.02,
+T037184_1.02	mnm-2	Caenorhabditis_elegans	D	C10A4.8	C2H2 ZF	M0381_1.02,
+T037190_1.02	odd-2	Caenorhabditis_elegans	D	C34H3.2	C2H2 ZF	M0384_1.02,
+T057645_1.02	pag-3	Caenorhabditis_elegans	D	F45B8.4	C2H2 ZF	M0451_1.02,
+T037192_1.02	ref-2	Caenorhabditis_elegans	D	C47C12.3	C2H2 ZF	M0386_1.02,
+T037196_1.02	scrt-1	Caenorhabditis_elegans	D	C55C2.1	C2H2 ZF	M0389_1.02,
+T061524_1.02	slr-2	Caenorhabditis_elegans	D	Y59A8B.13	C2H2 ZF	M0497_1.02,
+T061515_1.02	sptf-3	Caenorhabditis_elegans	D	Y40B1A.4	C2H2 ZF	M0495_1.02,
+T061576_1.02	syd-9	Caenorhabditis_elegans	D	ZK867.1	C2H2 ZF	M0547_1.02,
+T061501_1.02	T22C8.4	Caenorhabditis_elegans	D	T22C8.4	C2H2 ZF	M0491_1.02,
+T061516_1.02	tra-1	Caenorhabditis_elegans	D	Y47D3A.6	C2H2 ZF	M2598_1.02,	M2599_1.02,
+T061519_1.02	Y53H1A.2	Caenorhabditis_elegans	D	Y53H1A.2	C2H2 ZF	M0496_1.02,
+T061570_1.02	ZC328.2	Caenorhabditis_elegans	D	ZC328.2	C2H2 ZF	M0544_1.02,
+T061573_1.02	ZK337.2	Caenorhabditis_elegans	D	ZK337.2	C2H2 ZF	M0546_1.02,
+T060934_1.02	ztf-14	Caenorhabditis_elegans	D	M163.2	C2H2 ZF	M0461_1.02,
+T061407_1.02	ztf-16	Caenorhabditis_elegans	D	R08E3.4	C2H2 ZF	M0487_1.02,
+T061503_1.02	ztf-19	Caenorhabditis_elegans	D	T27B1.2	C2H2 ZF	M0492_1.02,
+T057634_1.02	ztf-2	Caenorhabditis_elegans	D	F13G3.1	C2H2 ZF	M0446_1.02,
+T061498_1.02	ztf-27	Caenorhabditis_elegans	D	T09F3.1	C2H2 ZF	M0490_1.02,
+T057642_1.02	ztf-28	Caenorhabditis_elegans	D	F36F12.8	C2H2 ZF	M0449_1.02,
+T061526_1.02	ztf-29	Caenorhabditis_elegans	D	Y66D12A.12	C2H2 ZF	M0498_1.02,
+T037194_1.02	ztf-3	Caenorhabditis_elegans	D	C53D5.4	C2H2 ZF	M0387_1.02,
+T061510_1.02	ztf-6	Caenorhabditis_elegans	D	W06H12.1	C2H2 ZF	M0494_1.02,
+T061572_1.02	ztf-9	Caenorhabditis_elegans	D	ZK287.6	C2H2 ZF	M0545_1.02,
+T070268_1.02	ztf-11	Caenorhabditis_elegans	D	F52F12.6	C2HC ZF	M0574_1.02,
+T070813_1.02	mex-6	Caenorhabditis_elegans	D	AH6.5	CCCH ZF	M0575_1.02,
+T071325_1.02	Y48G1C.6	Caenorhabditis_elegans	D	Y48G1C.6	CENPB	M0579_1.02,
+T072554_1.02	cey-1	Caenorhabditis_elegans	D	F33A8.3	CSD	M0584_1.02,
+T073408_1.02	ceh-48	Caenorhabditis_elegans	D	C17H12.9	CUT,Homeodomain	M0586_1.02,
+T074833_1.02	Y75B8A.6	Caenorhabditis_elegans	D	Y75B8A.6	CxxC	M0616_1.02,
+T075010_1.02	C34D1.1	Caenorhabditis_elegans	D	C34D1.1	DM	M0624_1.02,
+T075351_1.02	dmd-3	Caenorhabditis_elegans	D	Y43F8C.10	DM	M0643_1.02,
+T075008_1.02	dmd-4	Caenorhabditis_elegans	D	C27C12.6	DM	M0622_1.02,
+T075278_1.02	dmd-5	Caenorhabditis_elegans	D	F10C1.5	DM	M0639_1.02,
+T075279_1.02	dmd-6	Caenorhabditis_elegans	D	F13G11.1	DM	M0640_1.02,
+T075009_1.02	mab-23	Caenorhabditis_elegans	D	C32C4.5	DM	M0623_1.02,
+T075352_1.02	mab-3	Caenorhabditis_elegans	D	Y53C12B.5	DM	M0644_1.02,	M2068_1.02,
+T075350_1.02	T22H9.4	Caenorhabditis_elegans	D	T22H9.4	DM	M0642_1.02,
+T075353_1.02	Y67D8A.3	Caenorhabditis_elegans	D	Y67D8A.3	DM	M0645_1.02,
+T076991_1.02	efl-1	Caenorhabditis_elegans	D	Y102A5C.18	E2F	M2334_1.02,	M4711_1.02,
+T076992_1.02	efl-2	Caenorhabditis_elegans	D	Y48C3A.17	E2F	M0674_1.02,	M0675_1.02,
+T078792_1.02	F19F10.1	Caenorhabditis_elegans	D	F19F10.1	Ets	M0712_1.02,
+T082933_1.02	daf-16	Caenorhabditis_elegans	D	R13H8.1	Forkhead	M0748_1.02,	M2595_1.02,
+T082895_1.02	fkh-9	Caenorhabditis_elegans	D	K03C7.2	Forkhead	M0741_1.02,
+T082659_1.02	let-381	Caenorhabditis_elegans	D	F26B1.7	Forkhead	M0739_1.02,
+T082896_1.02	lin-31	Caenorhabditis_elegans	D	K10G6.1	Forkhead	M0742_1.02,
+T082661_1.02	pha-4	Caenorhabditis_elegans	D	F38A6.1	Forkhead	M2339_1.02,	M4712_1.02,
+T085219_1.02	elt-1	Caenorhabditis_elegans	D	W09C2.1	GATA	M4713_1.02,	M4714_1.02,
+T085093_1.02	elt-3	Caenorhabditis_elegans	D	K02B9.4	GATA	M2335_1.02,
+T084987_1.02	elt-6	Caenorhabditis_elegans	D	F52C12.5	GATA	M0786_1.02,
+T084368_1.02	elt-7	Caenorhabditis_elegans	D	C18G1.2	GATA	M0772_1.02,
+T084989_1.02	end-1	Caenorhabditis_elegans	D	F58E10.2	GATA	M0787_1.02,
+T084990_1.02	end-3	Caenorhabditis_elegans	D	F58E10.5	GATA	M0788_1.02,
+T085094_1.02	med-2	Caenorhabditis_elegans	D	K04C2.6	GATA	M0789_1.02,
+T086516_1.02	egl-27	Caenorhabditis_elegans	D	C04A2.3	GATA,Myb/SANT	M4715_1.02,
+T090451_1.02	C07E3.6	Caenorhabditis_elegans	D	C07E3.6	Homeodomain	M0857_1.02,
+T098452_1.02	ceh-19	Caenorhabditis_elegans	D	F20D12.6	Homeodomain	M1085_1.02,
+T098456_1.02	ceh-22	Caenorhabditis_elegans	D	F29F11.5	Homeodomain	M1086_1.02,	M2069_1.02,
+T100223_1.02	ceh-23	Caenorhabditis_elegans	D	ZK652.5	Homeodomain	M1144_1.02,
+T098467_1.02	ceh-24	Caenorhabditis_elegans	D	F55B12.1	Homeodomain	M1087_1.02,
+T099687_1.02	ceh-28	Caenorhabditis_elegans	D	K03A11.3	Homeodomain	M4717_1.02,
+T090456_1.02	ceh-34	Caenorhabditis_elegans	D	C10G8.6	Homeodomain	M0859_1.02,
+T090469_1.02	ceh-36	Caenorhabditis_elegans	D	C37E2.4	Homeodomain	M0862_1.02,
+T090470_1.02	ceh-37	Caenorhabditis_elegans	D	C37E2.5	Homeodomain	M0863_1.02,
+T090459_1.02	ceh-5	Caenorhabditis_elegans	D	C16C2.1	Homeodomain	M0860_1.02,
+T100206_1.02	ceh-51	Caenorhabditis_elegans	D	Y80D3A.3	Homeodomain	M1128_1.02,
+T090450_1.02	ceh-52	Caenorhabditis_elegans	D	C07E3.5	Homeodomain	M0856_1.02,
+T090455_1.02	ceh-53	Caenorhabditis_elegans	D	C09G12.1	Homeodomain	M0858_1.02,
+T100078_1.02	ceh-90	Caenorhabditis_elegans	D	R03E1.4	Homeodomain	M1118_1.02,
+T100220_1.02	lim-4	Caenorhabditis_elegans	D	ZC64.4	Homeodomain	M1143_1.02,
+T090452_1.02	lin-39	Caenorhabditis_elegans	D	C07H6.7	Homeodomain	M4716_1.02,
+T090461_1.02	nsy-7	Caenorhabditis_elegans	D	C18F3.4	Homeodomain	M0861_1.02,
+T090471_1.02	pal-1	Caenorhabditis_elegans	D	C38D4.6	Homeodomain	M0864_1.02,
+T099787_1.02	pha-2	Caenorhabditis_elegans	D	M6.3	Homeodomain	M1110_1.02,
+T100080_1.02	R06F6.6	Caenorhabditis_elegans	D	R06F6.6	Homeodomain	M1119_1.02,
+T100181_1.02	T13C5.4	Caenorhabditis_elegans	D	T13C5.4	Homeodomain	M1122_1.02,
+T100184_1.02	unc-62	Caenorhabditis_elegans	D	T28F12.2	Homeodomain	M1123_1.02,
+T099786_1.02	vab-7	Caenorhabditis_elegans	D	M142.4	Homeodomain	M1109_1.02,
+T100216_1.02	ZC123.3	Caenorhabditis_elegans	D	ZC123.3	Homeodomain	M1142_1.02,
+T104621_1.02	eyg-1	Caenorhabditis_elegans	D	Y53C12C.1	Homeodomain,Paired box	M1225_1.02,
+T105296_1.02	ceh-18	Caenorhabditis_elegans	D	ZC64.3	Homeodomain,POU	M1244_1.02,
+T104723_1.02	unc-86	Caenorhabditis_elegans	D	C30A5.7	Homeodomain,POU	M1229_1.02,
+T106439_1.02	hsf-1	Caenorhabditis_elegans	D	Y53C10A.12	HSF	M1251_1.02,
+T109483_1.02	C01G12.1	Caenorhabditis_elegans	D	C01G12.1	MADF	M1279_1.02,
+T110380_1.02	T07C12.11	Caenorhabditis_elegans	D	T07C12.11	MADF	M1288_1.02,
+T110383_1.02	ZC416.1	Caenorhabditis_elegans	D	ZC416.1	MADF	M1289_1.02,
+T111368_1.02	unc-120	Caenorhabditis_elegans	D	D1081.2	MADS box	M1296_1.02,
+T119023_1.02	gei-11	Caenorhabditis_elegans	D	F32H2.1	Myb/SANT	M2337_1.02,	M4718_1.02,
+T134147_1.02	daf-12	Caenorhabditis_elegans	D	F11A1.3	Nuclear receptor	M1461_1.02,	M2332_1.02,
+T134664_1.02	nhr-1	Caenorhabditis_elegans	D	R09G11.2	Nuclear receptor	M1477_1.02,
+T134734_1.02	nhr-122	Caenorhabditis_elegans	D	Y41D4B.9	Nuclear receptor	M1487_1.02,
+T134186_1.02	nhr-142	Caenorhabditis_elegans	D	F44E7.8	Nuclear receptor	M1466_1.02,
+T134727_1.02	nhr-145	Caenorhabditis_elegans	D	Y39B6A.47	Nuclear receptor	M1485_1.02,
+T131251_1.02	nhr-154	Caenorhabditis_elegans	D	C13C4.2	Nuclear receptor	M1424_1.02,
+T131292_1.02	nhr-168	Caenorhabditis_elegans	D	C50B6.8	Nuclear receptor	M1427_1.02,
+T134155_1.02	nhr-177	Caenorhabditis_elegans	D	F16B4.1	Nuclear receptor	M1462_1.02,
+T134170_1.02	nhr-182	Caenorhabditis_elegans	D	F41B5.9	Nuclear receptor	M1463_1.02,	M1464_1.02,
+T134655_1.02	nhr-204	Caenorhabditis_elegans	D	R02C2.4	Nuclear receptor	M1476_1.02,
+T134689_1.02	nhr-216	Caenorhabditis_elegans	D	T09D3.4	Nuclear receptor	M1480_1.02,
+T134722_1.02	nhr-232	Caenorhabditis_elegans	D	Y22F5A.1	Nuclear receptor	M1484_1.02,
+T134148_1.02	nhr-25	Caenorhabditis_elegans	D	F11C1.6	Nuclear receptor	M4719_1.02,
+T134464_1.02	nhr-3	Caenorhabditis_elegans	D	H01A20.1	Nuclear receptor	M1473_1.02,
+T134203_1.02	nhr-34	Caenorhabditis_elegans	D	F58G6.5	Nuclear receptor	M1468_1.02,
+T134143_1.02	nhr-36	Caenorhabditis_elegans	D	F07C3.10	Nuclear receptor	M1460_1.02,
+T131276_1.02	nhr-42	Caenorhabditis_elegans	D	C33G8.6	Nuclear receptor	M1425_1.02,
+T131283_1.02	nhr-46	Caenorhabditis_elegans	D	C45E5.6	Nuclear receptor	M1426_1.02,
+T134498_1.02	nhr-49	Caenorhabditis_elegans	D	K10C3.6	Nuclear receptor	M1474_1.02,
+T134748_1.02	nhr-5	Caenorhabditis_elegans	D	Y73F8A.21	Nuclear receptor	M1489_1.02,
+T134720_1.02	nhr-65	Caenorhabditis_elegans	D	Y17D7A.3	Nuclear receptor	M1483_1.02,
+T134688_1.02	nhr-66	Caenorhabditis_elegans	D	T09A12.4	Nuclear receptor	M1479_1.02,
+T134195_1.02	nhr-7	Caenorhabditis_elegans	D	F54D1.4	Nuclear receptor	M1467_1.02,
+T134739_1.02	nhr-70	Caenorhabditis_elegans	D	Y51A2D.17	Nuclear receptor	M1488_1.02,
+T134683_1.02	nhr-84	Caenorhabditis_elegans	D	T06C12.7	Nuclear receptor	M1478_1.02,
+T134728_1.02	nhr-86	Caenorhabditis_elegans	D	Y40B10A.8	Nuclear receptor	M1486_1.02,
+T134697_1.02	odr-7	Caenorhabditis_elegans	D	T18D3.2	Nuclear receptor	M1481_1.02,
+T134175_1.02	sex-1	Caenorhabditis_elegans	D	F44A6.2	Nuclear receptor	M1465_1.02,
+T135737_1.02	egl-38	Caenorhabditis_elegans	D	C04G2.7	Paired box	M1498_1.02,
+T136033_1.02	npax-1	Caenorhabditis_elegans	D	F21D12.5	Paired box	M1500_1.02,
+T136078_1.02	pax-2	Caenorhabditis_elegans	D	K06B9.5	Paired box	M1501_1.02,
+T136947_1.02	mbr-1	Caenorhabditis_elegans	D	T01C1.2	Pipsqueak	M1511_1.02,
+T137867_1.02	ceh-26	Caenorhabditis_elegans	D	K12H4.1	Prospero	M1514_1.02,
+T138992_1.02	daf-19	Caenorhabditis_elegans	D	F33H1.1	RFX	M1534_1.02,
+T140052_1.02	tag-347	Caenorhabditis_elegans	D	C25G4.4	SAND	M1542_1.02,
+T142324_1.02	sma-4	Caenorhabditis_elegans	D	R12B2.1	SMAD	M1574_1.02,
+T146184_1.02	egl-13	Caenorhabditis_elegans	D	T22B7.1	Sox	M1609_1.02,
+T146185_1.02	gei-3	Caenorhabditis_elegans	D	T22H6.6	Sox	M1610_1.02,
+T146234_1.02	pop-1	Caenorhabditis_elegans	D	W10C8.2	Sox	M1611_1.02,
+T143247_1.02	sem-2	Caenorhabditis_elegans	D	C32E12.5	Sox	M1577_1.02,
+T150133_1.02	tbx-33	Caenorhabditis_elegans	D	Y66A7A.8	T-box	M1636_1.02,
+T149062_1.02	tbx-38	Caenorhabditis_elegans	D	C24H11.3	T-box	M1624_1.02,
+T150134_1.02	tbx-39	Caenorhabditis_elegans	D	Y73F8A.16	T-box	M1637_1.02,
+T150135_1.02	tbx-40	Caenorhabditis_elegans	D	Y73F8A.17	T-box	M1638_1.02,
+T150128_1.02	tbx-43	Caenorhabditis_elegans	D	Y46E12A.4	T-box	M1635_1.02,
+T153668_1.02	athp-1	Caenorhabditis_elegans	D	C44B9.4	Unknown	M1672_1.02,
+T153734_1.02	dpy-27	Caenorhabditis_elegans	D	R13G10.1	Unknown	M2333_1.02,
+T153736_1.02	lin-14	Caenorhabditis_elegans	D	T25C12.1	Unknown	M2067_1.02,
+T012793_1.02	aha-1	Caenorhabditis_elegans	I	C25A1.11	bHLH
+T012795_1.02	cnd-1	Caenorhabditis_elegans	I	C34E10.7	bHLH
+T016865_1.02	hlh-13	Caenorhabditis_elegans	I	F48D6.3	bHLH
+T012797_1.02	hlh-15	Caenorhabditis_elegans	I	C43H6.8	bHLH
+T016861_1.02	hlh-17	Caenorhabditis_elegans	I	F38C2.2	bHLH
+T016859_1.02	hlh-28	Caenorhabditis_elegans	I	F31A3.2	bHLH
+T012787_1.02	hlh-8	Caenorhabditis_elegans	I	C02B8.4	bHLH
+T018400_1.02	lin-32	Caenorhabditis_elegans	I	T14F9.5	bHLH
+T028088_1.02	crh-1	Caenorhabditis_elegans	I	Y41C4A.4	bZIP
+T057659_1.02	klf-1	Caenorhabditis_elegans	I	F56F11.3	C2H2 ZF
+T057654_1.02	klf-2	Caenorhabditis_elegans	I	F53F8.1	C2H2 ZF
+T037064_1.02	odd-1	Caenorhabditis_elegans	I	B0280.4	C2H2 ZF
+T061513_1.02	Y38H8A.5	Caenorhabditis_elegans	I	Y38H8A.5	C2H2 ZF
+T061527_1.02	ztf-25	Caenorhabditis_elegans	I	Y6G8.3	C2H2 ZF
+T037181_1.02	ztf-30	Caenorhabditis_elegans	I	C06E1.8	C2H2 ZF
+T078938_1.02	ast-1	Caenorhabditis_elegans	I	T08H4.3	Ets
+T077566_1.02	C24A1.2	Caenorhabditis_elegans	I	C24A1.2	Ets
+T078794_1.02	ets-4	Caenorhabditis_elegans	I	F22A3.1	Ets
+T077569_1.02	ets-5	Caenorhabditis_elegans	I	C42D8.4	Ets
+T078793_1.02	F19F10.5	Caenorhabditis_elegans	I	F19F10.5	Ets
+T077568_1.02	lin-1	Caenorhabditis_elegans	I	C37F5.1	Ets
+T077567_1.02	tag-97	Caenorhabditis_elegans	I	C33A11.4	Ets
+T080997_1.02	fkh-10	Caenorhabditis_elegans	I	C25A1.2	Forkhead
+T082938_1.02	fkh-2	Caenorhabditis_elegans	I	T14G12.4	Forkhead
+T080996_1.02	fkh-6	Caenorhabditis_elegans	I	B0286.5	Forkhead
+T082660_1.02	fkh-7	Caenorhabditis_elegans	I	F26D12.1	Forkhead
+T081000_1.02	unc-130	Caenorhabditis_elegans	I	C47G2.2	Forkhead
+T084988_1.02	egl-18	Caenorhabditis_elegans	I	F55A8.1	GATA
+T085218_1.02	med-1	Caenorhabditis_elegans	I	T24D3.1	GATA
+T100082_1.02	alr-1	Caenorhabditis_elegans	I	R08B4.2	Homeodomain
+T098450_1.02	ceh-1	Caenorhabditis_elegans	I	F16H11.4	Homeodomain
+T100195_1.02	ceh-10	Caenorhabditis_elegans	I	W03A3.1	Homeodomain
+T098459_1.02	ceh-12	Caenorhabditis_elegans	I	F33D11.4	Homeodomain
+T100083_1.02	ceh-13	Caenorhabditis_elegans	I	R13A5.5	Homeodomain
+T098464_1.02	ceh-14	Caenorhabditis_elegans	I	F46C8.5	Homeodomain
+T090458_1.02	ceh-16	Caenorhabditis_elegans	I	C13G5.1	Homeodomain
+T091067_1.02	ceh-17	Caenorhabditis_elegans	I	D1007.1	Homeodomain
+T090463_1.02	ceh-2	Caenorhabditis_elegans	I	C27A12.5	Homeodomain
+T098457_1.02	ceh-20	Caenorhabditis_elegans	I	F31E3.1	Homeodomain
+T090466_1.02	ceh-30	Caenorhabditis_elegans	I	C33D12.7	Homeodomain
+T090465_1.02	ceh-31	Caenorhabditis_elegans	I	C33D12.1	Homeodomain
+T100196_1.02	ceh-32	Caenorhabditis_elegans	I	W05E10.3	Homeodomain
+T090457_1.02	ceh-33	Caenorhabditis_elegans	I	C10G8.7	Homeodomain
+T098451_1.02	ceh-40	Caenorhabditis_elegans	I	F17A2.5	Homeodomain
+T090464_1.02	ceh-43	Caenorhabditis_elegans	I	C28A5.4	Homeodomain
+T100224_1.02	ceh-45	Caenorhabditis_elegans	I	ZK993.1	Homeodomain
+T100222_1.02	ceh-8	Caenorhabditis_elegans	I	ZK265.4	Homeodomain
+T100202_1.02	ceh-9	Caenorhabditis_elegans	I	Y65B4BR.9	Homeodomain
+T100077_1.02	cog-1	Caenorhabditis_elegans	I	R03C1.3	Homeodomain
+T090460_1.02	dsc-1	Caenorhabditis_elegans	I	C18B12.3	Homeodomain
+T090453_1.02	egl-5	Caenorhabditis_elegans	I	C08C3.1	Homeodomain
+T090468_1.02	irx-1	Caenorhabditis_elegans	I	C36F7.1	Homeodomain
+T099688_1.02	lim-6	Caenorhabditis_elegans	I	K03E6.1	Homeodomain
+T090449_1.02	lim-7	Caenorhabditis_elegans	I	C04F1.3	Homeodomain
+T100218_1.02	lin-11	Caenorhabditis_elegans	I	ZC247.3	Homeodomain
+T090454_1.02	mab-5	Caenorhabditis_elegans	I	C08C3.3	Homeodomain
+T098449_1.02	mec-3	Caenorhabditis_elegans	I	F01D4.6	Homeodomain
+T090472_1.02	mls-2	Caenorhabditis_elegans	I	C39E6.4	Homeodomain
+T100204_1.02	php-3	Caenorhabditis_elegans	I	Y75B8A.1	Homeodomain
+T098458_1.02	tab-1	Caenorhabditis_elegans	I	F31E8.3	Homeodomain
+T100200_1.02	ttx-1	Caenorhabditis_elegans	I	Y113G7A.6	Homeodomain
+T090474_1.02	ttx-3	Caenorhabditis_elegans	I	C40H5.5	Homeodomain
+T090276_1.02	unc-30	Caenorhabditis_elegans	I	B0564.10	Homeodomain
+T098454_1.02	unc-4	Caenorhabditis_elegans	I	F26C11.2	Homeodomain
+T098469_1.02	unc-42	Caenorhabditis_elegans	I	F58E6.10	Homeodomain
+T100081_1.02	vab-15	Caenorhabditis_elegans	I	R07B1.1	Homeodomain
+T104530_1.02	vab-3	Caenorhabditis_elegans	I	F14F3.1	Homeodomain,Paired box
+T105286_1.02	ceh-6	Caenorhabditis_elegans	I	K02B12.1	Homeodomain,POU
+T111990_1.02	mef-2	Caenorhabditis_elegans	I	W10D5.1	MADS box
+T117747_1.02	D1081.8	Caenorhabditis_elegans	I	D1081.8	Myb/SANT
+T134197_1.02	fax-1	Caenorhabditis_elegans	I	F56E3.4	Nuclear receptor
+T131234_1.02	nhr-10	Caenorhabditis_elegans	I	B0280.8	Nuclear receptor
+T134467_1.02	nhr-101	Caenorhabditis_elegans	I	H12C20.6	Nuclear receptor
+T134692_1.02	nhr-109	Caenorhabditis_elegans	I	T12C9.5	Nuclear receptor
+T134182_1.02	nhr-128	Caenorhabditis_elegans	I	F44C8.5	Nuclear receptor
+T134179_1.02	nhr-134	Caenorhabditis_elegans	I	F44C8.2	Nuclear receptor
+T131252_1.02	nhr-136	Caenorhabditis_elegans	I	C13C4.3	Nuclear receptor
+T134160_1.02	nhr-141	Caenorhabditis_elegans	I	F25E5.6	Nuclear receptor
+T131250_1.02	nhr-153	Caenorhabditis_elegans	I	C13C4.1	Nuclear receptor
+T131235_1.02	nhr-23	Caenorhabditis_elegans	I	C01H6.5	Nuclear receptor
+T134691_1.02	nhr-273	Caenorhabditis_elegans	I	T12C9.1	Nuclear receptor
+T131247_1.02	nhr-28	Caenorhabditis_elegans	I	C11G6.4	Nuclear receptor
+T134717_1.02	nhr-41	Caenorhabditis_elegans	I	Y104H12A.1	Nuclear receptor
+T134766_1.02	nhr-48	Caenorhabditis_elegans	I	ZK662.3	Nuclear receptor
+T131286_1.02	nhr-6	Caenorhabditis_elegans	I	C48D5.1	Nuclear receptor
+T134199_1.02	nhr-60	Caenorhabditis_elegans	I	F57A10.5	Nuclear receptor
+T131282_1.02	nhr-64	Caenorhabditis_elegans	I	C45E1.1	Nuclear receptor
+T131246_1.02	nhr-67	Caenorhabditis_elegans	I	C08F8.8	Nuclear receptor
+T134706_1.02	nhr-79	Caenorhabditis_elegans	I	T26H2.9	Nuclear receptor
+T134715_1.02	nhr-85	Caenorhabditis_elegans	I	W05B5.3	Nuclear receptor
+T134196_1.02	unc-55	Caenorhabditis_elegans	I	F55D12.4	Nuclear receptor
+T136079_1.02	pax-1	Caenorhabditis_elegans	I	K07C11.1	Paired box
+T145631_1.02	sox-3	Caenorhabditis_elegans	I	F40E10.2	Sox
+T150127_1.02	mab-9	Caenorhabditis_elegans	I	T27A1.6	T-box
+T149993_1.02	tbx-2	Caenorhabditis_elegans	I	F21H11.3	T-box
+T150130_1.02	tbx-37	Caenorhabditis_elegans	I	Y47D3A.12	T-box
+T150739_1.02	tbp-1	Caenorhabditis_elegans	I	T20B12.2	TBP
+T005017_1.02	aptf-1	Caenorhabditis_elegans	N	K06A1.1	AP-2
+T004750_1.02	C46C2.7	Caenorhabditis_elegans	N	C46C2.7	AP-2
+T004997_1.02	F28C6.1	Caenorhabditis_elegans	N	F28C6.1	AP-2
+T004998_1.02	F28C6.2	Caenorhabditis_elegans	N	F28C6.2	AP-2
+T005039_1.02	Y62E10A.17	Caenorhabditis_elegans	N	Y62E10A.17	AP-2
+T007195_1.02	let-526	Caenorhabditis_elegans	N	C01G8.9	ARID/BRIGHT
+T007920_1.02	rbr-2	Caenorhabditis_elegans	N	ZK593.4	ARID/BRIGHT
+T007917_1.02	Y108G3AL.7	Caenorhabditis_elegans	N	Y108G3AL.7	ARID/BRIGHT
+T008422_1.02	C08B11.3	Caenorhabditis_elegans	N	C08B11.3	ARID/BRIGHT,RFX
+T012796_1.02	ahr-1	Caenorhabditis_elegans	N	C41G7.5	bHLH
+T012788_1.02	cky-1	Caenorhabditis_elegans	N	C15C8.2	bHLH
+T012792_1.02	hlh-14	Caenorhabditis_elegans	N	C18A3.8	bHLH
+T016866_1.02	hlh-19	Caenorhabditis_elegans	N	F57C12.3	bHLH
+T018404_1.02	hlh-3	Caenorhabditis_elegans	N	T24B8.6	bHLH
+T016862_1.02	hlh-31	Caenorhabditis_elegans	N	F38C2.8	bHLH
+T018411_1.02	hlh-32	Caenorhabditis_elegans	N	Y105C5B.29	bHLH
+T018412_1.02	hlh-33	Caenorhabditis_elegans	N	Y39A3CR.6	bHLH
+T018399_1.02	hlh-4	Caenorhabditis_elegans	N	T05G5.2	bHLH
+T018401_1.02	hlh-6	Caenorhabditis_elegans	N	T15H9.3	bHLH
+T012798_1.02	hnd-1	Caenorhabditis_elegans	N	C44C10.8	bHLH
+T018414_1.02	lin-22	Caenorhabditis_elegans	N	Y54G2A.1	bHLH
+T018403_1.02	mml-1	Caenorhabditis_elegans	N	T20B12.6	bHLH
+T018402_1.02	mxl-1	Caenorhabditis_elegans	N	T19B10.11	bHLH
+T016863_1.02	mxl-2	Caenorhabditis_elegans	N	F40G9.11	bHLH
+T018415_1.02	ngn-1	Caenorhabditis_elegans	N	Y69A2AR.29	bHLH
+T018413_1.02	sbp-1	Caenorhabditis_elegans	N	Y47D3B.7	bHLH
+T018424_1.02	ZK177.11	Caenorhabditis_elegans	N	ZK177.11	bHLH
+T022096_1.02	hlh-2	Caenorhabditis_elegans	N	M05B5.5	bHLH,Rap1
+T022214_1.02	F21D5.4	Caenorhabditis_elegans	N	F21D5.4	Brinker
+T022238_1.02	W02H5.4	Caenorhabditis_elegans	N	W02H5.4	Brinker
+T024085_1.02	C18C4.5	Caenorhabditis_elegans	N	C18C4.5	bZIP
+T024087_1.02	C32E8.1	Caenorhabditis_elegans	N	C32E8.1	bZIP
+T024089_1.02	C48E7.11	Caenorhabditis_elegans	N	C48E7.11	bZIP
+T027130_1.02	F15A4.10	Caenorhabditis_elegans	N	F15A4.10	bZIP
+T027132_1.02	F17C11.17	Caenorhabditis_elegans	N	F17C11.17	bZIP
+T027135_1.02	F41H10.4	Caenorhabditis_elegans	N	F41H10.4	bZIP
+T027137_1.02	F45H11.6	Caenorhabditis_elegans	N	F45H11.6	bZIP
+T027134_1.02	fos-1	Caenorhabditis_elegans	N	F29G9.4	bZIP
+T027138_1.02	let-607	Caenorhabditis_elegans	N	F57B10.1	bZIP
+T028112_1.02	lfi-1	Caenorhabditis_elegans	N	ZC8.4	bZIP
+T024515_1.02	lmn-1	Caenorhabditis_elegans	N	DY3.2	bZIP
+T028091_1.02	Y60A3A.25	Caenorhabditis_elegans	N	Y60A3A.25	bZIP
+T028111_1.02	ZC376.7	Caenorhabditis_elegans	N	ZC376.7	bZIP
+T027586_1.02	zip-2	Caenorhabditis_elegans	N	K02F3.4	bZIP
+T028089_1.02	zip-4	Caenorhabditis_elegans	N	Y44E3B.1	bZIP
+T024088_1.02	zip-5	Caenorhabditis_elegans	N	C34D1.5	bZIP
+T037180_1.02	C04F5.9	Caenorhabditis_elegans	N	C04F5.9	C2H2 ZF
+T037183_1.02	C09F5.3	Caenorhabditis_elegans	N	C09F5.3	C2H2 ZF
+T037186_1.02	C27A12.2	Caenorhabditis_elegans	N	C27A12.2	C2H2 ZF
+T037188_1.02	C27A2.7	Caenorhabditis_elegans	N	C27A2.7	C2H2 ZF
+T037193_1.02	C52E12.6	Caenorhabditis_elegans	N	C52E12.6	C2H2 ZF
+T038605_1.02	D2092.10	Caenorhabditis_elegans	N	D2092.10	C2H2 ZF
+T060872_1.02	egl-46	Caenorhabditis_elegans	N	K11G9.4	C2H2 ZF
+T061522_1.02	egrh-2	Caenorhabditis_elegans	N	Y55F3AM.7	C2H2 ZF
+T061574_1.02	ehn-3	Caenorhabditis_elegans	N	ZK616.10	C2H2 ZF
+T057637_1.02	F21D5.9	Caenorhabditis_elegans	N	F21D5.9	C2H2 ZF
+T057639_1.02	F26F4.8	Caenorhabditis_elegans	N	F26F4.8	C2H2 ZF
+T057643_1.02	F39B2.1	Caenorhabditis_elegans	N	F39B2.1	C2H2 ZF
+T057648_1.02	F47E1.3	Caenorhabditis_elegans	N	F47E1.3	C2H2 ZF
+T057658_1.02	F56D1.1	Caenorhabditis_elegans	N	F56D1.1	C2H2 ZF
+T057660_1.02	F57C9.4	Caenorhabditis_elegans	N	F57C9.4	C2H2 ZF
+T057661_1.02	F58G1.2	Caenorhabditis_elegans	N	F58G1.2	C2H2 ZF
+T057633_1.02	hbl-1	Caenorhabditis_elegans	N	F13D11.2	C2H2 ZF
+T060870_1.02	K11D12.12	Caenorhabditis_elegans	N	K11D12.12	C2H2 ZF
+T061497_1.02	pzf-1	Caenorhabditis_elegans	N	T05G11.1	C2H2 ZF
+T061406_1.02	R07E5.5	Caenorhabditis_elegans	N	R07E5.5	C2H2 ZF
+T057652_1.02	sdc-1	Caenorhabditis_elegans	N	F52E10.1	C2H2 ZF
+T057632_1.02	sdz-12	Caenorhabditis_elegans	N	F12E12.5	C2H2 ZF
+T057636_1.02	sem-4	Caenorhabditis_elegans	N	F15C11.1	C2H2 ZF
+T061496_1.02	sma-9	Caenorhabditis_elegans	N	T05A10.1	C2H2 ZF
+T057646_1.02	sptf-1	Caenorhabditis_elegans	N	F45H11.1	C2H2 ZF
+T061502_1.02	sptf-2	Caenorhabditis_elegans	N	T22C8.5	C2H2 ZF
+T061499_1.02	T20F7.1	Caenorhabditis_elegans	N	T20F7.1	C2H2 ZF
+T061500_1.02	T22C8.3	Caenorhabditis_elegans	N	T22C8.3	C2H2 ZF
+T037187_1.02	tag-146	Caenorhabditis_elegans	N	C27A12.3	C2H2 ZF
+T057630_1.02	unc-98	Caenorhabditis_elegans	N	F08C6.7	C2H2 ZF
+T061508_1.02	W02D7.6	Caenorhabditis_elegans	N	W02D7.6	C2H2 ZF
+T061511_1.02	Y111B2A.10	Caenorhabditis_elegans	N	Y111B2A.10	C2H2 ZF
+T061512_1.02	Y37E11B.1	Caenorhabditis_elegans	N	Y37E11B.1	C2H2 ZF
+T061517_1.02	Y48G8AL.10	Caenorhabditis_elegans	N	Y48G8AL.10	C2H2 ZF
+T061518_1.02	Y48G9A.11	Caenorhabditis_elegans	N	Y48G9A.11	C2H2 ZF
+T061521_1.02	Y55F3AM.14	Caenorhabditis_elegans	N	Y55F3AM.14	C2H2 ZF
+T061523_1.02	Y56A3A.28	Caenorhabditis_elegans	N	Y56A3A.28	C2H2 ZF
+T061525_1.02	Y5F2A.4	Caenorhabditis_elegans	N	Y5F2A.4	C2H2 ZF
+T057641_1.02	zfp-2	Caenorhabditis_elegans	N	F35H8.3	C2H2 ZF
+T061575_1.02	ZK686.5	Caenorhabditis_elegans	N	ZK686.5	C2H2 ZF
+T061405_1.02	ztf-15	Caenorhabditis_elegans	N	R06C7.9	C2H2 ZF
+T061514_1.02	ztf-20	Caenorhabditis_elegans	N	Y39B6A.46	C2H2 ZF
+T061520_1.02	ztf-23	Caenorhabditis_elegans	N	Y54E10BR.8	C2H2 ZF
+T057657_1.02	ztf-26	Caenorhabditis_elegans	N	F55H12.6	C2H2 ZF
+T057647_1.02	ztf-7	Caenorhabditis_elegans	N	F46B6.7	C2H2 ZF
+T032047_1.02	zag-1	Caenorhabditis_elegans	N	F28F9.1	C2H2 ZF,Homeodomain
+T070584_1.02	nfya-1	Caenorhabditis_elegans	N	T08D10.1	CBF/NF-Y
+T070586_1.02	nfya-2	Caenorhabditis_elegans	N	Y53H1A.5	CBF/NF-Y
+T071688_1.02	T05C1.4	Caenorhabditis_elegans	N	T05C1.4	CG-1
+T072555_1.02	cey-2	Caenorhabditis_elegans	N	F46F11.2	CSD
+T072613_1.02	cey-3	Caenorhabditis_elegans	N	M01E11.5	CSD
+T072647_1.02	cey-4	Caenorhabditis_elegans	N	Y39A1C.3	CSD
+T072553_1.02	lin-28	Caenorhabditis_elegans	N	F02E9.2	CSD
+T073181_1.02	lag-1	Caenorhabditis_elegans	N	K08B4.1	CSL
+T073746_1.02	ceh-21	Caenorhabditis_elegans	N	T26C11.6	CUT,Homeodomain
+T073717_1.02	ceh-38	Caenorhabditis_elegans	N	F22D3.1	CUT,Homeodomain
+T073747_1.02	ceh-39	Caenorhabditis_elegans	N	T26C11.7	CUT,Homeodomain
+T073748_1.02	ceh-44	Caenorhabditis_elegans	N	Y54F10AM.4	CUT,Homeodomain
+T073716_1.02	ceh-49	Caenorhabditis_elegans	N	F17A9.6	CUT,Homeodomain
+T073968_1.02	lin-54	Caenorhabditis_elegans	N	JC8.6	CxC
+T075011_1.02	C34D1.2	Caenorhabditis_elegans	N	C34D1.2	DM
+T075331_1.02	dmd-7	Caenorhabditis_elegans	N	K08B12.2	DM
+T076404_1.02	dpl-1	Caenorhabditis_elegans	N	T23G7.1	DP,E2F
+T076924_1.02	F49E12.6	Caenorhabditis_elegans	N	F49E12.6	E2F
+T077570_1.02	C50A2.4	Caenorhabditis_elegans	N	C50A2.4	Ets
+T077571_1.02	C52B9.2	Caenorhabditis_elegans	N	C52B9.2	Ets
+T080998_1.02	fkh-3	Caenorhabditis_elegans	N	C29F7.4	Forkhead
+T080999_1.02	fkh-4	Caenorhabditis_elegans	N	C29F7.5	Forkhead
+T082658_1.02	fkh-5	Caenorhabditis_elegans	N	F26A1.2	Forkhead
+T082662_1.02	fkh-8	Caenorhabditis_elegans	N	F40H3.4	Forkhead
+T082940_1.02	pes-1	Caenorhabditis_elegans	N	T28H11.4	Forkhead
+T082939_1.02	T27A8.2	Caenorhabditis_elegans	N	T27A8.2	Forkhead
+T084369_1.02	elt-2	Caenorhabditis_elegans	N	C33D3.1	GATA
+T084370_1.02	elt-4	Caenorhabditis_elegans	N	C39B10.6	GATA
+T086666_1.02	lin-40	Caenorhabditis_elegans	N	T27C4.4	GATA,Myb/SANT
+T086667_1.02	Y74C9A.4	Caenorhabditis_elegans	N	Y74C9A.4	GATA,Myb/SANT
+T087517_1.02	grh-1	Caenorhabditis_elegans	N	Y48G8AR.1	Grainyhead
+T090448_1.02	C02F12.10	Caenorhabditis_elegans	N	C02F12.10	Homeodomain
+T090462_1.02	C26E1.3	Caenorhabditis_elegans	N	C26E1.3	Homeodomain
+T090473_1.02	C40D2.4	Caenorhabditis_elegans	N	C40D2.4	Homeodomain
+T090475_1.02	C49C3.5	Caenorhabditis_elegans	N	C49C3.5	Homeodomain
+T090476_1.02	C50B6.1	Caenorhabditis_elegans	N	C50B6.1	Homeodomain
+T090477_1.02	C50H2.6	Caenorhabditis_elegans	N	C50H2.6	Homeodomain
+T100201_1.02	ceh-100	Caenorhabditis_elegans	N	Y38E10A.6	Homeodomain
+T098465_1.02	ceh-27	Caenorhabditis_elegans	N	F46F3.1	Homeodomain
+T100183_1.02	ceh-41	Caenorhabditis_elegans	N	T26C11.5	Homeodomain
+T098453_1.02	ceh-60	Caenorhabditis_elegans	N	F22A3.5	Homeodomain
+T090467_1.02	ceh-7	Caenorhabditis_elegans	N	C34C6.8	Homeodomain
+T100221_1.02	dve-1	Caenorhabditis_elegans	N	ZK1193.5	Homeodomain
+T098455_1.02	F28H6.2	Caenorhabditis_elegans	N	F28H6.2	Homeodomain
+T098460_1.02	F34D6.2	Caenorhabditis_elegans	N	F34D6.2	Homeodomain
+T098461_1.02	F42G2.6	Caenorhabditis_elegans	N	F42G2.6	Homeodomain
+T098462_1.02	F45C12.15	Caenorhabditis_elegans	N	F45C12.15	Homeodomain
+T098463_1.02	F45C12.3	Caenorhabditis_elegans	N	F45C12.3	Homeodomain
+T098470_1.02	F59H6.6	Caenorhabditis_elegans	N	F59H6.6	Homeodomain
+T098466_1.02	hmbx-1	Caenorhabditis_elegans	N	F54A5.1	Homeodomain
+T100205_1.02	nob-1	Caenorhabditis_elegans	N	Y75B8A.2	Homeodomain
+T100079_1.02	R04A9.5	Caenorhabditis_elegans	N	R04A9.5	Homeodomain
+T100182_1.02	T21B4.17	Caenorhabditis_elegans	N	T21B4.17	Homeodomain
+T098468_1.02	unc-39	Caenorhabditis_elegans	N	F56A12.1	Homeodomain
+T100203_1.02	Y66D12A.5	Caenorhabditis_elegans	N	Y66D12A.5	Homeodomain
+T100217_1.02	ZC204.2	Caenorhabditis_elegans	N	ZC204.2	Homeodomain
+T100219_1.02	ZC376.4	Caenorhabditis_elegans	N	ZC376.4	Homeodomain
+T104531_1.02	pax-3	Caenorhabditis_elegans	N	F27E5.2	Homeodomain,Paired box
+T105444_1.02	ceh-91	Caenorhabditis_elegans	N	Y66A7A.5	Homeodomain,THAP finger
+T106440_1.02	Y53C10A.3	Caenorhabditis_elegans	N	Y53C10A.3	HSF
+T109484_1.02	C05D2.6	Caenorhabditis_elegans	N	C05D2.6	MADF
+T109485_1.02	C06A5.4	Caenorhabditis_elegans	N	C06A5.4	MADF
+T109486_1.02	C06A6.2	Caenorhabditis_elegans	N	C06A6.2	MADF
+T109487_1.02	C46F11.3	Caenorhabditis_elegans	N	C46F11.3	MADF
+T109488_1.02	C54G6.1	Caenorhabditis_elegans	N	C54G6.1	MADF
+T109677_1.02	F36D1.1	Caenorhabditis_elegans	N	F36D1.1	MADF
+T110294_1.02	H20J04.3	Caenorhabditis_elegans	N	H20J04.3	MADF
+T110382_1.02	madf-1	Caenorhabditis_elegans	N	Y55F3BR.5	MADF
+T110381_1.02	Y106G6H.4	Caenorhabditis_elegans	N	Y106G6H.4	MADF
+T113921_1.02	flt-1	Caenorhabditis_elegans	N	ZK783.4	MBD
+T113890_1.02	met-2	Caenorhabditis_elegans	N	R05D3.11	MBD
+T114388_1.02	C50F4.12	Caenorhabditis_elegans	N	C50F4.12	mTERF
+T114660_1.02	K11D2.5	Caenorhabditis_elegans	N	K11D2.5	mTERF
+T119022_1.02	ada-2	Caenorhabditis_elegans	N	F32A5.1	Myb/SANT
+T119025_1.02	dnj-11	Caenorhabditis_elegans	N	F38A5.13	Myb/SANT
+T119026_1.02	F53H10.2	Caenorhabditis_elegans	N	F53H10.2	Myb/SANT
+T119027_1.02	F54F2.9	Caenorhabditis_elegans	N	F54F2.9	Myb/SANT
+T117562_1.02	gei-8	Caenorhabditis_elegans	N	C14B9.6	Myb/SANT
+T119024_1.02	isw-1	Caenorhabditis_elegans	N	F37A4.8	Myb/SANT
+T120853_1.02	psa-1	Caenorhabditis_elegans	N	Y113G7B.23	Myb/SANT
+T117746_1.02	spr-1	Caenorhabditis_elegans	N	D1014.8	Myb/SANT
+T120818_1.02	tag-192	Caenorhabditis_elegans	N	T04D1.4	Myb/SANT
+T130502_1.02	F21A10.2	Caenorhabditis_elegans	N	F21A10.2	Ndt80/PhoG
+T130503_1.02	pqn-47	Caenorhabditis_elegans	N	F59B10.1	Ndt80/PhoG
+T130701_1.02	tag-182	Caenorhabditis_elegans	N	C16A3.7	NFX
+T134665_1.02	dpr-1	Caenorhabditis_elegans	N	R10D12.2	Nuclear receptor
+T131268_1.02	nhr-100	Caenorhabditis_elegans	N	C28D4.1	Nuclear receptor
+T134682_1.02	nhr-102	Caenorhabditis_elegans	N	T06C12.6	Nuclear receptor
+T134181_1.02	nhr-103	Caenorhabditis_elegans	N	F44C8.4	Nuclear receptor
+T134666_1.02	nhr-104	Caenorhabditis_elegans	N	R11E3.5	Nuclear receptor
+T131244_1.02	nhr-105	Caenorhabditis_elegans	N	C06G3.1	Nuclear receptor
+T134673_1.02	nhr-106	Caenorhabditis_elegans	N	T01G6.4	Nuclear receptor
+T131274_1.02	nhr-107	Caenorhabditis_elegans	N	C33G8.11	Nuclear receptor
+T134165_1.02	nhr-108	Caenorhabditis_elegans	N	F35E8.12	Nuclear receptor
+T134751_1.02	nhr-11	Caenorhabditis_elegans	N	ZC410.1	Nuclear receptor
+T134736_1.02	nhr-110	Caenorhabditis_elegans	N	Y46H3D.5	Nuclear receptor
+T134187_1.02	nhr-111	Caenorhabditis_elegans	N	F44G3.9	Nuclear receptor
+T134746_1.02	nhr-112	Caenorhabditis_elegans	N	Y70C5C.6	Nuclear receptor
+T134753_1.02	nhr-113	Caenorhabditis_elegans	N	ZK1025.9	Nuclear receptor
+T134735_1.02	nhr-114	Caenorhabditis_elegans	N	Y45G5AM.1	Nuclear receptor
+T134710_1.02	nhr-115	Caenorhabditis_elegans	N	T27B7.4	Nuclear receptor
+T134145_1.02	nhr-116	Caenorhabditis_elegans	N	F09C6.9	Nuclear receptor
+T134154_1.02	nhr-117	Caenorhabditis_elegans	N	F16B4.12	Nuclear receptor
+T134149_1.02	nhr-118	Caenorhabditis_elegans	N	F13A2.8	Nuclear receptor
+T134500_1.02	nhr-119	Caenorhabditis_elegans	N	K12H6.1	Nuclear receptor
+T134658_1.02	nhr-12	Caenorhabditis_elegans	N	R04B5.4	Nuclear receptor
+T131262_1.02	nhr-120	Caenorhabditis_elegans	N	C25B8.6	Nuclear receptor
+T132152_1.02	nhr-121	Caenorhabditis_elegans	N	E02H9.8	Nuclear receptor
+T134506_1.02	nhr-123	Caenorhabditis_elegans	N	M02H5.7	Nuclear receptor
+T131260_1.02	nhr-124	Caenorhabditis_elegans	N	C17E7.8	Nuclear receptor
+T134656_1.02	nhr-125	Caenorhabditis_elegans	N	R02D1.1	Nuclear receptor
+T134177_1.02	nhr-126	Caenorhabditis_elegans	N	F44C8.10	Nuclear receptor
+T134695_1.02	nhr-127	Caenorhabditis_elegans	N	T13F3.3	Nuclear receptor
+T131291_1.02	nhr-129	Caenorhabditis_elegans	N	C50B6.14	Nuclear receptor
+T134742_1.02	nhr-13	Caenorhabditis_elegans	N	Y5H2B.2	Nuclear receptor
+T134677_1.02	nhr-130	Caenorhabditis_elegans	N	T01G6.8	Nuclear receptor
+T134672_1.02	nhr-131	Caenorhabditis_elegans	N	T01G6.2	Nuclear receptor
+T134668_1.02	nhr-132	Caenorhabditis_elegans	N	R11G11.1	Nuclear receptor
+T134184_1.02	nhr-133	Caenorhabditis_elegans	N	F44C8.8	Nuclear receptor
+T134712_1.02	nhr-135	Caenorhabditis_elegans	N	VC5.5	Nuclear receptor
+T131298_1.02	nhr-137	Caenorhabditis_elegans	N	C56E10.4	Nuclear receptor
+T131269_1.02	nhr-138	Caenorhabditis_elegans	N	C28D4.9	Nuclear receptor
+T131278_1.02	nhr-139	Caenorhabditis_elegans	N	C33G8.8	Nuclear receptor
+T134671_1.02	nhr-14	Caenorhabditis_elegans	N	T01B10.4	Nuclear receptor
+T131279_1.02	nhr-140	Caenorhabditis_elegans	N	C33G8.9	Nuclear receptor
+T134204_1.02	nhr-143	Caenorhabditis_elegans	N	F59E11.11	Nuclear receptor
+T134731_1.02	nhr-146	Caenorhabditis_elegans	N	Y41D4B.27	Nuclear receptor
+T131239_1.02	nhr-147	Caenorhabditis_elegans	N	C03G6.8	Nuclear receptor
+T131237_1.02	nhr-148	Caenorhabditis_elegans	N	C03G6.10	Nuclear receptor
+T131238_1.02	nhr-149	Caenorhabditis_elegans	N	C03G6.12	Nuclear receptor
+T134164_1.02	nhr-15	Caenorhabditis_elegans	N	F33E11.1	Nuclear receptor
+T131241_1.02	nhr-150	Caenorhabditis_elegans	N	C06B8.1	Nuclear receptor
+T131248_1.02	nhr-152	Caenorhabditis_elegans	N	C12D5.2	Nuclear receptor
+T131253_1.02	nhr-155	Caenorhabditis_elegans	N	C14C6.4	Nuclear receptor
+T131256_1.02	nhr-156	Caenorhabditis_elegans	N	C17E7.1	Nuclear receptor
+T131257_1.02	nhr-157	Caenorhabditis_elegans	N	C17E7.5	Nuclear receptor
+T131258_1.02	nhr-158	Caenorhabditis_elegans	N	C17E7.6	Nuclear receptor
+T131259_1.02	nhr-159	Caenorhabditis_elegans	N	C17E7.7	Nuclear receptor
+T134693_1.02	nhr-16	Caenorhabditis_elegans	N	T12C9.6	Nuclear receptor
+T131277_1.02	nhr-161	Caenorhabditis_elegans	N	C33G8.7	Nuclear receptor
+T131273_1.02	nhr-162	Caenorhabditis_elegans	N	C33G8.10	Nuclear receptor
+T131275_1.02	nhr-163	Caenorhabditis_elegans	N	C33G8.12	Nuclear receptor
+T131281_1.02	nhr-164	Caenorhabditis_elegans	N	C41G6.5	Nuclear receptor
+T131284_1.02	nhr-165	Caenorhabditis_elegans	N	C47F8.2	Nuclear receptor
+T131287_1.02	nhr-166	Caenorhabditis_elegans	N	C49D10.2	Nuclear receptor
+T131290_1.02	nhr-167	Caenorhabditis_elegans	N	C49F5.4	Nuclear receptor
+T131293_1.02	nhr-169	Caenorhabditis_elegans	N	C54C8.1	Nuclear receptor
+T131236_1.02	nhr-17	Caenorhabditis_elegans	N	C02B4.2	Nuclear receptor
+T131294_1.02	nhr-170	Caenorhabditis_elegans	N	C54E10.5	Nuclear receptor
+T131295_1.02	nhr-171	Caenorhabditis_elegans	N	C54F6.8	Nuclear receptor
+T131296_1.02	nhr-172	Caenorhabditis_elegans	N	C54F6.9	Nuclear receptor
+T131297_1.02	nhr-173	Caenorhabditis_elegans	N	C56E10.1	Nuclear receptor
+T132154_1.02	nhr-174	Caenorhabditis_elegans	N	E03H4.6	Nuclear receptor
+T134146_1.02	nhr-175	Caenorhabditis_elegans	N	F09F3.10	Nuclear receptor
+T134151_1.02	nhr-176	Caenorhabditis_elegans	N	F14H3.11	Nuclear receptor
+T134156_1.02	nhr-178	Caenorhabditis_elegans	N	F16B4.9	Nuclear receptor
+T134153_1.02	nhr-179	Caenorhabditis_elegans	N	F16B4.11	Nuclear receptor
+T134180_1.02	nhr-18	Caenorhabditis_elegans	N	F44C8.3	Nuclear receptor
+T134161_1.02	nhr-180	Caenorhabditis_elegans	N	F31F4.12	Nuclear receptor
+T134168_1.02	nhr-181	Caenorhabditis_elegans	N	F38H12.3	Nuclear receptor
+T134169_1.02	nhr-183	Caenorhabditis_elegans	N	F41B5.10	Nuclear receptor
+T134185_1.02	nhr-184	Caenorhabditis_elegans	N	F44C8.9	Nuclear receptor
+T134188_1.02	nhr-185	Caenorhabditis_elegans	N	F47C10.1	Nuclear receptor
+T134189_1.02	nhr-186	Caenorhabditis_elegans	N	F47C10.3	Nuclear receptor
+T134190_1.02	nhr-187	Caenorhabditis_elegans	N	F47C10.4	Nuclear receptor
+T134191_1.02	nhr-188	Caenorhabditis_elegans	N	F47C10.7	Nuclear receptor
+T134192_1.02	nhr-189	Caenorhabditis_elegans	N	F47C10.8	Nuclear receptor
+T132151_1.02	nhr-19	Caenorhabditis_elegans	N	E02H1.7	Nuclear receptor
+T134193_1.02	nhr-190	Caenorhabditis_elegans	N	F48G7.11	Nuclear receptor
+T134201_1.02	nhr-192	Caenorhabditis_elegans	N	F57A8.5	Nuclear receptor
+T134202_1.02	nhr-193	Caenorhabditis_elegans	N	F57G8.6	Nuclear receptor
+T134492_1.02	nhr-196	Caenorhabditis_elegans	N	K06B4.5	Nuclear receptor
+T134494_1.02	nhr-197	Caenorhabditis_elegans	N	K06B4.7	Nuclear receptor
+T134495_1.02	nhr-198	Caenorhabditis_elegans	N	K06B4.8	Nuclear receptor
+T134488_1.02	nhr-199	Caenorhabditis_elegans	N	K06B4.10	Nuclear receptor
+T131272_1.02	nhr-2	Caenorhabditis_elegans	N	C32F10.6	Nuclear receptor
+T134173_1.02	nhr-20	Caenorhabditis_elegans	N	F43C1.4	Nuclear receptor
+T134502_1.02	nhr-201	Caenorhabditis_elegans	N	M02H5.3	Nuclear receptor
+T134503_1.02	nhr-202	Caenorhabditis_elegans	N	M02H5.4	Nuclear receptor
+T134504_1.02	nhr-203	Caenorhabditis_elegans	N	M02H5.5	Nuclear receptor
+T134657_1.02	nhr-205	Caenorhabditis_elegans	N	R04B5.3	Nuclear receptor
+T134659_1.02	nhr-206	Caenorhabditis_elegans	N	R07B7.13	Nuclear receptor
+T134660_1.02	nhr-207	Caenorhabditis_elegans	N	R07B7.14	Nuclear receptor
+T134661_1.02	nhr-208	Caenorhabditis_elegans	N	R07B7.15	Nuclear receptor
+T134662_1.02	nhr-209	Caenorhabditis_elegans	N	R07B7.16	Nuclear receptor
+T134159_1.02	nhr-21	Caenorhabditis_elegans	N	F21D12.1	Nuclear receptor
+T134667_1.02	nhr-210	Caenorhabditis_elegans	N	R11G11.12	Nuclear receptor
+T134674_1.02	nhr-211	Caenorhabditis_elegans	N	T01G6.5	Nuclear receptor
+T134675_1.02	nhr-212	Caenorhabditis_elegans	N	T01G6.6	Nuclear receptor
+T134681_1.02	nhr-213	Caenorhabditis_elegans	N	T06C12.13	Nuclear receptor
+T134685_1.02	nhr-214	Caenorhabditis_elegans	N	T07C5.3	Nuclear receptor
+T134686_1.02	nhr-215	Caenorhabditis_elegans	N	T07C5.4	Nuclear receptor
+T134690_1.02	nhr-217	Caenorhabditis_elegans	N	T09E11.2	Nuclear receptor
+T134694_1.02	nhr-218	Caenorhabditis_elegans	N	T13F3.2	Nuclear receptor
+T134699_1.02	nhr-219	Caenorhabditis_elegans	N	T19A5.5	Nuclear receptor
+T134487_1.02	nhr-22	Caenorhabditis_elegans	N	K06A1.4	Nuclear receptor
+T134700_1.02	nhr-220	Caenorhabditis_elegans	N	T19H12.8	Nuclear receptor
+T134703_1.02	nhr-221	Caenorhabditis_elegans	N	T24A6.8	Nuclear receptor
+T134702_1.02	nhr-222	Caenorhabditis_elegans	N	T24A6.11	Nuclear receptor
+T134705_1.02	nhr-223	Caenorhabditis_elegans	N	T26E4.8	Nuclear receptor
+T134708_1.02	nhr-225	Caenorhabditis_elegans	N	T27B7.2	Nuclear receptor
+T134709_1.02	nhr-226	Caenorhabditis_elegans	N	T27B7.3	Nuclear receptor
+T134711_1.02	nhr-228	Caenorhabditis_elegans	N	T27B7.6	Nuclear receptor
+T134719_1.02	nhr-230	Caenorhabditis_elegans	N	Y17D7A.1	Nuclear receptor
+T134721_1.02	nhr-231	Caenorhabditis_elegans	N	Y17D7B.1	Nuclear receptor
+T134723_1.02	nhr-233	Caenorhabditis_elegans	N	Y32B12B.6	Nuclear receptor
+T134724_1.02	nhr-234	Caenorhabditis_elegans	N	Y38E10A.18	Nuclear receptor
+T134725_1.02	nhr-236	Caenorhabditis_elegans	N	Y38F2AL.5	Nuclear receptor
+T134737_1.02	nhr-237	Caenorhabditis_elegans	N	Y46H3D.6	Nuclear receptor
+T134738_1.02	nhr-238	Caenorhabditis_elegans	N	Y46H3D.7	Nuclear receptor
+T134740_1.02	nhr-239	Caenorhabditis_elegans	N	Y54F10AM.1	Nuclear receptor
+T134745_1.02	nhr-241	Caenorhabditis_elegans	N	Y69H2.8	Nuclear receptor
+T134744_1.02	nhr-242	Caenorhabditis_elegans	N	Y69A2AR.26	Nuclear receptor
+T134749_1.02	nhr-243	Caenorhabditis_elegans	N	Y80D3A.4	Nuclear receptor
+T134752_1.02	nhr-245	Caenorhabditis_elegans	N	ZK1025.10	Nuclear receptor
+T134755_1.02	nhr-247	Caenorhabditis_elegans	N	ZK1037.5	Nuclear receptor
+T134756_1.02	nhr-248	Caenorhabditis_elegans	N	ZK218.6	Nuclear receptor
+T134759_1.02	nhr-250	Caenorhabditis_elegans	N	ZK488.1	Nuclear receptor
+T134761_1.02	nhr-251	Caenorhabditis_elegans	N	ZK488.4	Nuclear receptor
+T134763_1.02	nhr-252	Caenorhabditis_elegans	N	ZK6.2	Nuclear receptor
+T134764_1.02	nhr-253	Caenorhabditis_elegans	N	ZK6.4	Nuclear receptor
+T134765_1.02	nhr-254	Caenorhabditis_elegans	N	ZK6.5	Nuclear receptor
+T134767_1.02	nhr-255	Caenorhabditis_elegans	N	ZK678.2	Nuclear receptor
+T134768_1.02	nhr-256	Caenorhabditis_elegans	N	ZK697.2	Nuclear receptor
+T131254_1.02	nhr-257	Caenorhabditis_elegans	N	C17A2.1	Nuclear receptor
+T131265_1.02	nhr-258	Caenorhabditis_elegans	N	C26B2.4	Nuclear receptor
+T134687_1.02	nhr-26	Caenorhabditis_elegans	N	T07C5.5	Nuclear receptor
+T131280_1.02	nhr-260	Caenorhabditis_elegans	N	C38C3.9	Nuclear receptor
+T131289_1.02	nhr-261	Caenorhabditis_elegans	N	C49D10.9	Nuclear receptor
+T134144_1.02	nhr-262	Caenorhabditis_elegans	N	F09C6.8	Nuclear receptor
+T134150_1.02	nhr-264	Caenorhabditis_elegans	N	F14A5.1	Nuclear receptor
+T134172_1.02	nhr-265	Caenorhabditis_elegans	N	F41D3.3	Nuclear receptor
+T134198_1.02	nhr-266	Caenorhabditis_elegans	N	F56H1.2	Nuclear receptor
+T134468_1.02	nhr-267	Caenorhabditis_elegans	N	H22D14.1	Nuclear receptor
+T134493_1.02	nhr-268	Caenorhabditis_elegans	N	K06B4.6	Nuclear receptor
+T134663_1.02	nhr-269	Caenorhabditis_elegans	N	R08H2.9	Nuclear receptor
+T134158_1.02	nhr-27	Caenorhabditis_elegans	N	F16H9.2	Nuclear receptor
+T134670_1.02	nhr-270	Caenorhabditis_elegans	N	R13D11.8	Nuclear receptor
+T134678_1.02	nhr-271	Caenorhabditis_elegans	N	T03E6.3	Nuclear receptor
+T134684_1.02	nhr-272	Caenorhabditis_elegans	N	T07C5.2	Nuclear receptor
+T134730_1.02	nhr-274	Caenorhabditis_elegans	N	Y41D4B.21	Nuclear receptor
+T134741_1.02	nhr-275	Caenorhabditis_elegans	N	Y5H2A.2	Nuclear receptor
+T134747_1.02	nhr-276	Caenorhabditis_elegans	N	Y71A12C.1	Nuclear receptor
+T134750_1.02	nhr-277	Caenorhabditis_elegans	N	Y94H6A.1	Nuclear receptor
+T134762_1.02	nhr-278	Caenorhabditis_elegans	N	ZK6.1	Nuclear receptor
+T134152_1.02	nhr-281	Caenorhabditis_elegans	N	F16B12.8	Nuclear receptor
+T134200_1.02	nhr-283	Caenorhabditis_elegans	N	F57A10.6	Nuclear receptor
+T134704_1.02	nhr-285	Caenorhabditis_elegans	N	T26E4.16	Nuclear receptor
+T134713_1.02	nhr-286	Caenorhabditis_elegans	N	VC5.6	Nuclear receptor
+T131263_1.02	nhr-30	Caenorhabditis_elegans	N	C25E10.1	Nuclear receptor
+T131264_1.02	nhr-31	Caenorhabditis_elegans	N	C26B2.3	Nuclear receptor
+T134497_1.02	nhr-32	Caenorhabditis_elegans	N	K08H2.8	Nuclear receptor
+T134758_1.02	nhr-33	Caenorhabditis_elegans	N	ZK455.6	Nuclear receptor
+T131245_1.02	nhr-35	Caenorhabditis_elegans	N	C07A12.3	Nuclear receptor
+T134176_1.02	nhr-37	Caenorhabditis_elegans	N	F44C4.2	Nuclear receptor
+T134486_1.02	nhr-38	Caenorhabditis_elegans	N	K01H12.3	Nuclear receptor
+T134174_1.02	nhr-39	Caenorhabditis_elegans	N	F44A2.4	Nuclear receptor
+T134162_1.02	nhr-4	Caenorhabditis_elegans	N	F32B6.1	Nuclear receptor
+T134679_1.02	nhr-40	Caenorhabditis_elegans	N	T03G6.2	Nuclear receptor
+T131270_1.02	nhr-43	Caenorhabditis_elegans	N	C29E6.5	Nuclear receptor
+T134698_1.02	nhr-44	Caenorhabditis_elegans	N	T19A5.4	Nuclear receptor
+T134157_1.02	nhr-45	Caenorhabditis_elegans	N	F16H11.5	Nuclear receptor
+T131261_1.02	nhr-47	Caenorhabditis_elegans	N	C24G6.4	Nuclear receptor
+T131243_1.02	nhr-50	Caenorhabditis_elegans	N	C06C6.5	Nuclear receptor
+T134490_1.02	nhr-51	Caenorhabditis_elegans	N	K06B4.1	Nuclear receptor
+T134491_1.02	nhr-52	Caenorhabditis_elegans	N	K06B4.2	Nuclear receptor
+T134489_1.02	nhr-53	Caenorhabditis_elegans	N	K06B4.11	Nuclear receptor
+T134167_1.02	nhr-54	Caenorhabditis_elegans	N	F36D3.2	Nuclear receptor
+T134676_1.02	nhr-55	Caenorhabditis_elegans	N	T01G6.7	Nuclear receptor
+T134183_1.02	nhr-56	Caenorhabditis_elegans	N	F44C8.6	Nuclear receptor
+T134680_1.02	nhr-57	Caenorhabditis_elegans	N	T05B4.2	Nuclear receptor
+T134669_1.02	nhr-58	Caenorhabditis_elegans	N	R11G11.2	Nuclear receptor
+T134707_1.02	nhr-59	Caenorhabditis_elegans	N	T27B7.1	Nuclear receptor
+T134714_1.02	nhr-61	Caenorhabditis_elegans	N	W01D2.2	Nuclear receptor
+T134743_1.02	nhr-62	Caenorhabditis_elegans	N	Y67A6A.2	Nuclear receptor
+T131242_1.02	nhr-63	Caenorhabditis_elegans	N	C06C6.4	Nuclear receptor
+T134466_1.02	nhr-68	Caenorhabditis_elegans	N	H12C20.3	Nuclear receptor
+T134701_1.02	nhr-69	Caenorhabditis_elegans	N	T23H4.2	Nuclear receptor
+T134499_1.02	nhr-71	Caenorhabditis_elegans	N	K11E4.5	Nuclear receptor
+T131255_1.02	nhr-72	Caenorhabditis_elegans	N	C17A2.8	Nuclear receptor
+T131267_1.02	nhr-73	Caenorhabditis_elegans	N	C27C7.4	Nuclear receptor
+T131266_1.02	nhr-74	Caenorhabditis_elegans	N	C27C7.3	Nuclear receptor
+T131288_1.02	nhr-75	Caenorhabditis_elegans	N	C49D10.6	Nuclear receptor
+T131240_1.02	nhr-76	Caenorhabditis_elegans	N	C05G6.1	Nuclear receptor
+T134696_1.02	nhr-77	Caenorhabditis_elegans	N	T15D6.6	Nuclear receptor
+T134166_1.02	nhr-78	Caenorhabditis_elegans	N	F36A4.14	Nuclear receptor
+T134163_1.02	nhr-8	Caenorhabditis_elegans	N	F33D4.1	Nuclear receptor
+T134465_1.02	nhr-80	Caenorhabditis_elegans	N	H10E21.3	Nuclear receptor
+T131285_1.02	nhr-81	Caenorhabditis_elegans	N	C47F8.8	Nuclear receptor
+T134171_1.02	nhr-82	Caenorhabditis_elegans	N	F41D3.1	Nuclear receptor
+T134194_1.02	nhr-83	Caenorhabditis_elegans	N	F48G7.3	Nuclear receptor
+T134732_1.02	nhr-87	Caenorhabditis_elegans	N	Y41D4B.7	Nuclear receptor
+T134496_1.02	nhr-88	Caenorhabditis_elegans	N	K08A2.5	Nuclear receptor
+T132153_1.02	nhr-89	Caenorhabditis_elegans	N	E03H4.13	Nuclear receptor
+T134757_1.02	nhr-9	Caenorhabditis_elegans	N	ZK418.1	Nuclear receptor
+T134760_1.02	nhr-90	Caenorhabditis_elegans	N	ZK488.2	Nuclear receptor
+T134718_1.02	nhr-91	Caenorhabditis_elegans	N	Y15E3A.1	Nuclear receptor
+T134733_1.02	nhr-92	Caenorhabditis_elegans	N	Y41D4B.8	Nuclear receptor
+T131249_1.02	nhr-94	Caenorhabditis_elegans	N	C12D5.8	Nuclear receptor
+T134726_1.02	nhr-95	Caenorhabditis_elegans	N	Y39B6A.17	Nuclear receptor
+T134178_1.02	nhr-96	Caenorhabditis_elegans	N	F44C8.11	Nuclear receptor
+T134469_1.02	nhr-97	Caenorhabditis_elegans	N	H27C11.1	Nuclear receptor
+T134505_1.02	nhr-98	Caenorhabditis_elegans	N	M02H5.6	Nuclear receptor
+T134501_1.02	nhr-99	Caenorhabditis_elegans	N	M02H5.1	Nuclear receptor
+T134729_1.02	set-23	Caenorhabditis_elegans	N	Y41D4B.12	Nuclear receptor
+T131271_1.02	srt-58	Caenorhabditis_elegans	N	C29G2.5	Nuclear receptor
+T134754_1.02	ZK1037.13	Caenorhabditis_elegans	N	ZK1037.13	Nuclear receptor
+T136034_1.02	npax-2	Caenorhabditis_elegans	N	F48B9.5	Paired box
+T136091_1.02	npax-3	Caenorhabditis_elegans	N	R13.2	Paired box
+T135738_1.02	npax-4	Caenorhabditis_elegans	N	C09G9.7	Paired box
+T135739_1.02	rps-13	Caenorhabditis_elegans	N	C16A3.9	Paired box
+T136948_1.02	ZC247.1	Caenorhabditis_elegans	N	ZC247.1	Pipsqueak
+T139238_1.02	rnt-1	Caenorhabditis_elegans	N	B0414.2	Runt
+T140053_1.02	attf-1	Caenorhabditis_elegans	N	C44F1.2	SAND
+T140051_1.02	C01B12.2	Caenorhabditis_elegans	N	C01B12.2	SAND
+T140308_1.02	F53H4.5	Caenorhabditis_elegans	N	F53H4.5	SAND
+T140606_1.02	F19F10.9	Caenorhabditis_elegans	N	F19F10.9	SART-1
+T142242_1.02	daf-3	Caenorhabditis_elegans	N	F25E2.5	SMAD
+T142323_1.02	daf-8	Caenorhabditis_elegans	N	R05D11.1	SMAD
+T142326_1.02	nfi-1	Caenorhabditis_elegans	N	ZK1290.4	SMAD
+T142327_1.02	sma-2	Caenorhabditis_elegans	N	ZK370.2	SMAD
+T142325_1.02	sma-3	Caenorhabditis_elegans	N	R13F6.9	SMAD
+T142243_1.02	tag-68	Caenorhabditis_elegans	N	F37D6.6	SMAD
+T145634_1.02	F47G4.6	Caenorhabditis_elegans	N	F47G4.6	Sox
+T146235_1.02	hmg-1.1	Caenorhabditis_elegans	N	Y48B6A.14	Sox
+T145633_1.02	hmg-1.2	Caenorhabditis_elegans	N	F47D12.4	Sox
+T143248_1.02	hmg-3	Caenorhabditis_elegans	N	C32F10.5	Sox
+T146183_1.02	hmg-4	Caenorhabditis_elegans	N	T20B12.8	Sox
+T145632_1.02	hmg-5	Caenorhabditis_elegans	N	F45E4.9	Sox
+T143246_1.02	pbrm-1	Caenorhabditis_elegans	N	C26C6.1	Sox
+T146006_1.02	sox-2	Caenorhabditis_elegans	N	K08A8.2	Sox
+T143245_1.02	sox-4	Caenorhabditis_elegans	N	C12D12.5	Sox
+T146233_1.02	W02D9.3	Caenorhabditis_elegans	N	W02D9.3	Sox
+T146236_1.02	Y71H2AM.17	Caenorhabditis_elegans	N	Y71H2AM.17	Sox
+T146237_1.02	Y73E7A.1	Caenorhabditis_elegans	N	Y73E7A.1	Sox
+T148629_1.02	F59D6.7	Caenorhabditis_elegans	N	F59D6.7	STAT
+T148645_1.02	sta-1	Caenorhabditis_elegans	N	Y51H4A.17	STAT
+T150093_1.02	mls-1	Caenorhabditis_elegans	N	H14A12.4	T-box
+T149992_1.02	sea-1	Caenorhabditis_elegans	N	F19B10.9	T-box
+T149994_1.02	tbx-11	Caenorhabditis_elegans	N	F40H6.4	T-box
+T150131_1.02	tbx-30	Caenorhabditis_elegans	N	Y59E9AR.3	T-box
+T149063_1.02	tbx-31	Caenorhabditis_elegans	N	C36C9.2	T-box
+T150138_1.02	tbx-32	Caenorhabditis_elegans	N	ZK380.1	T-box
+T150129_1.02	tbx-34	Caenorhabditis_elegans	N	Y47D3A.10	T-box
+T150136_1.02	tbx-35	Caenorhabditis_elegans	N	ZK177.10	T-box
+T150139_1.02	tbx-36	Caenorhabditis_elegans	N	ZK829.5	T-box
+T150126_1.02	tbx-41	Caenorhabditis_elegans	N	T26C11.1	T-box
+T150132_1.02	tbx-42	Caenorhabditis_elegans	N	Y59E9AR.5	T-box
+T150137_1.02	tbx-7	Caenorhabditis_elegans	N	ZK328.8	T-box
+T150124_1.02	tbx-8	Caenorhabditis_elegans	N	T07C4.2	T-box
+T150125_1.02	tbx-9	Caenorhabditis_elegans	N	T07C4.6	T-box
+T150642_1.02	tlf-1	Caenorhabditis_elegans	N	F39H11.2	TBP
+T151810_1.02	egl-44	Caenorhabditis_elegans	N	F28B12.2	TEA
+T152498_1.02	B0336.7	Caenorhabditis_elegans	N	B0336.7	THAP finger
+T152499_1.02	cdc-14	Caenorhabditis_elegans	N	C17G10.4	THAP finger
+T153016_1.02	ctbp-1	Caenorhabditis_elegans	N	F49E10.5	THAP finger
+T153179_1.02	him-17	Caenorhabditis_elegans	N	T09E8.2	THAP finger
+T153181_1.02	lin-15B	Caenorhabditis_elegans	N	ZK662.4	THAP finger
+T153015_1.02	lin-36	Caenorhabditis_elegans	N	F44B9.6	THAP finger
+T153180_1.02	Y50E8A.12	Caenorhabditis_elegans	N	Y50E8A.12	THAP finger

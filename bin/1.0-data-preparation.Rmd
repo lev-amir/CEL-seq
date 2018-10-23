@@ -1,0 +1,97 @@
+---
+title: "data_preparation"
+output: html_document
+---
+#Data preparation
+Following "dataset-choice.Rmd", data-prepartion for downstream analysis.
+
+## Clear variables and load packages
+```{r}
+rm(list=ls()) # and Ctrl+L
+if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
+```
+
+## Import data
+Data is the output of the differntial gene expression analysis performed by Eitan Winter to the CEL-seq data from the Technion.
+Column "NCBI_gene_ID" in variable NT changed to 'character' type for later combining the data-frames.
+```{r}
+NT <- read_csv("raw/2018-04-25 reanalysis results Eitan Winter/diff_exp_WT_anc1/WT.EV_WT.anc1_results.csv",
+               col_types = cols(NCBI_gene_ID = col_character()))
+AM <- read_csv("raw/2018-04-25 reanalysis results Eitan Winter/diff_exp_AM_anc1/AM.EV_AM.anc1_results.csv")
+```
+
+## Merge the two data-frames
+* add 'strain' identifier column
+* remove individual samples columns
+* combine rows
+* add strain identifier
+* remove 'anc-1' gene row.
+```{r}
+NT %<>% dplyr::select(-starts_with('NT')) %>% dplyr::filter(Gene_name != "anc-1")
+AM %<>% dplyr::select(-starts_with('AM')) %>% dplyr::filter(Gene_name != "anc-1")
+BOTH <- bind_rows(list(N2 = NT,AM140 = AM), .id = 'strain') %>%
+  mutate(
+    padj_stars = if_else(padj < 0.0001,'****',
+                         if_else(padj < 0.001,'***',
+                                 if_else(padj < 0.01,'**',
+                                         if_else(padj < 0.05,'*',
+                                                 '')))))
+
+```
+
+## Function to filter genes with adjusted p-value < 0.1 
+```{r}
+threshold_pvalue_foldChange <- function(tbl) {
+  tbl %>% 
+    dplyr::filter(padj < 0.1)
+    #dplyr::filter(padj < 0.1) %>%
+    #dplyr::filter(abs(log2FoldChange) > 1)
+}
+```
+
+## function to filter genes based on direction of differential expression
+```{r}
+threshold_foldChange_direction <- function(tbl,direction) {
+  if (direction == 'up') {tbl %>% dplyr::filter(log2FoldChange > 0)
+  } else if (direction == 'down') {tbl %>% dplyr::filter(log2FoldChange < 0)
+      } else print('error in direction definition')
+  }
+```
+
+## Define AM140 and N2 sets of up and down-regulated genes
+Sets of genes that are up- or down-regulated in each strain.
+```{r}
+DEG <- list(
+  "N2.up" = NT %>% threshold_pvalue_foldChange() %>% threshold_foldChange_direction('up') %>% .$'Gene_stable_ID',
+  "N2.dn" = NT %>% threshold_pvalue_foldChange() %>% threshold_foldChange_direction('down') %>% .$'Gene_stable_ID',
+  "AM.up" = AM %>% threshold_pvalue_foldChange() %>% threshold_foldChange_direction('up') %>% .$'Gene_stable_ID',
+  "AM.dn" = AM %>% threshold_pvalue_foldChange() %>% threshold_foldChange_direction('down') %>% .$'Gene_stable_ID'
+)
+```
+
+Sets of genes that are mutually regulated in both strains.
+```{r}
+DEG$INTERSECT.up <- intersect(DEG$N2.up,DEG$AM.up) # up-regulated genes in both N2 and AM140
+DEG$INTERSECT.dn <- intersect(DEG$N2.dn,DEG$AM.dn) # down-regulated genes in both N2 and AM140
+DEG$INTERSECT.reg <- union(DEG$INTERSECT.up,DEG$INTERSECT.dn) # regulated genes in both of the strains
+```
+
+Sets of genes that are exclusively regulated in one of the strains.
+```{r}
+DEG$N2.only.up <- setdiff(DEG$N2.up,DEG$AM.up) # up-regulated genes in N2 only
+DEG$AM.only.up <- setdiff(DEG$AM.up,DEG$N2.up) # up-regulated genes in AM140 only
+DEG$N2.only.dn <- setdiff(DEG$N2.dn,DEG$AM.dn) # down-regulated genes in N2 only
+DEG$AM.only.dn <- setdiff(DEG$AM.dn,DEG$N2.dn) # down-regulated genes in AM140 only
+```
+
+Sets of genes that are regulated in either one of the strains.
+```{r}
+DEG$UNION.up <- union(DEG$AM.up,DEG$N2.up) # up-regulated genes in either of the strains
+DEG$UNION.dn <- union(DEG$AM.dn,DEG$N2.dn) # down-regulated genes in either of the strains
+DEG$UNION.reg <- union(DEG$UNION.up,DEG$UNION.dn) # regulated genes in either of the strains
+```
+
+Export data for further analysis.
+```{r}
+save(DEG, file = "data/geneExpression.rdata")
+```

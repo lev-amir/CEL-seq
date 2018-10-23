@@ -1,0 +1,94 @@
+---
+title: "Choosing a data-set for downstream analysis"
+output: html_document
+---
+
+After CEL-seq and DEG analysis, we got two datasets. The first one denoted some of the adjusted p-value as *NA*. The second dataset assigned a valid adjusted p-value to each measured gene, which we received upon specifically asking for this feature.
+
+The purpose of this analysis is to estimate the validity of using the dataset with the assigned adjusted p-values.
+
+First, let's read in the two datasets.
+```{r}
+N2.excl.low <- read_csv("raw/2018-04-25 reanalysis results Eitan Winter/diff_exp_WT_anc1/WT.EV_WT.anc1_results.csv",
+                        col_types = cols(NCBI_gene_ID = col_character()))
+N2.excl.non <- read_csv("raw/2018-05-29 reanalysis results Eitan Winter without excluding low intensity/diff_exp_WT_anc1/WT.EV_WT.anc1_results.csv",
+                        col_types = cols(NCBI_gene_ID = col_character()))
+```
+
+We'll reorder the gene names so that the order of the two datasets match.
+```{r}
+N2.excl.low <- arrange(N2.excl.low,Gene_stable_ID)
+N2.excl.non <- arrange(N2.excl.non,Gene_stable_ID)
+```
+
+We'll compare the gene IDs row-by-row in the two dataset to validate that their order isidentical (mean equaling 1 indicates that all comparisons are TRUE)
+```{r}
+mean(N2.excl.low$Gene_stable_ID == N2.excl.non$Gene_stable_ID)
+```
+
+We'll confirm all gene IDs and positions match by plotting all the  data except adjusted p-values, expecting a complete linear correlation, which is indicated by the red line.
+```{r}
+par(mfrow = c(3,2))
+plot(N2.excl.low$baseMean,N2.excl.non$baseMean)
+abline(0,1,col = "red")
+plot(N2.excl.low$log2FoldChange,N2.excl.non$log2FoldChange)
+abline(0,1,col = "red")
+plot(N2.excl.low$lfcSE,N2.excl.non$lfcSE)
+abline(0,1,col = "red")
+plot(N2.excl.low$baseMean,N2.excl.non$baseMean)
+abline(0,1,col = "red")
+plot(N2.excl.low$stat,N2.excl.non$stat)
+abline(0,1,col = "red")
+plot(N2.excl.low$pvalue,N2.excl.non$pvalue)
+abline(0,1,col = "red")
+```
+
+Let's change NA values to -0.1 to be able to visualize them, and validate that the other dataset with assigned adjusted p-values, have no NA values.
+```{r}
+N2.excl.low$padj[is.na(N2.excl.low$padj)] <- -0.1
+mean(is.na(N2.excl.non$padj))
+```
+
+Scatter plotting the adjusted p-values of the two datasets.
+```{r}
+par(mfrow = c(1,2))
+plot(N2.excl.low$padj,N2.excl.non$padj)
+abline(0,1,col = "red")
+```
+
+Focusing on the 0 to 0.1 p-values range.
+```{r}
+plot(N2.excl.low$padj,N2.excl.non$padj,
+     xlim = c(0,0.1),
+     ylim = c(0,0.1))
+abline(0,1,col = "red")
+```
+This reveals that the newly assigned p-values span from 0 to 1. In addition, we see that by assigning the adjusted p-values instead of NA values, several genes that were initially assigned an adjusted p-value, do not pass the /alpha = 0.1 threshold of statistical significance.
+
+Most genes reached a significance level > 0.1, still let's focus on those "new candidates" whose p-value is less than 0.1, and had NA values in the 2018-04-25 analysis.
+```{r}
+new.cand <- N2.excl.non[N2.excl.non$padj < 0.1 & N2.excl.low$padj == -0.1,]
+par(mfrow = c(1,1))
+plot(new.cand$baseMean,new.cand$log2FoldChange)
+new.cand$Gene_name
+```
+ 
+Visualize how does the read count of these genes compares to all the other measured genes.
+```{r}
+par(mfrow = c(1,2))
+plot(log(N2.excl.low$baseMean),
+     N2.excl.low$log2FoldChange,
+     xlab = "log(Reads)",
+     ylab = "log2(fold-change)")
+points(log(new.cand$baseMean),new.cand$log2FoldChange,col = "red")
+
+plot(log(N2.excl.low$baseMean),
+     N2.excl.non$padj,
+     xlab = "log(Reads)",
+     ylab = "Adjusted p-value")
+points(log(new.cand$baseMean),new.cand$padj,col = "red")
+```
+It's clear that the genes that were set as NA are defined as such due to their low read count. This is could be necessary to avoid false positives.
+
+# Summary
+I will carry on the analysis using the data from 2018-04-24

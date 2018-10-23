@@ -1,0 +1,85 @@
+gene	role	type	complex	enzyme
+rbx-1	RING finger	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+rbx-1	RING finger	multi subunit RING-finger type	ECV complex	E3 ubiquitin ligase
+rbx-1	RING finger	multi subunit RING-finger type	Cul3 complex	E3 ubiquitin ligase
+rbx-1	RING finger	multi subunit RING-finger type	Cul4 complex	E3 ubiquitin ligase
+cul-1	Cullin	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+cul-6	Cullin	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-17	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-16	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-12	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-9	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-13	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-8	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-3	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-2	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-1	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-5	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-15	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-18	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-21	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-19	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-20	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-10	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-6	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-7	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-14	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skr-4	Adaptor protein	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+skpt-1	Target recognizing subunit	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+sel-10	Target recognizing subunit	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+lin-23	Target recognizing subunit	multi subunit RING-finger type	SCF complex	E3 ubiquitin ligase
+cul-2	Cullin	multi subunit RING-finger type	ECV complex	E3 ubiquitin ligase
+elb-1	Adaptor protein	multi subunit RING-finger type	ECV complex	E3 ubiquitin ligase
+elc-1	Adaptor protein	multi subunit RING-finger type	ECV complex	E3 ubiquitin ligase
+elc-2	Adaptor protein	multi subunit RING-finger type	ECV complex	E3 ubiquitin ligase
+vhl-1	Target recognizing subunit	multi subunit RING-finger type	ECV complex	E3 ubiquitin ligase
+cul-3	Cullin	multi subunit RING-finger type	Cul3 complex	E3 ubiquitin ligase
+mel-26	Adaptor protein	multi subunit RING-finger type	Cul3 complex	E3 ubiquitin ligase
+mel-26	Target recognizing subunit	multi subunit RING-finger type	Cul3 complex	E3 ubiquitin ligase
+cul-4	Cullin	multi subunit RING-finger type	Cul4 complex	E3 ubiquitin ligase
+ddb-1	Adaptor protein	multi subunit RING-finger type	Cul4 complex	E3 ubiquitin ligase
+rbx-2	RING finger	multi subunit RING-finger type	ECS complex	E3 ubiquitin ligase
+cul-5	Cullin	multi subunit RING-finger type	ECS complex	E3 ubiquitin ligase
+elb-1	Adaptor protein	multi subunit RING-finger type	ECS complex	E3 ubiquitin ligase
+elc-1	Adaptor protein	multi subunit RING-finger type	ECS complex	E3 ubiquitin ligase
+elc-2	Adaptor protein	multi subunit RING-finger type	ECS complex	E3 ubiquitin ligase
+sli-1		single RING-finger type	single RING-finger type	E3 ubiquitin ligase
+pdr-1		single RING-finger type	single RING-finger type	E3 ubiquitin ligase
+siah-1		single RING-finger type	single RING-finger type	E3 ubiquitin ligase
+gei-17		single RING-finger type	single RING-finger type	E3 ubiquitin ligase
+sel-11		single RING-finger type	single RING-finger type	E3 ubiquitin ligase
+ufd-2		U-box type	U-box type	E3 ubiquitin ligase
+chn-1		U-box type	U-box type	E3 ubiquitin ligase
+cyn-4		U-box type	U-box type	E3 ubiquitin ligase
+prp-19		U-box type	U-box type	E3 ubiquitin ligase
+oxi-1		HECT type	HECT type	E3 ubiquitin ligase
+etc-1		HECT type	HECT type	E3 ubiquitin ligase
+wwp-1		HECT type	HECT type	E3 ubiquitin ligase
+Y92H12A.2		HECT type	HECT type	E3 ubiquitin ligase
+eel-1		HECT type	HECT type	E3 ubiquitin ligase
+ubr-5		HECT type	HECT type	E3 ubiquitin ligase
+ubc-1				E2 ubiquitin-conjugating enzyme
+let-70				E2 ubiquitin-conjugating enzyme
+ubc-12				E2 ubiquitin-conjugating enzyme
+ubc-7				E2 ubiquitin-conjugating enzyme
+ubc-14				E2 ubiquitin-conjugating enzyme
+ubc-8				E2 ubiquitin-conjugating enzyme
+ubc-9				E2 ubiquitin-conjugating enzyme
+uev-2				E2 ubiquitin-conjugating enzyme
+ubc-6				E2 ubiquitin-conjugating enzyme
+ubc-26				E2 ubiquitin-conjugating enzyme
+ubc-15				E2 ubiquitin-conjugating enzyme
+ubc-24				E2 ubiquitin-conjugating enzyme
+ubc-18				E2 ubiquitin-conjugating enzyme
+ubc-13				E2 ubiquitin-conjugating enzyme
+ubc-25				E2 ubiquitin-conjugating enzyme
+ubc-3				E2 ubiquitin-conjugating enzyme
+ubc-16				E2 ubiquitin-conjugating enzyme
+ubc-21				E2 ubiquitin-conjugating enzyme
+ubc-22				E2 ubiquitin-conjugating enzyme
+ubc-20				E2 ubiquitin-conjugating enzyme
+ubc-17				E2 ubiquitin-conjugating enzyme
+uba-1				E1 ubiquitin-activating enzyme
+aos-1				E1 ubiquitin-activating enzyme
+uba-2				E1 ubiquitin-activating enzyme
+rfl-1				E1 ubiquitin-activating enzyme

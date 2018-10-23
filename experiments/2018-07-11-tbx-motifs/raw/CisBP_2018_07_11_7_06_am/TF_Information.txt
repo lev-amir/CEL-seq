@@ -1,0 +1,5 @@
+TF_ID	TF_Name	Species_Name	Status	Gene_ID	Family	Motif_ID
+T082933_1.02	daf-16	Caenorhabditis_elegans	D	R13H8.1	Forkhead	M0748_1.02,	M2595_1.02,
+T106439_1.02	hsf-1	Caenorhabditis_elegans	D	Y53C10A.12	HSF	M1251_1.02,
+T028060_1.02	skn-1	Caenorhabditis_elegans	D	T19E7.2	bZIP	M0343_1.02,	M2340_1.02,	M2596_1.02,	M2597_1.02,
+T082661_1.02	pha-4	Caenorhabditis_elegans	D	F38A6.1	Forkhead	M2339_1.02,	M4712_1.02,

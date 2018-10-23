@@ -1,0 +1,7 @@
+name	condition
+NT11	WT.EV
+NT12	WT.anc1
+NT21	WT.EV
+NT22	WT.anc1
+NT31	WT.EV
+NT32	WT.anc1

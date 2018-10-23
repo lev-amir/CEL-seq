@@ -1,0 +1,65 @@
+---
+title: "foldchange-correlation"
+output: html_document
+---
+
+## How do genes differentially express in N2 compared to AM140?
+Combine the two strain data-frames:
+* removing genes that don't appear in both.
+* adding variable to indicate which genes are statistically significant (p-value < 0.05) in both strains
+```{r}
+bothStrains <- inner_join(AM,NT, by = 'Gene_stable_ID') %>%
+  mutate(significant_change = case_when(padj.x < 0.05 & padj.y < 0.05 ~ 'BOTH_SIGNIFICANT',
+                                        padj.x < 0.05 & padj.y >= 0.05 ~ 'AM140',
+                                        padj.x >= 0.05 & padj.y < 0.05 ~ 'N2',
+                                        TRUE ~ 'NS'))
+```
+
+### Gene-expression correlation between the two strain
+Calculate Pearson's correlation coefficient of the fold-change between the two strains
+```{r}
+cor(bothStrains$log2FoldChange.x,bothStrains$log2FoldChange.y)
+```
+
+In addition, calculate Pearson's correlation coefficient considering only statistically significant genes with FDR p-value < 0.05
+```{r}
+bothStrain.signif <- bothStrains %>% filter(significant_change == 'BOTH_SIGNIFICANT')
+cor(bothStrain.signif$log2FoldChange.x,bothStrain.signif$log2FoldChange.y)
+```
+
+### Plotting gene expression fold-change of the two strains
+Plot AM140 fold-change on the X-axis, N2 fold-change on the y-axis.
+Color significant values in both strains in purple, AM140 only in blue, N2 only in red, and non-significant values in black.
+```{r}
+bothStrains %>%
+  ggplot(aes(x = log2FoldChange.x,
+             y = log2FoldChange.y,
+             col = significant_change,
+             alpha = significant_change)) +
+  geom_point(shape = 16,size = 2) + 
+  geom_hline(yintercept=0, alpha = 0.1) +
+  geom_vline(xintercept=0, alpha = 0.1) +
+  theme_classic() +
+  ylab("N2 fold-change (log2)") +
+  xlab("AM140 fold-change (log2)") + 
+  scale_alpha_manual(values = c(0.2,0.4,0.2,0.1), na.value = 0.1) + 
+  scale_color_manual(values = c("blue","purple","red","black"),na.value = "Black") + 
+  theme(legend.position = "none") + 
+  theme(text = element_text(size=7))
+```
+
+Export the plot for publication. 
+```{r}
+## dots size may be too large and need to be reduced to 0.1 in the above `geom_point(shape = 16,size = 2)`
+ggsave("results\\foldchange-correlation_scatterPlot.pdf", 
+       height = 4.5, 
+       width = 4.5, 
+       units = "cm")
+ggsave("results\\foldchange-correlation_scatterPlot.png",
+       device = "png",
+       height = 16.7, 
+       width = 16.7, 
+       units = "cm",
+       dpi = 300)
+```
+note: to export plots with transperency (determined by alpha value), in file-types other than PDF, install and load the Cairo package

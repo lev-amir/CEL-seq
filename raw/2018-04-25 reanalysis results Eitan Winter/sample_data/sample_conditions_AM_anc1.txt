@@ -1,0 +1,9 @@
+name	condition	batch
+AM11	AM.EV	A
+AM12	AM.anc1	A
+AM21	AM.EV	B
+AM22	AM.anc1	B
+AM31	AM.EV	C
+AM32	AM.anc1	C
+AM41	AM.EV	D
+AM42	AM.anc1	D

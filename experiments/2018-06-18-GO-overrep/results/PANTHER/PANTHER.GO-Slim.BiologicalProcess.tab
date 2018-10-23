@@ -1,0 +1,21 @@
+
+
+
+
+
+Analysis Type:	PANTHER Overrepresentation Test (Released 20171205)
+Annotation Version and Release Date:	PANTHER version 13.1 Released 2018-02-03
+Analyzed List:	AM.dn.PANTHER.input.txt (Caenorhabditis elegans)AM.up.PANTHER.input.txt (Caenorhabditis elegans)N2.up.PANTHER.input.txt (Caenorhabditis elegans)N2.dn.PANTHER.input.txt (Caenorhabditis elegans)
+Reference List:	Caenorhabditis elegans (all genes in database)
+Test Type:	BINOMIAL
+Bonferroni correction:	true
+Bonferroni count:	210
+PANTHER GO-Slim Biological Process	Caenorhabditis elegans - REFLIST (20057)	AM.dn.PANTHER.input.txt (202)	AM.dn.PANTHER.input.txt (expected)	AM.dn.PANTHER.input.txt (over/under)	AM.dn.PANTHER.input.txt (fold Enrichment)	AM.dn.PANTHER.input.txt (P-value)	AM.up.PANTHER.input.txt (141)	AM.up.PANTHER.input.txt (expected)	AM.up.PANTHER.input.txt (over/under)	AM.up.PANTHER.input.txt (fold Enrichment)	AM.up.PANTHER.input.txt (P-value)	N2.up.PANTHER.input.txt (250)	N2.up.PANTHER.input.txt (expected)	N2.up.PANTHER.input.txt (over/under)	N2.up.PANTHER.input.txt (fold Enrichment)	N2.up.PANTHER.input.txt (P-value)	N2.dn.PANTHER.input.txt (129)	N2.dn.PANTHER.input.txt (expected)	N2.dn.PANTHER.input.txt (over/under)	N2.dn.PANTHER.input.txt (fold Enrichment)	N2.dn.PANTHER.input.txt (P-value)
+regulation of transcription from RNA polymerase II promoter (GO:0006357)	234	10	2.36	+	4.24	3.21E-02	0	1.65	-	 < 0.01	1.00E00	1	2.92	-	.34	1.00E00	7	1.51	+	4.65	1.79E-01
+metabolic process (GO:0008152)	3682	48	37.08	+	1.29	1.00E00	4	25.88	-	.15	3.68E-06	26	45.89	-	.57	7.99E-02	29	23.68	+	1.22	1.00E00
+primary metabolic process (GO:0044238)	2940	38	29.61	+	1.28	1.00E00	3	20.67	-	.15	1.09E-04	19	36.65	-	.52	1.03E-01	24	18.91	+	1.27	1.00E00
+biological regulation (GO:0065007)	1410	14	14.20	-	.99	1.00E00	1	9.91	-	.10	8.42E-02	4	17.57	-	.23	1.66E-02	3	9.07	-	.33	1.00E00
+Unclassified (UNCLASSIFIED)	13969	137	140.69	-	.97	0.00E00	127	98.20	+	1.29	0.00E00	197	174.12	+	1.13	0.00E00	89	89.84	-	.99	0.00E00
+cellular process (GO:0009987)	4274	31	43.04	-	.72	1.00E00	6	30.05	-	.20	2.04E-06	27	53.27	-	.51	2.02E-03	15	27.49	-	.55	6.67E-01
+immune response (GO:0006955)	173	0	1.74	-	 < 0.01	1.00E00	6	1.22	+	4.93	3.15E-01	11	2.16	+	5.10	3.00E-03	1	1.11	-	.90	1.00E00
+immune system process (GO:0002376)	283	0	2.85	-	 < 0.01	1.00E00	6	1.99	+	3.02	1.00E00	13	3.53	+	3.69	1.45E-02	1	1.82	-	.55	1.00E00
