@@ -1,0 +1,10 @@
+#'---
+#'title: "First R Markdown"
+#'author: "Amir Levine"
+#'date: "2018-10-23"
+#'output: github_document
+#'---
+
+# a single English sentence
+#+ r
+print("ABC")
