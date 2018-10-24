@@ -14,12 +14,16 @@ mRNA.seqs.promoter <- mRNA.seqs.promoter %>% mutate(CELseq.hits = ensembl_gene_i
 
 #+ Motif enrichment analysis in gene-sets
 useBigMemoryPWMEnrich(TRUE) # using large amount of memory
-res = motifEnrichment(prs[mRNA.seqs.promoter$CELseq.hits], bg.custom)
+res.dn = motifEnrichment(prs[mRNA.seqs.promoter$CELseq.hits], bg.custom)
 useBigMemoryPWMEnrich(FALSE) # disable using large amount of memory
 
-#+ Generate table of transcription factors that are enriched in the promoters of anc-1 downregulated genes.
-report.dn <- groupReport(res,by.top.motifs=FALSE)
-report.dn %<>% as.data.frame() %>% mutate("enriched.motif" = report.dn$p.value < 0.05)
+#' Generate table of transcription factors that are enriched in the promoters of anc-1 downregulated genes.
+#' Export the reports as tables
+report.dn <- groupReport(res.dn,by.top.motifs=FALSE)
+report.dn %>% 
+  as.data.frame() %>% 
+  mutate("enriched.motif" = report.dn$p.value < 0.05) %>%
+  write_csv(path = "experiments/2018-09-02-TFs-motifs/results/TFs-motifs-enrichment-overlapping-downregulated.csv")
 
 #' Export the reports as PDFs of the enriched transcription factors -- no need to perform
 # pdf(file = "experiments/2018-09-02-TFs-motifs/results/TFs-motifs-enrichment-overlapping-downregulated.pdf",
@@ -29,10 +33,6 @@ report.dn %<>% as.data.frame() %>% mutate("enriched.motif" = report.dn$p.value <
 # plot(report.dn[report.dn$p.value < 0.05], fontsize=7, id.fontsize=6, header.fontsize=7)
 # dev.off()
 
-#' Export the reports as tables
-write_csv(x = report.dn,
-          path = "experiments/2018-09-02-TFs-motifs/results/TFs-motifs-enrichment-overlapping-downregulated.csv")
-
 #+ Upregulated genes 
 goi <- DEG$INTERSECT.up # CEL-seq DEGs, query genes
 length(goi) # 438 downregulated genes in both strains (w/ p-value < 0.1)
@@ -40,12 +40,16 @@ mRNA.seqs.promoter <- mRNA.seqs.promoter %>% mutate(CELseq.hits = ensembl_gene_i
 
 #+ Motif enrichment analysis in gene-sets
 useBigMemoryPWMEnrich(TRUE) # using large amount of memory
-res = motifEnrichment(prs[mRNA.seqs.promoter$CELseq.hits], bg.custom)
+res.up = motifEnrichment(prs[mRNA.seqs.promoter$CELseq.hits], bg.custom)
 useBigMemoryPWMEnrich(FALSE) # disable using large amount of memory
 
-#+ Generate table of transcription factors that are enriched in the promoters of anc-1 downregulated genes.
-report.up <- groupReport(res,by.top.motifs=FALSE)
-report.up %<>% as.data.frame() %>% mutate("enriched.motif" = report.up$p.value < 0.05)
+#' Generate table of transcription factors that are enriched in the promoters of anc-1 downregulated genes.
+#' Export the reports as tables
+report.up <- groupReport(res.up,by.top.motifs=FALSE)
+report.up %>% 
+  as.data.frame() %>% 
+  mutate("enriched.motif" = report.up$p.value < 0.05) %>%
+  write_csv(path = "experiments/2018-09-02-TFs-motifs/results/TFs-motifs-enrichment-overlapping-upregulated.csv")
 
 #' Export the reports as PDFs of the enriched transcription factors -- no need to perform
 # pdf(file = "experiments/2018-09-02-TFs-motifs/results/TFs-motifs-enrichment-overlapping-upregulated.pdf",
@@ -54,11 +58,6 @@ report.up %<>% as.data.frame() %>% mutate("enriched.motif" = report.up$p.value <
 #     paper = "a4") 
 # plot(report.up[report.up$p.value < 0.05], fontsize=7, id.fontsize=6, header.fontsize=7)
 # dev.off()
-
-#' Export the reports as tables
-write_csv(x = report.up,
-          path = "experiments/2018-09-02-TFs-motifs/results/TFs-motifs-enrichment-overlapping-upregulated.csv")
-
 
 #' As a control to the above analyses - repeat it using random promoter sequences
 #+ Select the same amount of random *C. elegans* promoter sequences as a control
@@ -73,4 +72,5 @@ useBigMemoryPWMEnrich(FALSE) # disable using large amount of memory
 report.random <- groupReport(res,by.top.motifs=FALSE) # Report of all enrichment scores.
 plot(report.random[report.random$p.value < 0.05], fontsize=7, id.fontsize=6)
 
-save("report.up","report.dn",file = "experiments/2018-09-02-TFs-motifs/data/TFs-enriched-DEG.Rdata")
+save("report.up","report.dn", "res.dn", "res.up",
+     file = "experiments/2018-09-02-TFs-motifs/data/TFs-enriched-DEG.Rdata")
