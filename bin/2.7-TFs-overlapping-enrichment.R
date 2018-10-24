@@ -5,7 +5,6 @@ if (!require(PWMEnrich)) {install.packages("PWMEnrich"); library(PWMEnrich)}
 load("experiments/2018-09-02-TFs-motifs/data/background-celegans-TF.rdata")
 load("data/Celegans-promoters.rdata")
 
-
 #' Focus on the intersect of the two strains, with upregulated and downregulated genes analyzed separately. 
 
 #+ Downregulated genes 
@@ -18,9 +17,21 @@ useBigMemoryPWMEnrich(TRUE) # using large amount of memory
 res = motifEnrichment(prs[mRNA.seqs.promoter$CELseq.hits], bg.custom)
 useBigMemoryPWMEnrich(FALSE) # disable using large amount of memory
 
-#+ Generate report of transcription factors that are enriched in the promoters of anc-1 downregulated genes.
+#+ Generate table of transcription factors that are enriched in the promoters of anc-1 downregulated genes.
 report.dn <- groupReport(res,by.top.motifs=FALSE)
-plot(report.dn[report.dn$p.value < 0.05], fontsize=7, id.fontsize=6)
+report.dn %<>% as.data.frame() %>% mutate("enriched.motif" = report.dn$p.value < 0.05)
+
+#' Export the reports as PDFs of the enriched transcription factors -- no need to perform
+# pdf(file = "experiments/2018-09-02-TFs-motifs/results/TFs-motifs-enrichment-overlapping-downregulated.pdf",
+#     height = 10.69,
+#     width = 7.27,
+#     paper = "a4") 
+# plot(report.dn[report.dn$p.value < 0.05], fontsize=7, id.fontsize=6, header.fontsize=7)
+# dev.off()
+
+#' Export the reports as tables
+write_csv(x = report.dn,
+          path = "experiments/2018-09-02-TFs-motifs/results/TFs-motifs-enrichment-overlapping-downregulated.csv")
 
 #+ Upregulated genes 
 goi <- DEG$INTERSECT.up # CEL-seq DEGs, query genes
@@ -32,11 +43,24 @@ useBigMemoryPWMEnrich(TRUE) # using large amount of memory
 res = motifEnrichment(prs[mRNA.seqs.promoter$CELseq.hits], bg.custom)
 useBigMemoryPWMEnrich(FALSE) # disable using large amount of memory
 
-#+ Generate report of transcription factors that are enriched in the promoters of anc-1 downregulated genes.
+#+ Generate table of transcription factors that are enriched in the promoters of anc-1 downregulated genes.
 report.up <- groupReport(res,by.top.motifs=FALSE)
-plot(report.up[report.up$p.value < 0.05], fontsize=7, id.fontsize=6)
+report.up %<>% as.data.frame() %>% mutate("enriched.motif" = report.up$p.value < 0.05)
+
+#' Export the reports as PDFs of the enriched transcription factors -- no need to perform
+# pdf(file = "experiments/2018-09-02-TFs-motifs/results/TFs-motifs-enrichment-overlapping-upregulated.pdf",
+#     height = 10.69,
+#     width = 7.27,
+#     paper = "a4") 
+# plot(report.up[report.up$p.value < 0.05], fontsize=7, id.fontsize=6, header.fontsize=7)
+# dev.off()
+
+#' Export the reports as tables
+write_csv(x = report.up,
+          path = "experiments/2018-09-02-TFs-motifs/results/TFs-motifs-enrichment-overlapping-upregulated.csv")
 
 
+#' As a control to the above analyses - repeat it using random promoter sequences
 #+ Select the same amount of random *C. elegans* promoter sequences as a control
 set.seed(168)
 goi <- sample(mRNA.seqs.promoter$ensembl_gene_id,length(goi))
