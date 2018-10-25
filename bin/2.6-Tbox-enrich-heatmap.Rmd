@@ -1,0 +1,103 @@
+---
+title: "Tbox transcription factors gene regulation heat map"
+author: "Amir Levine"
+date: "2018-10-25"
+output: md_document
+---
+
+Load packages and datasets.
+PWMEnrich object of Tbox transcrption factors motifs enrichement in the promoters of anc-1 RNAi regulateed genes.
+```{r}
+load("experiments/2018-07-11-tbx-motifs/data/Tbox-anc1-reg-enriched.Rdata")
+```
+
+
+## Create p-values matrix
+Obtain the *p*-values of motifs per sequence.
+* Rows correspond to the different input sequences and the columns correspond to motifs.
+* `sequence.nobg` contains the raw affinity scores.
+* `sequence.bg` contains the corresponding P-values.
+```{r}
+pvals.dn.mat <- res.dn$sequence.bg
+```
+
+
+Rename the column names to be the T-box protein names to be used as the x-axis label.
+Change the row names to be the common Gene names instead of the Ensenbl IDs to increase readability of the plot.
+
+```{r}
+colnames(pvals.dn.mat) <- c("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43")
+rownames(pvals.dn.mat) <- mRNA.ids$external_gene_name[which(mRNA.ids$ensembl_gene_id %in% rownames(pvals.dn.mat))]
+```
+
+Change *p*-value to boolean. TRUE is statistically significant (*p*-value < 0.05).
+```{r}
+pvals.dn.sig <- (pvals.dn.mat < 0.05)
+```
+
+How many downregulated genes have at least one T-box transcription factors binding motifs?
+```{r}
+dim(pvals.dn.sig)[1]
+```
+
+What percentage of the downregulated genes have each T-box motif?
+```{r}
+round(sum(pvals.dn.sig[,1]) / nrow(pvals.dn.mat) * 100,2) # 7.46%
+round(sum(pvals.dn.sig[,2]) / nrow(pvals.dn.mat) * 100,2) # 8.96%
+round(sum(pvals.dn.sig[,3]) / nrow(pvals.dn.mat) * 100,2) # 7.71%
+round(sum(pvals.dn.sig[,4]) / nrow(pvals.dn.mat) * 100,2) # 8.71%
+round(sum(pvals.dn.sig[,5]) / nrow(pvals.dn.mat) * 100,2) # 5.47%
+```
+
+Filter-out genes w/o a motif.
+```{r}
+pvals.dn.sig <- pvals.dn.sig[rowSums(pvals.dn.sig) > 0,]
+```
+
+What fraction of the downregulated genes have at least one T-box motif?
+```{r}
+round(dim(pvals.dn.sig)[1] / dim(pvals.dn.mat)[1] * 100,2) # 25.37%
+```
+
+What is the distribution of the T-box motifs in the downregulated genes?
+```{r}
+hist(rowSums(pvals.dn.sig),breaks = c(0,1,2,3,4,5))
+```
+
+Sort the genes that contain a motifs by number of motifs in their promoters.
+```{r}
+pvals.sig.sort <- sort(rowSums(pvals.dn.sig), decreasing = TRUE)
+```
+
+Is there a correlation between any two motifs?
+The function `rcorr()` in `Hmisc` package can be used to compute the significance levels for Pearson and Spearman correlations. It returns both the correlation coefficients and the p-value of the correlation for all possible pairs of columns in the data table.
+
+```{r}
+if (!require(Hmisc)) {install.packages("Hmisc"); library(Hmisc)}
+cor2 <- rcorr(pvals.dn.mat)
+
+if (!require(corrplot)) {install.packages("corrplot"); library(corrplot)}
+corrplot(cor, type = "upper", order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+```
+
+
+## Plot heatmap of p-values ver2
+Based on (Heatmap - Static and Interactive: Absolute Guide
+)[http://www.sthda.com/english/articles/28-hierarchical-clustering-essentials/93-heatmap-static-and-interactive-absolute-guide/]
+```{r}
+if (!require(dendextend)) {install.packages("dendextend"); library("dendextend")}
+if (!require(ComplexHeatmap)) {biocLite("ComplexHeatmap"); library("ComplexHeatmap")}
+               
+row_dend = hclust(dist(pvals.dn.mat)) # row clustering
+col_dend = hclust(dist(t(pvals.dn.mat))) # column clustering
+
+
+Heatmap(pvals.dn.mat,
+        name = "Motif presence\n(p-value < 0.05)", # title of legend
+        row_title = "Genes downregulated by anc-1 RNAi",
+        column_names_side = "top",
+        row_names_gp = gpar(fontsize = 6), # Text size for row names
+        cluster_rows = color_branches(row_dend, k = 8),
+        cluster_columns = color_branches(col_dend, k = 3)) 
+```
