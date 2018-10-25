@@ -1,0 +1,95 @@
+---
+title: "TFs-background: Background set of *C. elegans* transcription factors binding motifs representation in protein coding genes promoters"
+output: md_document
+editor_options: 
+  chunk_output_type: console
+---
+
+This script checks the enrichment of the currently known position-weight matrices of *C. elegans* transcription factors in all protein coding genes promoters. This object will serve as the background for the enrichment of the PWMs in specified gene lists. The TFs that were selected are ones that are differentially regulated by *anc-1* RNAi (p-value < 0.1) and that have a known binding motif.
+
+
+Load packages and previously generated data of transcription factors enrichment in each DEG set.
+```{r}
+source("https://bioconductor.org/biocLite.R")
+if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
+if (!require(biomaRt)) {biocLite("biomaRt"); library(biomaRt)} 
+if (!require(PWMEnrich)) {install.packages("PWMEnrich"); library(PWMEnrich)}
+```
+
+
+Load previosly obtained *C. elegans* ensembl database and the differentially expression genes sorted data.
+```{r}
+load("data/celegans-biomart-database-mRNAs.Rdata")
+load("data/geneExpression.rdata")
+load("data/Celegans-promoters.rdata")
+```
+
+
+# Fetch C. elegnas transcription factors based on GO terms.
+GO term accession   GO term name
+GO:0003700          DNA-binding transcription factor activity
+GO:0006355          regulation of transcription, DNA-templated
+```{r}
+TFs <- getBM( # gene ids to all protein coding genes in celegans biomart
+  attributes = c("ensembl_gene_id","external_gene_name","ensembl_transcript_id"), 
+  filters = c("biotype","go"), 
+  values = list(biotype = "protein_coding",
+                go = c("GO:0006355","GO:0003700")), 
+  mart = ensembl)
+```
+
+
+Extract the transcription factors that are differentially regulated by 
+anc-1 RNAi. Only transcription factors with a known binding motif.
+```{r}
+TFs.a1 <- DEG$INTERSECT.reg[DEG$INTERSECT.reg %in% TFs$ensembl_gene_id]
+TFs.a1 <- BOTH[BOTH$Gene_stable_ID %in% TFs.a1,]
+```
+
+
+# Obtain transcription factors motifs
+Known Position Weight Matrices for *C. elegans* transcription factors were downloaded from the (CIS-BP Database)[http://cisbp.ccbr.utoronto.ca] (downloaded only TF info and PWMs). `"experiments\\2018-09-02-TFs-motifs\\raw\\CisBP_2018_09_02_12_51_pm.log"` contains the metadata. `TF.PWM-clean.R` wrangles `"PWM.txt"` to an object suitable for downstream analysis.
+
+
+Load the PWM object.
+```{r}
+load("experiments/2018-09-02-TFs-motifs/data/TFs-PWM.rdata")
+```
+
+Select transcription factor motifs that are differentially regulated by anc-1 RNAi
+```{r}
+# Fetch Gene Name of PWM
+PWM.ID <- mRNA.ids$ensembl_gene_id[match(names(PWM),mRNA.ids$external_gene_name)]
+
+# Subset PWM list based on occurance in DEG
+PWM <- discard(PWM[match(DEG$INTERSECT.reg,PWM.ID)],is.null)
+```
+
+convert PWM to PCM (partially arbitrariy by multiplying by 100), rounding, and converting the matrix type to "integer". This is the required input to the enrichment calculation algorithm.
+```{r}
+PCM <- lapply(PWM,"*",100)
+PCM <- lapply(PCM,round)
+PCM <- lapply(PCM, FUN=function(x) type.convert(x))
+# mean(sapply(PCM,storage.mode) == "integer") # verify that all matrices are stored as an "integer" (=1)
+# storage.mode(PCM[[1]]) # Check just the first matrix.
+```
+
+## Define background set of sequences
+Using the *PWMEnrich* package. 
+The background sequences are calculated by:
+1. The promoter regions I defined for all protein-coding genes in *C. elegans*.
+2. The known PCM motifs of *C. elegans* TFs.
+3. The promoter sequences are split into 100bp chunks and fitted.
+This process is very long and so it's best to save the output for future sessions.
+```{r}
+useBigMemoryPWMEnrich(FALSE) # using large amount of memory
+bg.custom <- makeBackground(motifs = PCM,
+                            type = "logn",
+                            bg.seq = prs,
+                            bg.len=100,
+                            bg.source="All promoters: TSS-up-500, TSS-dn-100, split into 100bp chunks")
+
+dir.create("experiments/2018-10-25-TFs-anc1-reg-motifs/data")
+save(bg.custom,
+     file = "experiments/2018-10-25-TFs-anc1-reg-motifs/data/bkgd-TF-anc1-reg.rdata")
+```
