@@ -1,6 +1,6 @@
 ---
 title: "Take in raw DEG data from the two stains, clean it and store as an object for downstream analysis."
-output: html_document
+output: md_document
 ---
 #Data preparation
 Following "dataset-choice.Rmd", data-prepartion for downstream analysis.
@@ -93,5 +93,5 @@ DEG$UNION.reg <- union(DEG$UNION.up,DEG$UNION.dn) # regulated genes in either of
 
 Export data for further analysis.
 ```{r}
-save(DEG, file = "data/geneExpression.rdata")
+save(DEG, BOTH, file = "data/geneExpression.rdata")
 ```
