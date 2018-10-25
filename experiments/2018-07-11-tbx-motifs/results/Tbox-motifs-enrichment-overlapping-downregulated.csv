@@ -1,0 +1,6 @@
+rank,target,id,raw.score,p.value,top.motif.prop,enriched.motif
+1,pwm.tbx-38.txt,pwm.tbx-38.txt,1.3614052071968339,7.042903519616744e-8,0,TRUE
+2,pwm.tbx-40.txt,pwm.tbx-40.txt,1.780791514145527,7.68204469125633e-6,0,TRUE
+3,pwm.tbx-33.txt,pwm.tbx-33.txt,1.3356739721641868,2.561676085140878e-4,0,TRUE
+4,pwm.tbx-39.txt,pwm.tbx-39.txt,1.4357568742157607,0.012240382335097435,0,TRUE
+5,pwm.tbx-43.txt,pwm.tbx-43.txt,1.3318512856909215,0.08534490961126412,0,FALSE

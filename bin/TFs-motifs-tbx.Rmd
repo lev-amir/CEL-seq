@@ -41,10 +41,6 @@ Define the names of the t-box proteins to be used as the x-axis label.
 colnames(pvals.mat) <- c("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43")
 ```
 
-```{r}
-
-```
-
 
 
 Change the gene IDs to common gene names
@@ -146,29 +142,4 @@ pheatmap(pvals.mat.sig,
          cellheight = 5)
 
 
-```
-
-## Plot heatmap of p-values
-```{r}
-res.pvals %>% 
-  ggplot(aes(x = TF.motifs, y = external_gene_name)) +
-  geom_tile(aes(fill = p.value)) +
-  scale_fill_viridis() +
-  ylab("Genes ") +
-  xlab("T-box binding motifs") +
-  theme_bw() + 
-  theme(legend.title = element_text(size = 10),
-        legend.text = element_text(size = 12),
-        plot.title = element_text(size=16),
-        axis.title=element_text(size=14,face="bold"),
-        axis.text.y=element_text(size=7),
-        axis.text.x=element_text(size=14)) +
-  labs(fill = "p-value")
-```
-
-based on (Heatmap - Static and Interactive: Absolute Guide
-)[http://www.sthda.com/english/articles/28-hierarchical-clustering-essentials/93-heatmap-static-and-interactive-absolute-guide/]
-```{r}
-df <- pvals.mat
-clustering_distance_rows, clustering_distance_columns: metric for clustering: “euclidean”, “maximum”, “manhattan”, “canberra”, “binary”, “minkowski”, “pearson”, “spearman”, “kendall”)
 ```

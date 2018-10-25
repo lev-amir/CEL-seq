@@ -1,9 +1,0 @@
-TF_ID	TF_Name	Species_Name	Status	Gene_ID	Family	Motif_ID
-T150133_1.02	tbx-33	Caenorhabditis_elegans	D	Y66A7A.8	T-box	M1636_1.02,
-T149062_1.02	tbx-38	Caenorhabditis_elegans	D	C24H11.3	T-box	M1624_1.02,
-T150134_1.02	tbx-39	Caenorhabditis_elegans	D	Y73F8A.16	T-box	M1637_1.02,
-T150135_1.02	tbx-40	Caenorhabditis_elegans	D	Y73F8A.17	T-box	M1638_1.02,
-T150128_1.02	tbx-43	Caenorhabditis_elegans	D	Y46E12A.4	T-box	M1635_1.02,
-T150127_1.02	mab-9	Caenorhabditis_elegans	I	T27A1.6	T-box
-T149993_1.02	tbx-2	Caenorhabditis_elegans	I	F21H11.3	T-box
-T150130_1.02	tbx-37	Caenorhabditis_elegans	I	Y47D3A.12	T-box
