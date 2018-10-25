@@ -25,28 +25,6 @@ load("data/Celegans-promoters.rdata")
 ```
 
 
-# Fetch C. elegnas transcription factors based on GO terms.
-GO term accession   GO term name
-GO:0003700          DNA-binding transcription factor activity
-GO:0006355          regulation of transcription, DNA-templated
-```{r}
-TFs <- getBM( # gene ids to all protein coding genes in celegans biomart
-  attributes = c("ensembl_gene_id","external_gene_name","ensembl_transcript_id"), 
-  filters = c("biotype","go"), 
-  values = list(biotype = "protein_coding",
-                go = c("GO:0006355","GO:0003700")), 
-  mart = ensembl)
-```
-
-
-Extract the transcription factors that are differentially regulated by 
-anc-1 RNAi. Only transcription factors with a known binding motif.
-```{r}
-TFs.a1 <- DEG$INTERSECT.reg[DEG$INTERSECT.reg %in% TFs$ensembl_gene_id]
-TFs.a1 <- BOTH[BOTH$Gene_stable_ID %in% TFs.a1,]
-```
-
-
 # Obtain transcription factors motifs
 Known Position Weight Matrices for *C. elegans* transcription factors were downloaded from the (CIS-BP Database)[http://cisbp.ccbr.utoronto.ca] (downloaded only TF info and PWMs). `"experiments\\2018-09-02-TFs-motifs\\raw\\CisBP_2018_09_02_12_51_pm.log"` contains the metadata. `TF.PWM-clean.R` wrangles `"PWM.txt"` to an object suitable for downstream analysis.
 
