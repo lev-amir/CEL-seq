@@ -1,5 +1,5 @@
 ---
-title: "Tbox transcription factors gene regulation heat map"
+title: "Tbox transcription factors gene regulation heatmap"
 author: "Amir Levine"
 date: "2018-10-25"
 output: md_document
@@ -11,7 +11,6 @@ PWMEnrich object of Tbox transcrption factors motifs enrichement in the promoter
 load("experiments/2018-07-11-tbx-motifs/data/Tbox-anc1-reg-enriched.Rdata")
 ```
 
-
 ## Create p-values matrix
 Obtain the *p*-values of motifs per sequence.
 * Rows correspond to the different input sequences and the columns correspond to motifs.
@@ -21,13 +20,9 @@ Obtain the *p*-values of motifs per sequence.
 pvals.dn.mat <- res.dn$sequence.bg
 ```
 
-
-Rename the column names to be the T-box protein names to be used as the x-axis label.
-Change the row names to be the common Gene names instead of the Ensenbl IDs to increase readability of the plot.
-
+Rename the column names to be the T-box protein names.
 ```{r}
 colnames(pvals.dn.mat) <- c("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43")
-rownames(pvals.dn.mat) <- mRNA.ids$external_gene_name[which(mRNA.ids$ensembl_gene_id %in% rownames(pvals.dn.mat))]
 ```
 
 Change *p*-value to boolean. TRUE is statistically significant (*p*-value < 0.05).
@@ -35,9 +30,47 @@ Change *p*-value to boolean. TRUE is statistically significant (*p*-value < 0.05
 pvals.dn.sig <- (pvals.dn.mat < 0.05)
 ```
 
+Count the number of T-box motifs (*p*-value < 0.05) in each gene
+```{r}
+pvals.dn.sig <- cbind(pvals.dn.sig,n_motifs = rowSums(pvals.dn.sig))
+```
+
+
+## Reshape gene expression data
+Extract the expression fold-change of genes in both strains
+```{r}
+df <- BOTH %>% 
+  spread(key = strain, value = log2FoldChange) %>% 
+  filter(Gene_stable_ID %in% rownames(pvals.dn.mat)) %>%
+  group_by(Gene_stable_ID,Gene_name) %>%
+  summarise(N2 = sum(N2,na.rm = TRUE),AM140 = sum(AM140,na.rm = TRUE))
+fc <- matrix(c(b$N2,b$AM140), ncol = 2)
+rownames(fc) <- b$Gene_stable_ID
+```
+
+Check that the gene IDs match, and save the gene names as a vector for later visualization
+```{r}
+sum(rownames(pvals.dn.sig) == rownames(fc))
+
+```
+
+
+
+
+
+Change the row names to be the common Gene names instead of the Ensenbl IDs to increase readability of the plot.
+```{r}
+rownames(pvals.dn.mat) <- mRNA.ids$external_gene_name[which(mRNA.ids$ensembl_gene_id %in% rownames(pvals.dn.mat))]
+```
+
+
+
+
+
+
 How many downregulated genes have at least one T-box transcription factors binding motifs?
 ```{r}
-dim(pvals.dn.sig)[1]
+dim(pvals.dn.sig)[1] # 102
 ```
 
 What percentage of the downregulated genes have each T-box motif?
@@ -82,16 +115,18 @@ corrplot(cor, type = "upper", order = "hclust",
 ```
 
 
-## Plot heatmap of p-values ver2
+## Plot heatmap of p-values
 Based on (Heatmap - Static and Interactive: Absolute Guide
 )[http://www.sthda.com/english/articles/28-hierarchical-clustering-essentials/93-heatmap-static-and-interactive-absolute-guide/]
 ```{r}
 if (!require(dendextend)) {install.packages("dendextend"); library("dendextend")}
 if (!require(ComplexHeatmap)) {biocLite("ComplexHeatmap"); library("ComplexHeatmap")}
-               
+if (!require(viridis)) {biocLite("viridis"); library("viridis")}
+   
 row_dend = hclust(dist(pvals.dn.mat)) # row clustering
 col_dend = hclust(dist(t(pvals.dn.mat))) # column clustering
 
+viridisLite::viridis(3)
 
 Heatmap(pvals.dn.mat,
         name = "Motif presence\n(p-value < 0.05)", # title of legend
@@ -99,5 +134,44 @@ Heatmap(pvals.dn.mat,
         column_names_side = "top",
         row_names_gp = gpar(fontsize = 6), # Text size for row names
         cluster_rows = color_branches(row_dend, k = 8),
-        cluster_columns = color_branches(col_dend, k = 3)) 
+        cluster_columns = color_branches(col_dend, k = 3),
+        show_row_dend = FALSE,
+        col = viridisLite::viridis(3)
+        ) 
+
+
+
+
+
+# Annotation data frame
+annot_df <- tibble(`TBX-33` = pvals.dn.mat[,"TBX-33"],
+                   `TBX-38` = pvals.dn.mat[,"TBX-38"],
+                   `TBX-39` = pvals.dn.mat[,"TBX-39"],
+                   `TBX-40` = pvals.dn.mat[,"TBX-40"],
+                   `TBX-43` = pvals.dn.mat[,"TBX-43"]
+)
+annot_df <- annot_df < 0.05
+
+# Define colors for each levels of qualitative variables
+# Define gradient color for continuous variable (mpg)
+col = list(`TBX-33` = c("TRUE" = "black", "FALSE" = "white"),
+           `TBX-38` = c("TRUE" = "black", "FALSE" = "white"),
+           `TBX-39` = c("TRUE" = "black", "FALSE" = "white"),
+           `TBX-40` = c("TRUE" = "black", "FALSE" = "white"),
+           `TBX-43` = c("TRUE" = "black", "FALSE" = "white")
+)
+
+# Create the heatmap annotation
+ha <- HeatmapAnnotation(annot_df, col = col,show_legend = FALSE,which = "column")
+
+
+
+Heatmap(c,top_annotation = ha)
+
+ht1 <- Heatmap(c)
+x <- (pvals.dn.mat < 0.05) * 1
+ht2 <- Heatmap(x)
+  
+
+ht1 + ht2
 ```
