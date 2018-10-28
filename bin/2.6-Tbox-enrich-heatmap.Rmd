@@ -4,10 +4,15 @@ author: "Amir Levine"
 date: "2018-10-25"
 output: md_document
 ---
-
 Load packages and datasets.
 PWMEnrich object of Tbox transcrption factors motifs enrichement in the promoters of anc-1 RNAi regulateed genes.
 ```{r}
+if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
+if (!require(dendextend)) {install.packages("dendextend"); library("dendextend")}
+if (!require(ComplexHeatmap)) {biocLite("ComplexHeatmap"); library("ComplexHeatmap")}
+if (!require(viridis)) {biocLite("viridis"); library("viridis")}
+
+load("data/geneExpression.rdata")
 load("experiments/2018-07-11-tbx-motifs/data/Tbox-anc1-reg-enriched.Rdata")
 ```
 
@@ -32,7 +37,7 @@ pvals.dn.sig <- (pvals.dn.mat < 0.05)
 
 Count the number of T-box motifs (*p*-value < 0.05) in each gene
 ```{r}
-pvals.dn.sig <- cbind(pvals.dn.sig,n_motifs = rowSums(pvals.dn.sig))
+n_motifs <- rowSums(pvals.dn.sig)
 ```
 
 
@@ -44,74 +49,38 @@ df <- BOTH %>%
   filter(Gene_stable_ID %in% rownames(pvals.dn.mat)) %>%
   group_by(Gene_stable_ID,Gene_name) %>%
   summarise(N2 = sum(N2,na.rm = TRUE),AM140 = sum(AM140,na.rm = TRUE))
-fc <- matrix(c(b$N2,b$AM140), ncol = 2)
-rownames(fc) <- b$Gene_stable_ID
+fc <- cbind(N2 = df$N2, AM140 = df$AM140)
+rownames(fc) <- df$Gene_stable_ID
 ```
 
-Check that the gene IDs match, and save the gene names as a vector for later visualization
+Check that the gene IDs match.
 ```{r}
 sum(rownames(pvals.dn.sig) == rownames(fc))
-
 ```
 
+## Prepare the matrices for heatmap visualization
 
-
-
-
-Change the row names to be the common Gene names instead of the Ensenbl IDs to increase readability of the plot.
+Filter genes w/o T-box transcription factors binding motifs.
+Rename Gene IDs to Gene Names for visualization.
+Cluster analysis (Eucleadean).
 ```{r}
-rownames(pvals.dn.mat) <- mRNA.ids$external_gene_name[which(mRNA.ids$ensembl_gene_id %in% rownames(pvals.dn.mat))]
-```
+gene.names.w.tbx <- df$Gene_name[n_motifs != 0]
 
+p.w.tbx <- pvals.dn.mat[n_motifs != 0,]
+rownames(p.w.tbx) <- gene.names.w.tbx
 
+sig.w.tbx <- pvals.dn.sig[n_motifs != 0,]
+col_dend <- hclust(dist(t(sig.w.tbx))) # column clustering
+sig.w.tbx <- ifelse(sig.w.tbx,"p-value < 0.05","ns")
+rownames(sig.w.tbx) <- gene.names.w.tbx
 
+fc.w.tbx <- fc[n_motifs != 0,]
+row_dend <- hclust(dist(fc.w.tbx)) # row clustering
+rownames(fc.w.tbx) <- gene.names.w.tbx
 
-
-
-How many downregulated genes have at least one T-box transcription factors binding motifs?
-```{r}
-dim(pvals.dn.sig)[1] # 102
-```
-
-What percentage of the downregulated genes have each T-box motif?
-```{r}
-round(sum(pvals.dn.sig[,1]) / nrow(pvals.dn.mat) * 100,2) # 7.46%
-round(sum(pvals.dn.sig[,2]) / nrow(pvals.dn.mat) * 100,2) # 8.96%
-round(sum(pvals.dn.sig[,3]) / nrow(pvals.dn.mat) * 100,2) # 7.71%
-round(sum(pvals.dn.sig[,4]) / nrow(pvals.dn.mat) * 100,2) # 8.71%
-round(sum(pvals.dn.sig[,5]) / nrow(pvals.dn.mat) * 100,2) # 5.47%
-```
-
-Filter-out genes w/o a motif.
-```{r}
-pvals.dn.sig <- pvals.dn.sig[rowSums(pvals.dn.sig) > 0,]
-```
-
-What fraction of the downregulated genes have at least one T-box motif?
-```{r}
-round(dim(pvals.dn.sig)[1] / dim(pvals.dn.mat)[1] * 100,2) # 25.37%
-```
-
-What is the distribution of the T-box motifs in the downregulated genes?
-```{r}
-hist(rowSums(pvals.dn.sig),breaks = c(0,1,2,3,4,5))
-```
-
-Sort the genes that contain a motifs by number of motifs in their promoters.
-```{r}
-pvals.sig.sort <- sort(rowSums(pvals.dn.sig), decreasing = TRUE)
-```
-
-Is there a correlation between any two motifs?
-The function `rcorr()` in `Hmisc` package can be used to compute the significance levels for Pearson and Spearman correlations. It returns both the correlation coefficients and the p-value of the correlation for all possible pairs of columns in the data table.
-
-```{r}
-if (!require(Hmisc)) {install.packages("Hmisc"); library(Hmisc)}
-cor2 <- rcorr(pvals.dn.mat)
-
-if (!require(corrplot)) {install.packages("corrplot"); library(corrplot)}
-corrplot(cor, type = "upper", order = "hclust", 
-         tl.col = "black", tl.srt = 45)
+n_motifs.w.tbx <- n_motifs[n_motifs != 0]
+n_motifs.w.tbx <- factor(n_motifs.w.tbx)
+names(n_motifs.w.tbx) <- gene.names.w.tbx
 ```
 
 
@@ -119,59 +88,45 @@ corrplot(cor, type = "upper", order = "hclust",
 Based on (Heatmap - Static and Interactive: Absolute Guide
 )[http://www.sthda.com/english/articles/28-hierarchical-clustering-essentials/93-heatmap-static-and-interactive-absolute-guide/]
 ```{r}
-if (!require(dendextend)) {install.packages("dendextend"); library("dendextend")}
-if (!require(ComplexHeatmap)) {biocLite("ComplexHeatmap"); library("ComplexHeatmap")}
-if (!require(viridis)) {biocLite("viridis"); library("viridis")}
-   
-row_dend = hclust(dist(pvals.dn.mat)) # row clustering
-col_dend = hclust(dist(t(pvals.dn.mat))) # column clustering
+sig.w.tbx
+fc.w.tbx
+p.w.tbx
+n_motifs.w.tbx
 
-viridisLite::viridis(3)
+ht1 <- Heatmap(fc.w.tbx,
+               name = "Expression fold-change\n(log2)",
+               col = magma(10),
+               rect_gp = gpar(col = "black"),
+               row_title = "Genes downregulated by anc-1 RNAi",
+               column_names_side = "top",
+               cluster_columns = FALSE,
+               cluster_rows = TRUE,
+               column_dend_reorder = FALSE,
+               row_names_gp = gpar(fontsize = 6),
+               show_row_dend = FALSE,
+               width = unit(0.6, "cm"),
+               row_names_side = "left",
+               column_names_gp = gpar(fontsize = 7)) # Text size for row names
+# ht.sig[unlist(row_order(ht1)),] ## must be done to reorder the next two heatmaps to match the clustering that was performed.
+ht2 <- Heatmap(sig.w.tbx,
+               name = "Motif presence",
+               col = c("white","black"),
+               rect_gp = gpar(col = "black"),
+               width = unit(1.5, "cm"),
+               show_column_dend = TRUE,
+               show_row_names = FALSE,
+               cluster_columns = col_dend,
+               column_names_side = "top",
+               column_names_gp = gpar(fontsize = 7))
+ht3 <- Heatmap(n_motifs.w.tbx,
+               col = viridisLite::viridis(5),
+               rect_gp = gpar(col = "black"),
+               width = unit(0.3, "cm"),
+               name = "T-box transcription factors\nbinding motifs",
+               show_row_names = FALSE,
+               show_column_names = FALSE,
+               column_names_side = "top",
+               column_names_gp = gpar(fontsize = 7))
 
-Heatmap(pvals.dn.mat,
-        name = "Motif presence\n(p-value < 0.05)", # title of legend
-        row_title = "Genes downregulated by anc-1 RNAi",
-        column_names_side = "top",
-        row_names_gp = gpar(fontsize = 6), # Text size for row names
-        cluster_rows = color_branches(row_dend, k = 8),
-        cluster_columns = color_branches(col_dend, k = 3),
-        show_row_dend = FALSE,
-        col = viridisLite::viridis(3)
-        ) 
-
-
-
-
-
-# Annotation data frame
-annot_df <- tibble(`TBX-33` = pvals.dn.mat[,"TBX-33"],
-                   `TBX-38` = pvals.dn.mat[,"TBX-38"],
-                   `TBX-39` = pvals.dn.mat[,"TBX-39"],
-                   `TBX-40` = pvals.dn.mat[,"TBX-40"],
-                   `TBX-43` = pvals.dn.mat[,"TBX-43"]
-)
-annot_df <- annot_df < 0.05
-
-# Define colors for each levels of qualitative variables
-# Define gradient color for continuous variable (mpg)
-col = list(`TBX-33` = c("TRUE" = "black", "FALSE" = "white"),
-           `TBX-38` = c("TRUE" = "black", "FALSE" = "white"),
-           `TBX-39` = c("TRUE" = "black", "FALSE" = "white"),
-           `TBX-40` = c("TRUE" = "black", "FALSE" = "white"),
-           `TBX-43` = c("TRUE" = "black", "FALSE" = "white")
-)
-
-# Create the heatmap annotation
-ha <- HeatmapAnnotation(annot_df, col = col,show_legend = FALSE,which = "column")
-
-
-
-Heatmap(c,top_annotation = ha)
-
-ht1 <- Heatmap(c)
-x <- (pvals.dn.mat < 0.05) * 1
-ht2 <- Heatmap(x)
-  
-
-ht1 + ht2
+ht1 + ht2 + ht3
 ```
