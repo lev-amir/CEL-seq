@@ -10,10 +10,10 @@ output: md_document
 Load packages.
 ```{r}
 source("https://bioconductor.org/biocLite.R")
-if (!require(biomaRt)) {biocLite("biomaRt"); library(biomaRt)}
-if (!require(org.Ce.eg.db)) {biocLite("org.Ce.eg.db"); library(org.Ce.eg.db)}
-if (!require(clusterProfiler)) {biocLite("clusterProfiler"); library(clusterProfiler)}
-if (!require(fgsea)) {biocLite("fgsea"); library(fgsea)}
+if (!require(biomaRt)) {BiocManager::install("biomaRt"); library(biomaRt)}
+if (!require(org.Ce.eg.db)) {BiocManager::install("org.Ce.eg.db"); library(org.Ce.eg.db)}
+if (!require(clusterProfiler)) {BiocManager::install("clusterProfiler"); library(clusterProfiler)}
+if (!require(fgsea)) {BiocManager::install("fgsea"); library(fgsea)}
 ```
 
 Load the clean datasets.
@@ -21,10 +21,19 @@ Load the clean datasets.
 load("data/geneExpression.rdata")
 ```
 
+# Define the Genes of interest for the following analyses
+A vector of the Gene IDs for all the *anc-1* RNAi regulated genes.
+Narrow down the gene expression datarame to goi
+```{r}
+goi <- DEG$UNION.reg
+goi.df <- NT[which(NT$Gene_stable_ID %in% goi),]
+```
+
+
 # Convert IDs
 Convert gene IDs from *Ensembl* to *Entrez* using *BioMart*, a required inout ID for KEGG enrichment analysis in the package *clusterProfilter*. This is not a requirement for Gene Ontology enrichment analyses using the same package.
 ```{r}
-ENTREZ.ID <- bitr(DEG$UNION.reg, # All regulated genes
+ENTREZ.ID <- bitr(goi, # All regulated genes
                   fromType="WORMBASE", # From Stable Gene ID
                   toType="ENTREZID", # To Entrez ID
                   OrgDb="org.Ce.eg.db", # C. elegans annotation data.
@@ -130,35 +139,79 @@ head(kk2)
 # GO Gene Set Enrichment Analysis (GSEA) - *fgsea*
 Perform GSEA using the package *fgsea*.
 
-Fetch Gene-Ontology (GO) annotations for *C. elegans*. The fetching process takes a while, so save the data for faster future run-times.
+Fetch BioMart object.
 ```{r}
 mart = useMart(biomart="ensembl", dataset="celegans_gene_ensembl")
-go_annotation <- getBM(attributes = c("ensembl_gene_id",
-                                      "goslim_goa_accession",
-                                      "goslim_goa_description",
-                                      "namespace_1003",
-                                      "go_linkage_type"), 
+```
+
+Go over possible annotations
+```{r}
+att <- listAttributes(mart)
+att[att$page == "feature_page",]
+```
+
+GO terms associated attributes:
+```
+                               name                                description         page
+...
+25                            go_id                          GO term accession feature_page
+26                        name_1006                               GO term name feature_page
+27                  definition_1006                         GO term definition feature_page
+28                  go_linkage_type                      GO term evidence code feature_page
+29                   namespace_1003                                  GO domain feature_page
+30             goslim_goa_accession                    GOSlim GOA Accession(s) feature_page
+31           goslim_goa_description                     GOSlim GOA Description feature_page
+...
+```
+
+Fetch Gene-Ontology (GO) and GO-Slim annotations for *C. elegans*. 
+The fetching process takes a while, so save the data for faster future run-times.
+```{r}
+att <- c("ensembl_gene_id","go_id","name_1006","definition_1006","go_linkage_type","namespace_1003")
+go_annotation <- getBM(attributes = att, 
                        filters=list(biotype='protein_coding'),
                        mart=mart)
 
-save(go_annotation, file = "data/2018-11-06-GO-annotations")
+att <- c("ensembl_gene_id","goslim_goa_accession","name_1006","goslim_goa_description","namespace_1003")
+goslim_annotation <- getBM(attributes = att, 
+                       filters=list(biotype='protein_coding'),
+                       mart=mart)
+
+save(go_annotation,goslim_annotation, file = "data/2018-11-06-GO-annotations.Rdata")
 ```
 
 Extract GO annotations that are under *Biological Process*.
 ```{r}
 go_annotation_bp <- go_annotation[which(go_annotation$namespace_1003 == "biological_process"),]
+goslim_annotation_bp <- goslim_annotation[which(goslim_annotation$namespace_1003 == "biological_process"),]
+```
+
+Generate **Gene-Sets**, a list object in which there are vectors of Ensembl Gene IDs, each labelled with a Go term.
+```{r}
+
+
 go_pathway_sets <- split(go_annotation_bp$ensembl_gene_id,
-                         paste(go_annotation_bp$goslim_goa_accession,go_annotation_bp$goslim_goa_description))
+                         paste(go_annotation_bp$goslim_goa_accession,
+                               go_annotation_bp$goslim_goa_description))
+
 go_pathway_sets <- lapply(go_pathway_sets, unique)
 ```
 
-The list of genes needs to be sorted for GSEA analysis. It is sorted based on the FDR-adjusted *p*-value (*p*) and the gene expression fold-change (*FC*) between treatment (*anc-1* RNAi) and the control. The sorting score is equal to $-log10(p)*log2(FC)$.
+
+
+The list of genes needs to be sorted for GSEA analysis. It is sorted based on the FDR-adjusted *p*-value (*p*) and the gene expression fold-change (*FC*) between treatment (*anc-1* RNAi) and the control. The sorting score is equal to $-log10(p)*log2(FC)$
 The list is sorted in a descending order. Need to consider using just the *p*-values.
 ```{r}
 geneList <- -log10(NT$padj) * NT$log2FoldChange
 names(geneList) <- NT$Gene_stable_ID
 geneList <- sort(geneList, decreasing = TRUE)
 ```
+
+Trying *p*-value only
+```{r}
+
+```
+
 
 Perform GSEA, focusing on medium-sized gene-sets (with 15-500 members), 10,000 permutations.
 ```{r}
