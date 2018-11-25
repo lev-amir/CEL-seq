@@ -16,7 +16,9 @@ if (!require(clusterProfiler)) {BiocManager::install("clusterProfiler"); library
 if (!require(fgsea)) {BiocManager::install("fgsea"); library(fgsea)}
 ```
 
-Load the clean datasets.
+Load two pre-processed datasets:
+1. `DEG` is a list of sets of gene IDs that were differentially regulated by *anc-1* RNAi.
+2. `BOTH` is a tibble that contains the RNA-seq gene expression information and statistics for the two strain.
 ```{r}
 load("data/geneExpression.rdata")
 ```
@@ -26,8 +28,15 @@ A vector of the Gene IDs for all the *anc-1* RNAi regulated genes.
 Narrow down the gene expression datarame to goi
 ```{r}
 goi <- DEG$UNION.reg
-goi.df <- NT[which(NT$Gene_stable_ID %in% goi),]
 ```
+
+# Gene Ontology (GO) Gene Set Enrichment Analysis
+
+
+
+# Gene Ontology (GO) Overrepresentation Analysis
+...Need to perform...
+
 
 
 # Convert IDs
@@ -47,8 +56,7 @@ The above code returns a warning regarding 1-to-many mappings and 0.13% of input
 # In bitr(DEG$UNION.reg, fromType = "WORMBASE", toType = "ENTREZID",  :
 #   0.13% of input gene IDs are fail to map...
 ```
-# Gene Ontology (GO) Overrepresentation Analysis
-...Need to perform...
+
 
 # KEGG Overrepresentation Analysis
 ...Need to perform...
