@@ -58,6 +58,7 @@ Check that the gene IDs match.
 sum(rownames(pvals.dn.sig) == rownames(fc))
 ```
 
+
 ## Prepare the matrices for heatmap visualization
 
 Filter genes w/o T-box transcription factors binding motifs.
@@ -81,6 +82,11 @@ rownames(fc.w.tbx) <- gene.names.w.tbx
 n_motifs.w.tbx <- n_motifs[n_motifs != 0]
 n_motifs.w.tbx <- factor(n_motifs.w.tbx)
 names(n_motifs.w.tbx) <- gene.names.w.tbx
+```
+
+
+```{r}
+write(rownames(pvals.dn.mat[n_motifs != 0,]), file = "a.txt")
 ```
 
 
