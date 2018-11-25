@@ -43,7 +43,7 @@ BOTH <- bind_rows(list(N2 = NT,AM140 = AM), .id = 'strain') %>%
 ```{r}
 threshold_pvalue_foldChange <- function(tbl) {
   tbl %>% 
-    dplyr::filter(padj < 0.1)
+    dplyr::filter(padj < 0.05)
     #dplyr::filter(padj < 0.1) %>%
     #dplyr::filter(abs(log2FoldChange) > 1)
 }
