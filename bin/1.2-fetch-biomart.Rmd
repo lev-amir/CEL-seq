@@ -1,0 +1,63 @@
+---
+title: "Fetching attributes from BioMart"
+author: "Amir Levine"
+date: "201-11-27"
+output: md_document
+---
+
+# Pre-loading
+```{r Load Packages}
+source("https://bioconductor.org/biocLite.R")
+if (!require(biomaRt)) {BiocManager::install("biomaRt"); library(biomaRt)}
+if (!require(org.Ce.eg.db)) {BiocManager::install("org.Ce.eg.db"); library(org.Ce.eg.db)}
+```
+
+Fetch BioMart object and browse annotations.
+
+```{r Fetch BioMart object}
+mart = useMart(biomart="ensembl", dataset="celegans_gene_ensembl")
+```
+
+```{r Browse annotations}
+att <- listAttributes(mart)
+att[att$page == "feature_page",]
+```
+GO terms associated attributes:
+```
+                               name                                description         page
+...
+25                            go_id                          GO term accession feature_page
+26                        name_1006                               GO term name feature_page
+27                  definition_1006                         GO term definition feature_page
+28                  go_linkage_type                      GO term evidence code feature_page
+29                   namespace_1003                                  GO domain feature_page
+30             goslim_goa_accession                    GOSlim GOA Accession(s) feature_page
+31           goslim_goa_description                     GOSlim GOA Description feature_page
+...
+```
+
+Fetch Gene-Ontology (GO) and GO-Slim annotations for *C. elegans*. 
+The fetching process takes a while, so save the data for faster future run-times.
+```{r Fetch GO annotations}
+att <- c("ensembl_gene_id",
+         "go_id",
+         "name_1006",
+         "definition_1006",
+         "go_linkage_type",
+         "namespace_1003")
+go_annotation <- getBM(attributes = att, 
+                       filters=list(biotype='protein_coding'),
+                       mart=mart)
+
+att <- c("ensembl_gene_id",
+         "goslim_goa_accession",
+         "name_1006",
+         "goslim_goa_description",
+         "go_linkage_type",
+         "namespace_1003")
+goslim_annotation <- getBM(attributes = att, 
+                       filters=list(biotype='protein_coding'),
+                       mart=mart)
+
+save(go_annotation,goslim_annotation, file = "data/2018-11-27-GO-annotations.Rdata")
+```
