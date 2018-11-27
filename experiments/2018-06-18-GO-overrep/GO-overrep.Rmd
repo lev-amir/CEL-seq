@@ -1,52 +1,16 @@
 ---
-title: "gene_ontology"
-output: html_document
-editor_options: 
-  chunk_output_type: console
+title: "Gene Ontology (GO) term Enrichment Analysis"
+output: md_document
 ---
 
-# Gene Ontology (GO) term analysis
-## load packages
-``` {r}
-source("https://bioconductor.org/biocLite.R")
-biocLite("clusterProfiler") ; library(clusterProfiler)
-biocLite("biomaRt") ; library(biomaRt)
-biocLite("GOstats") ; library(GOstats)
-biocLite("topGO") ; library(topGO)
-biocLite("org.Ce.eg.db") ; library(org.Ce.eg.db)
-biocLite("AnnotationHub") ; library(AnnotationHub)
-```
-
-## BioMart sketch
+## Load Packages
 ```{r}
-listMarts(host = "parasite.wormbase.org")
-wormbase = useMart(biomart = "parasite_mart_10_merged", host = "parasite.wormbase.org")
-listDatasets(wormbase)
-wormbase <- useDataset(mart = wormbase, dataset = "wbps_gene")
-head(listFilters(wormbase),n=50)
-head(listAttributes(wormbase),n=50)
-getBM(attributes = c("external_gene_id", "wbps_gene_id", "transcript_biotype","species_id_1010"), 
-      filters="gene_name", 
-      values=c("unc-26","his-33"), 
-      mart=wormbase)
-
-## remove the "biotype" filter, as there's discrepency
-getBM(attributes = c("external_gene_id", "wbps_gene_id", "transcript_biotype","wormbase_gene"),
-      filters = c("species_id_1010","biotype"), 
-      values = list("elegaprjna13758","protein_coding"),
-      mart=wormbase)
-
-
-listMarts()
-ensembl=useMart("ensembl")
-listDatasets(ensembl)$description
-ensembl = useMart("ensembl",dataset="celegans_gene_ensembl")
-ensembl <- useEnsembl(biomart="ensembl", dataset = "celegans_gene_ensembl") # Ensembl release 92 - April 2018
-
-head(listFilters(ensembl))
-head(listAttributes(ensembl))
-getBM(ensembl, attributes='ensembl_gene_id', mart=ensembl)
+source("https://bioconductor.org/biocLite.R")
+if (!require(biomaRt)) {BiocManager::install("biomaRt"); library(biomaRt)}
+if (!require(biomaRt)) {BiocManager::install("org.Ce.eg.db"); library(org.Ce.eg.db)}
+if (!require(biomaRt)) {BiocManager::install("clusterProfiler"); library(clusterProfiler)}
 ```
+
 
 
 ## clusterProfiler GO classification of gene lists
@@ -59,28 +23,6 @@ getBM(ensembl, attributes='ensembl_gene_id', mart=ensembl)
 #                     readable = TRUE)
 # head(AM.dn.GO)
 # ## need to remove anc-1
-```
-
-## retrieve Caenorhabditis elegans protein-coding genes
-retrieve AnnotationHub metadata
-```{r}
-ah <- AnnotationHub()
-```
-
-import "Caenorhabditis elegans Ensembl WBcel235" reference genome
-```{r}
-# query(ah, c("Caenorhabditis elegans","Ensembl","WBcel235"))
-# query(ah, "Caenorhabditis_elegans.WBcel235.88.gtf")
-cel.ensembl <- ah[['AH53484']]
-```
-
-vector of Caenorhabditis elegans protein-coding genes
-```{r}
-# cel.ensembl$gene_id
-# unique(cel.ensembl$type) # type == "gene"
-# unique(cel.ensembl$gene_biotype) # gene_biotype == "protein_coding"
-cel.proteinCoding.genes <- cel.ensembl$gene_id[cel.ensembl$gene_biotype == "protein_coding"
-                                               & cel.ensembl$type == "gene"]
 ```
 
 ## clusterProfiler GO over-representation test 
@@ -155,7 +97,7 @@ barplot(kegg_enrich,
         title = "KEGG Enrichment Pathways",
         font.size = 8)
 
-biocLite("org.Ce.eg.db") ; library(org.Ce.eg.db)
+BiocManager::install("org.Ce.eg.db") ; library(org.Ce.eg.db)
 
 go_enrich <- enrichGO(gene = both.pval.FC[["NCBI_gene_ID"]],
                       OrgDb = 'org.Ce.eg.db', 
