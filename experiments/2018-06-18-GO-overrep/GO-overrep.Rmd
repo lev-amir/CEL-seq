@@ -11,8 +11,6 @@ if (!require(biomaRt)) {BiocManager::install("org.Ce.eg.db"); library(org.Ce.eg.
 if (!require(biomaRt)) {BiocManager::install("clusterProfiler"); library(clusterProfiler)}
 ```
 
-
-
 ## clusterProfiler GO classification of gene lists
 ```{r}
 # AM.dn.GO <- groupGO(gene = both.sets$AM.dn,

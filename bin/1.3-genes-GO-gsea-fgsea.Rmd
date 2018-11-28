@@ -1,0 +1,256 @@
+---
+title: "Gene Ontology (GO) Gene Set Enrichment Analysis using the package *gsea*"
+author: "Amir Levine"
+date: "2018-11-06"
+output: md_document
+---
+
+## Pre-loading
+Load packages.
+```{r Load Load packages}
+if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
+source("https://bioconductor.org/biocLite.R")
+if (!require(biomaRt)) {BiocManager::install("biomaRt"); library(biomaRt)}
+if (!require(org.Ce.eg.db)) {BiocManager::install("org.Ce.eg.db"); library(org.Ce.eg.db)}
+if (!require(fgsea)) {BiocManager::install("fgsea"); library(fgsea)}
+```
+
+Load biomart object of *C. elegans* GO annotations.
+```{r biomart object}
+load("data/2018-11-27-GO-annotations.Rdata")
+```
+
+## Process GOSlim Terms
+View possible GO terms annotations are:
+```{r possible GO terms}
+levels(factor(goslim_annotation$namespace_1003))
+```
+```
+[1] ""                   "biological_process" "cellular_component" "eco"               
+[5] "EFO"                "molecular_function"
+```
+Extract GO annotations that are under *Biological Process*.  
+Generate **Gene-Sets**, a list object of Ensembl Gene IDs vectors that correspond to a unique GOSlim term.
+```{r GOSlim BP annotations and Generate Gene-Sets}
+goslim_annotation_bp <- goslim_annotation %>%
+  filter(namespace_1003 == "biological_process", go_linkage_type != "IEA")
+
+goslim_pathway_sets <- split(goslim_annotation_bp$ensembl_gene_id,
+                             paste(goslim_annotation_bp$goslim_goa_accession,
+                                   goslim_annotation_bp$goslim_goa_description))
+goslim_pathway_sets <- lapply(goslim_pathway_sets, unique)
+```
+
+## Process GO Terms
+Extract GO annotations that are under *Biological Process*
+Generate **Gene-Sets**, a list object of Ensembl Gene IDs vectors that correspond to a unique GOSlim term.
+```{r GO BP annotations and Generate Gene-Sets}
+  go_annotation_bp <- go_annotation %>%
+    filter(namespace_1003 == "biological_process", go_linkage_type != "IEA")
+  
+  go_pathway_sets <- split(go_annotation_bp$ensembl_gene_id,
+                           paste(go_annotation_bp$go_id,
+                                 go_annotation_bp$name_1006))
+  go_pathway_sets <- lapply(go_pathway_sets, unique)
+```
+
+## Import gene lists
+Load two pre-processed datasets:
+1. `DEG` is a list of sets of gene IDs that were differentially regulated by *anc-1* RNAi.
+2. `BOTH` is a tibble that contains the RNA-seq gene expression information and statistics for the two strains.
+```{r pre-processed datasets}
+load("data/2018-11-27-geneExpression-pval-thresh-0.05.rdata",verbose=TRUE)
+```
+
+# Analysis of differential gene-expression to N2.
+## Ranked Gene list
+The ranked gene-list for the analysis needs to be ordered in a descending order by Fold-change.
+I tried ordering by *p*-values and by -log10(*p*)*log2FC, but these didn't give meaningful results.
+To avoid some combination of these numerical values in the two strains, I'll analyze the gene-lists from each strain independently. **Split this into 2 analyses**.
+Remove NA values from adjusted *p*-value.
+Return a vector of the Gene IDs for all the identified genes.
+```{r Ranked Gene List}
+strain = "N2"
+#strain = "AM140"
+
+geneList <- BOTH %>% 
+  dplyr::filter(!is.na(padj)) %>%
+  dplyr::mutate(rank = log2FoldChange) %>%
+  dplyr::filter((!!strain) == strain) %>%
+  dplyr::select(Gene_stable_ID,rank)
+
+rankedList <- as.vector(geneList$rank) 
+names(rankedList) <- geneList$Gene_stable_ID
+rankedList <- sort(rankedList, decreasing = TRUE)
+```
+
+## GSEA: GOSlim BP Terms
+Perform GSEA, focusing on medium-sized gene-sets (with 15-500 members), 10,000 permutations.
+Pring the enriched (*p*-value < 0.05) gene-sets.
+```{r}
+set.seed(159159)
+fgseaRes <- fgsea(pathways = goslim_pathway_sets, 
+                  stats = rankedList,
+                  minSize=15,
+                  maxSize=500,
+                  nperm=10000)
+# Print top 15 enriched pathways
+# head(fgseaRes[order(pval),][padj < 0.05],15)
+
+topPathwaysUp <- fgseaRes[ES > 0, ][padj<0.05,][order(pval), pathway]
+topPathwaysDown <- fgseaRes[ES < 0, ][padj<0.05,][order(pval), pathway]
+topPathways <- c(topPathwaysUp, rev(topPathwaysDown))
+
+file = "experiments/2018-11-28-GO-GSEA/results/N2.GOSlim.BP.GSEA.pdf"
+pdf(file = file,width = 10, height = 4,pointsize=7)
+plotGseaTable(goslim_pathway_sets[topPathways], rankedList, fgseaRes, 
+              gseaParam = 0.5, colwidths = c(5,3,0.5,0.5,0.5))
+dev.off()
+```
+
+## GSEA: GO BP Terms
+Perform GSEA, focusing on medium-sized gene-sets (with 15-500 members), 10,000 permutations.
+Pring the enriched (*p*-value < 0.05) gene-sets.
+Plot GSEA selected pathways. Focus only on significant *p*-values (<0.05). Save as PDF file.
+```{r}
+set.seed(159159)
+fgseaRes <- fgsea(pathways = go_pathway_sets, 
+                  stats = rankedList,
+                  minSize=15,
+                  maxSize=500,
+                  nperm=10000)
+# Print top 15 enriched pathways
+# print(head(fgseaRes[order(pval),][padj < 0.05],15))
+
+topPathwaysUp <- fgseaRes[ES > 0, ][padj<0.05,][order(pval), pathway]
+topPathwaysDown <- fgseaRes[ES < 0, ][padj<0.05,][order(pval), pathway]
+topPathways <- c(topPathwaysUp, rev(topPathwaysDown))
+
+file = "experiments/2018-11-28-GO-GSEA/results/N2.GO.BP.GSEA.pdf"
+pdf(file = file,width = 10, height = 4,pointsize=7)
+plotGseaTable(go_pathway_sets[topPathways], rankedList, fgseaRes, 
+              gseaParam = 0.5, colwidths = c(5,3,0.5,0.5,0.5))
+dev.off()
+```
+
+# Analysis of differential gene-expression to AM140.
+## Ranked Gene list
+The ranked gene-list for the analysis needs to be ordered in a descending order by Fold-change.
+I tried ordering by *p*-values and by -log10(*p*)*log2FC, but these didn't give meaningful results.
+To avoid some combination of these numerical values in the two strains, I'll analyze the gene-lists from each strain independently. **Split this into 2 analyses**.
+Remove NA values from adjusted *p*-value.
+Return a vector of the Gene IDs for all the identified genes.
+```{r Ranked Gene List}
+#strain = "N2"
+strain = "AM140"
+
+geneList <- BOTH %>% 
+  dplyr::filter(!is.na(padj)) %>%
+  dplyr::mutate(rank = log2FoldChange) %>%
+  dplyr::filter((!!strain) == strain) %>%
+  dplyr::select(Gene_stable_ID,rank)
+
+rankedList <- as.vector(geneList$rank) 
+names(rankedList) <- geneList$Gene_stable_ID
+rankedList <- sort(rankedList, decreasing = TRUE)
+```
+
+## GSEA: GOSlim BP Terms
+Perform GSEA, focusing on medium-sized gene-sets (with 15-500 members), 10,000 permutations.
+Pring the enriched (*p*-value < 0.05) gene-sets.
+```{r}
+set.seed(159159)
+fgseaRes <- fgsea(pathways = goslim_pathway_sets, 
+                  stats = rankedList,
+                  minSize=15,
+                  maxSize=500,
+                  nperm=10000)
+# Print top 15 enriched pathways
+# head(fgseaRes[order(pval),][padj < 0.05],15)
+
+topPathwaysUp <- fgseaRes[ES > 0, ][padj<0.05,][order(pval), pathway]
+topPathwaysDown <- fgseaRes[ES < 0, ][padj<0.05,][order(pval), pathway]
+topPathways <- c(topPathwaysUp, rev(topPathwaysDown))
+
+file = "experiments/2018-11-28-GO-GSEA/results/AM140.GOSlim.BP.GSEA.pdf"
+pdf(file = file,width = 10, height = 4,pointsize=7)
+plotGseaTable(goslim_pathway_sets[topPathways], rankedList, fgseaRes, 
+              gseaParam = 0.5, colwidths = c(5,3,0.5,0.5,0.5))
+dev.off()
+```
+
+## GSEA: GO BP Terms
+Perform GSEA, focusing on medium-sized gene-sets (with 15-500 members), 10,000 permutations.
+Pring the enriched (*p*-value < 0.05) gene-sets.
+Plot GSEA selected pathways. Focus only on significant *p*-values (<0.05). Save as PDF file.
+```{r}
+set.seed(159159)
+fgseaRes <- fgsea(pathways = go_pathway_sets, 
+                  stats = rankedList,
+                  minSize=15,
+                  maxSize=500,
+                  nperm=10000)
+# Print top 15 enriched pathways
+# print(head(fgseaRes[order(pval),][padj < 0.05],15))
+
+topPathwaysUp <- fgseaRes[ES > 0, ][padj<0.05,][order(pval), pathway]
+topPathwaysDown <- fgseaRes[ES < 0, ][padj<0.05,][order(pval), pathway]
+topPathways <- c(topPathwaysUp, rev(topPathwaysDown))
+
+file = "experiments/2018-11-28-GO-GSEA/results/AM140.GO.BP.GSEA.pdf"
+pdf(file = file,width = 10, height = 4,pointsize=7)
+plotGseaTable(go_pathway_sets[topPathways], rankedList, fgseaRes, 
+              gseaParam = 0.5, colwidths = c(5,3,0.5,0.5,0.5))
+dev.off()
+```
+
+```{r}
+sessionInfo()
+```
+```
+R version 3.5.1 (2018-07-02)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows >= 8 x64 (build 9200)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_Israel.1252  LC_CTYPE=English_Israel.1252   
+[3] LC_MONETARY=English_Israel.1252 LC_NUMERIC=C                   
+[5] LC_TIME=English_Israel.1252    
+
+attached base packages:
+[1] parallel  stats4    stats     graphics  grDevices utils    
+[7] datasets  methods   base     
+
+other attached packages:
+ [1] bindrcpp_0.2.2       forcats_0.3.0        stringr_1.3.1       
+ [4] dplyr_0.7.7          purrr_0.2.5          readr_1.1.1         
+ [7] tidyr_0.8.2          tibble_1.4.2         ggplot2_3.1.0       
+[10] tidyverse_1.2.1      fgsea_1.8.0          Rcpp_0.12.19        
+[13] org.Ce.eg.db_3.6.0   AnnotationDbi_1.44.0 IRanges_2.16.0      
+[16] S4Vectors_0.20.0     Biobase_2.42.0       BiocGenerics_0.28.0 
+[19] biomaRt_2.38.0       BiocInstaller_1.32.1
+
+loaded via a namespace (and not attached):
+ [1] httr_1.3.1          bit64_0.9-7         jsonlite_1.5       
+ [4] modelr_0.1.2        assertthat_0.2.0    BiocManager_1.30.3 
+ [7] blob_1.1.1          cellranger_1.1.0    yaml_2.2.0         
+[10] progress_1.2.0      pillar_1.3.0        RSQLite_2.1.1      
+[13] backports_1.1.2     lattice_0.20-35     glue_1.3.0         
+[16] digest_0.6.18       rvest_0.3.2         colorspace_1.3-2   
+[19] Matrix_1.2-14       plyr_1.8.4          XML_3.98-1.16      
+[22] pkgconfig_2.0.2     broom_0.5.0         haven_1.1.2        
+[25] snow_0.4-3          scales_1.0.0        BiocParallel_1.16.0
+[28] withr_2.1.2         lazyeval_0.2.1      cli_1.0.1          
+[31] magrittr_1.5        crayon_1.3.4        readxl_1.1.0       
+[34] memoise_1.1.0       nlme_3.1-137        xml2_1.2.0         
+[37] tools_3.5.1         data.table_1.11.8   prettyunits_1.0.2  
+[40] hms_0.4.2           munsell_0.5.0       compiler_3.5.1     
+[43] rlang_0.3.0.1       grid_3.5.1          RCurl_1.95-4.11    
+[46] rstudioapi_0.8      labeling_0.3        bitops_1.0-6       
+[49] gtable_0.2.0        DBI_1.0.0           R6_2.3.0           
+[52] gridExtra_2.3       lubridate_1.7.4     knitr_1.20         
+[55] bit_1.1-14          bindr_0.1.1         fastmatch_1.1-0    
+[58] stringi_1.2.4       tidyselect_0.2.5 
+```
