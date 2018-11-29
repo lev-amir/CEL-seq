@@ -1,0 +1,135 @@
+---
+title: "Untitled"
+author: "Amir Levine"
+date: "2018-11-29"
+output: md_document
+---
+
+## Pre-loading
+Load packages.
+```{r Load Load packages}
+if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
+source("https://bioconductor.org/biocLite.R")
+if (!require(biomaRt)) {BiocManager::install("biomaRt"); library(biomaRt)}
+if (!require(org.Ce.eg.db)) {BiocManager::install("org.Ce.eg.db"); library(org.Ce.eg.db)}
+if (!require(biomaRt)) {BiocManager::install("clusterProfiler"); library(clusterProfiler)}
+```
+
+Load the Entrez ids for KEGG analysis
+```{r}
+load("experiments/2018-05-01-kegg-enrichment/data/2018-11-29-entrez-ids-for-kegg-enrichment.Rdata")
+```
+
+Convert Entrez IDs to KEGG IDs and add the "Ensemble gene IDs"" (= Gene_stable_ID) to the final data-frame.
+```{r}
+kegg.ids <- bitr_kegg(entrez$entrezgene, fromType='ncbi-geneid', toType='kegg', organism='cel')
+kegg.ids <- merge(kegg.ids,entrez, by.x="ncbi-geneid", by.y="entrezgene")
+```
+
+# Analysis of differential gene-expression to N2.
+## Ranked Gene list
+The ranked gene-list for the analysis needs to be ordered in a descending order by Fold-change.
+Create a vector of fold-change values and KEGG IDs only.
+To avoid some combination of these numerical values in the two strains, I'll analyze the gene-lists from each strain independently. **Split this into 2 analyses**.
+Remove NA values from adjusted *p*-value.
+Return a vector of the Gene IDs for all the identified genes.
+Generate the Differentially expressed Gene List ordered by log2FC with KEGG IDs.
+```{r Ranked Gene List}
+strain = "N2"
+#strain = "AM140"
+
+geneList <- BOTH %>% 
+  dplyr::filter(!is.na(padj)) %>%
+  dplyr::mutate(rank = log2FoldChange) %>%
+  dplyr::filter((!!strain) == strain) %>%
+  dplyr::select(Gene_stable_ID,rank)
+
+geneList <- data.frame("ensembl_gene_id" = geneList$Gene_stable_ID,
+                       "log2FoldChange" = geneList$rank)
+geneList <- merge(geneList,kegg.ids,by="ensembl_gene_id")
+geneList <- geneList[order(geneList$log2FoldChange, decreasing = TRUE),]
+
+
+rankedList <- geneList$log2FoldChange
+names(rankedList) <- geneList$kegg
+```
+
+Perform KEGG 
+```{r}
+set.seed(159159)
+KEGG.gsea.N2 <- gseKEGG(geneList     = rankedList,
+                        organism = 'cel',
+                        nPerm        = 10000,
+                        minGSSize    = 15,
+                        pvalueCutoff = 0.05, 
+                        verbose = TRUE)
+```
+
+# Analysis of differential gene-expression to AM140
+```{r Ranked Gene List}
+#strain = "N2"
+strain = "AM140"
+
+geneList <- BOTH %>% 
+  dplyr::filter(!is.na(padj)) %>%
+  dplyr::mutate(rank = log2FoldChange) %>%
+  dplyr::filter((!!strain) == strain) %>%
+  dplyr::select(Gene_stable_ID,rank)
+
+geneList <- data.frame("ensembl_gene_id" = geneList$Gene_stable_ID,
+                       "log2FoldChange" = geneList$rank)
+geneList <- merge(geneList,kegg.ids,by="ensembl_gene_id")
+geneList <- geneList[order(geneList$log2FoldChange, decreasing = TRUE),]
+
+
+rankedList <- geneList$log2FoldChange
+names(rankedList) <- geneList$kegg
+```
+
+Perform KEGG 
+```{r}
+set.seed(159159)
+KEGG.gsea.AM <- gseKEGG(geneList     = rankedList,
+                        organism = 'cel',
+                        nPerm        = 10000,
+                        minGSSize    = 15,
+                        pvalueCutoff = 0.05, 
+                        verbose = TRUE)
+```
+
+Save the data for the GSEA analyses
+```{r}
+save(KEGG.gsea.N2,KEGG.gsea.AM,
+     file = "experiments/2018-05-01-kegg-enrichment/data/2018-11-29-GSEA-KEGG-N2-AM-results.Rdata")
+```
+
+
+Export KEGG GSEA enrichment Tables
+```{r}
+write.csv(KEGG.gsea.N2@result,
+          file = "experiments/2018-05-01-kegg-enrichment/results/2018-11-29-GSEA-KEGG-N2.csv")
+write.csv(KEGG.gsea.AM@result,
+          file = "experiments/2018-05-01-kegg-enrichment/results/2018-11-29-GSEA-KEGG-AM.csv")
+```
+
+Older Analysis of threshold set gene list.
+```{r}
+# Create a matrix of gene log2 fold changes
+gene_matrix <- both.pval.FC[["log2FoldChange"]]
+
+# Add the entrezID's as names for each logFC entry
+names(gene_matrix) <- CELE_entrezJoined
+
+kegg_enrich <- enrichKEGG(gene = names(gene_matrix),
+                          organism = 'celegans',
+                          pvalueCutoff = 0.05, 
+                          qvalueCutoff = 0.10)
+
+# Plot results
+barplot(KEGG.gsea, 
+        drop = TRUE, 
+        showCategory = 10, 
+        title = "KEGG Enrichment Pathways",
+        font.size = 8)
+```
+
