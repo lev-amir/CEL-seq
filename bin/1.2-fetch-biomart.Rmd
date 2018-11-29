@@ -36,6 +36,15 @@ GO terms associated attributes:
 ...
 ```
 
+KEGG, MetaCyc associated attributes
+```
+                               name                                description         page
+...
+36                      kegg_enzyme                 KEGG Pathway and Enzyme ID feature_page
+38                          metacyc                                 MetaCyc ID feature_page
+```
+
+
 Fetch Gene-Ontology (GO) and GO-Slim annotations for *C. elegans*. 
 The fetching process takes a while, so save the data for faster future run-times.
 ```{r Fetch GO annotations}
@@ -60,4 +69,17 @@ goslim_annotation <- getBM(attributes = att,
                        mart=mart)
 
 save(go_annotation,goslim_annotation, file = "data/2018-11-27-GO-annotations.Rdata")
+```
+
+# Entrez IDs for KEGG enrichment analysis
+Set the  
+Obtain all the *ensembl_gene_id* and *entrezgene* for *C. elegans*.
+Save for later usage by enrichment analysis
+```{r}
+entrez <- getBM(
+  attributes = c("ensembl_gene_id","entrezgene"),
+  mart = mart
+)
+save(entrez, 
+  file = "experiments/2018-05-01-kegg-enrichment/data/2018-11-29-entrez-ids-for-kegg-enrichment.Rdata")
 ```
