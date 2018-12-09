@@ -53,6 +53,14 @@ pltE1E2 <-
         strip.background = element_rect(colour=NA,fill=NA), # Remove facet bkrng
         panel.border=element_rect(colour="grey50"))  # Format Facet remove outline
 
+ggsave(filename = "ubiquitin-foldchange-N2-E1E2-raw.pdf",
+       plot = pltE1E2,
+       device = "pdf",
+       path = "experiments/2018-07-04-ubiquitin-foldchange/results/",
+       width = 12.7,
+       height = 4.5,
+       units = "cm")
+
 ## Plot E3 Ubiquitin Ligases expression fold-change
 pltE3 <- 
   ubiq.N2 %>% 
@@ -89,17 +97,12 @@ pltE3 <-
         strip.background = element_rect(colour=NA,fill=NA), # Remove facet bkrng
         panel.border=element_rect(colour="grey50"))  # Format Facet remove outline
 
-# Warning message:
-#   Removed 2 rows containing missing values (geom_text). 
-## this is likely due to the analysis in which low intensity reads had their 'padj' set as NA.
-## in new analysis this should not occur.
-
 ggsave(filename = "ubiquitin-foldchange-N2-E3-raw.pdf",
        plot = pltE3,
        device = "pdf",
        path = "experiments/2018-07-04-ubiquitin-foldchange/results/",
        width = 16.7,
-       height = 4.5,
+       height = 5,
        units = "cm")
 
 ## Align the two plots vertically, is a 1:2 height ratio.
@@ -189,12 +192,6 @@ pltE3 <-
         strip.text.x = element_text(color = "black",angle = 0),  # Format Facet title
         strip.background = element_rect(colour=NA,fill=NA), # Remove facet bkrng
         panel.border=element_rect(colour="grey50"))  # Format Facet remove outline
-
-# Warning message:
-#   Removed 2 rows containing missing values (geom_text). 
-## this is likely due to the analysis in which low intensity reads had their 'padj' set as NA.
-## in new analysis this should not occur.
-
 
 ## Align the two plots vertically, is a 1:2 height ratio.
 labels = c("","E3 ubiquitin ligases")
