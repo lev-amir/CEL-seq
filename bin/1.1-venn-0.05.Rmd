@@ -1,30 +1,70 @@
+---
+title: "Venn Diagrams of genes that are differentially regulated by anc-1"
+author: "Amir Levine"
+date: "2018-12-13"
+output: md_document
+---
+
+Load Packages
+```{r}
 source("https://bioconductor.org/biocLite.R")
 install.packages("VennDiagram") ; library(VennDiagram)
+```
 
+Set experiment path
+```{r}
+path = "experiments/2018-04-24-venn/"
+```
+
+# Top regulated genes
+Get top 15 genes per overlap by adjusted p-values
+```{r}
+a <- NT$Gene_name[NT$Gene_stable_ID %in% intersect(DEG$AM.up,DEG$N2.up)][1:15]
+write(a, paste0(path,"results/topGenes-up.txt"))
+a <- NT$Gene_name[NT$Gene_stable_ID %in% intersect(DEG$AM.dn,DEG$N2.dn)][1:15]
+write(a, paste0(path,"results/topGenes-dn.txt"))
+```
+
+# Genes that passed a significance threshold of 0.05
+
+Load Processed Data
+```{r}
 # Load processed data----------------------------------------------------------
-load("data/geneExpression.rdata")
+load("data/2018-11-27-geneExpression-pval-thresh-0.05.rdata")
+```
 
-## Hypergeometric distribution test to check if gene overlap is significant----
-# Check the p-values of overlaps that are equal or greater than the measured overlap
+## Hypergeometric distribution test to check if gene overlap is significant
+Check the p-values of overlaps that are equal or greater than the measured overlap
 
-# Total population are genes that appeard in the results of either AM140 or N2 CEL-seq
-totalpop <- length( union(NT$Gene_stable_ID,AM$Gene_stable_ID) )
+The total population are genes that appeard in the results of either AM140 or N2 CEL-seq
+```{r}
+totalpop <- length( union(union(DEG$N2.up,DEG$N2.dn),
+                          union(DEG$AM.up,DEG$AM.dn)
+) 
+)
+```
 
-# Upregulated genes
-
+### Upregulated genes
+```{r}
 # Genes that were upregulated in AM140 animals
 sample1 <- length(DEG$AM.up)
 # Genes that were upregulated in N2 animals
 sample2 <- length(DEG$N2.up)
 # Genes that were upregulated in both AM140 and N2 animals
 overlap <- length( intersect(DEG$AM.up,DEG$N2.up) )
+```
 
+Hypergeometric test
+```{r}
 hyper.up <- sum( dhyper(x = overlap:sample1,
                         m = sample2,
                         n = totalpop - sample2,
                         k = sample1) )
 print(hyper.up)
+```
 
+### Downregulated genes
+```{r}
 # Downregulated genes
 
 # Genes that were upregulated in AM140 animals
@@ -33,20 +73,27 @@ sample1 <- length(DEG$AM.dn)
 sample2 <- length(DEG$N2.dn)
 # Genes that were upregulated in both AM140 and N2 animals
 overlap <- length( intersect(DEG$AM.dn,DEG$N2.dn) )
+```
 
+Hypergeometric test
+```{r}
 hyper.dn <- sum( dhyper(x = overlap:sample1,
                         m = sample2,
                         n = totalpop - sample2,
                         k = sample1) )
 print(hyper.dn)
+```
 
-# Venn of up-regulated genes---------------------------------------------------
+## Plot Venn Diagrams
+
+Venn of up-regulated genes
+```{r}
 venn.diagram(
   x = list(AM140 = DEG$AM.up, N2 = DEG$N2.up),
-  filename = "experiments/2018-04-24-venn/results/venn_anc1_upregulated.tiff",
+  filename = paste0(path,"results/venn-anc1-up-0.05.tiff"),
   resolution = 300,
   imagetype = "tiff",
-  main = "Upregulated (p < 0.1)",
+  main = "Upregulated (p < 0.05)",
   main.cex = 3,
   main.fontfamily = "sans",
   fill = c("blue", "red"),
@@ -62,14 +109,16 @@ venn.diagram(
   sub.cex = 2,
   sub.fontfamily = "sans"
 )
+```
 
-# Venn of down-regulated genes-------------------------------------------------
+Venn of down-regulated genes
+```{r}
 venn.diagram(
   x = list(AM140 = DEG$AM.dn, N2 = DEG$N2.dn),
-  filename = "experiments/2018-04-24-venn/results/venn_anc1_downregulated.tiff",
+  filename = paste0(path,"results/venn-anc1-dn-0.05.tiff"),
   resolution = 300,
   imagetype = "tiff",
-  main = "Downregulated (p < 0.1)",
+  main = "Downregulated (p < 0.05)",
   main.cex = 3,
   main.fontfamily = "sans",
   fill = c("blue", "red"),
@@ -86,9 +135,4 @@ venn.diagram(
   sub.fontfamily = "sans"
   #inverted = TRUE
 )
-
-# Get top 15 genes per overlap by adjusted p-values----------------------------
-a <- NT$Gene_name[NT$Gene_stable_ID %in% intersect(DEG$AM.up,DEG$N2.up)][1:15]
-write(a, "experiments/2018-04-24-venn/results/topGenes-up.txt")
-a <- NT$Gene_name[NT$Gene_stable_ID %in% intersect(DEG$AM.dn,DEG$N2.dn)][1:15]
-write(a, "experiments/2018-04-24-venn/results/topGenes-dn.txt")
+```
