@@ -1,16 +1,19 @@
 ---
-title: "Untitled"
+title: "Enrichment of the binding motifs of T-box transcription factors or any transcription factors in the promoters of SCF complex genes"
 author: "Amir Levine"
-date: "2018 M12 18"
-output: html_document
+date: "2018-12-18"
+output: md_document
 ---
+
+# Loading packages and data pre-processing
 ```{r}
 if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
 if (!require(PWMEnrich)) {install.packages("PWMEnrich"); library(PWMEnrich)}
 
+# Working directory
 path = "experiments/2018-12-18-tbx-motifs-enrich-SCF/"
 
-load(paste0(path,"data/backgound-celegans-proteincoding-tbx.rdata"))
+# All C. elegans promoters
 load("data/mRNA-seqs-promoters.rdata")
 ```
 
@@ -20,6 +23,12 @@ scf <- "skr-|rbx-1|cul-1|cul-6|sel-10|lin-23|skpt-1"
 scf_gene_idx <- mRNA.ids$ensembl_gene_id[grep(scf,mRNA.ids$external_gene_name)]
 
 scf_prs <- prs[names(prs) %in% scf_gene_idx]
+```
+
+# Enrichment of T-box transcription factors binding motifs
+Load the background list of the T-box transcription factors binding motifs.
+```{r}
+load(paste0(path,"data/backgound-celegans-proteincoding-tbx.rdata"))
 ```
 
 Motif enrichment analysis of SCF complex genes
@@ -37,7 +46,6 @@ plot(report_scf)
 
 Export the table of scores.
 ```{r}
-#' Export the reports 
 pdf(file = paste0(path,"results/TBX-motifs-enrich-SCF.pdf"),
     height = 1.5,
     width = 5)
@@ -51,3 +59,45 @@ save("scf_prs","report_scf",
      file = paste0(path,"data/TBX-motifs-enrich-SCF.Rdata"))
 ```
 
+# Enrichment of all the available transcription factors binding motifs
+Load the background list of the T-box transcription factors binding motifs.
+```{r}
+load(paste0(path,"data/background-celegans-TF.rdata"))
+```
+
+Motif enrichment analysis of SCF complex genes
+```{r}
+useBigMemoryPWMEnrich(TRUE) # using large amount of memory
+res_scf = motifEnrichment(scf_prs, bg.custom)
+useBigMemoryPWMEnrich(FALSE) # disable using large amount of memory
+```
+
+Generate table of TFs that are enriched in the promoters of SCF complex genes
+```{r}
+report_scf <- groupReport(res_scf,by.top.motifs=FALSE)
+```
+
+Were  the enriched transcription factors differntially regulated in anc-1 treated animals
+```{r}
+# The enriched transcription factors which are in the differentially expressed gene list of anc-1 regulated genes
+tf_sig_a1_idx <- BOTH$Gene_name %in% report_scf[report_scf$p.value < 0.1]$id
+# What were their expression levels in anc-1 treated animals
+BOTH[tf_sig_a1_idx,]
+# Show only the ones that had a padj < 0.1
+BOTH[tf_sig_a1_idx & BOTH$padj<.1,]
+```
+
+Export the table of scores. p-value < 0.1
+```{r}
+pdf(file = paste0(path,"results/TF-all-motifs-enrich-SCF.pdf"),
+    height = 4,
+    width = 5)
+plot(report_scf[report_scf$p.value < 0.05], fontsize=7, id.fontsize=6)
+dev.off()
+```
+
+Save the enrichment file
+```{r}
+save("scf_prs","report_scf",
+     file = paste0(path,"data/TF-all-motifs-enrich-SCF.Rdata"))
+```
