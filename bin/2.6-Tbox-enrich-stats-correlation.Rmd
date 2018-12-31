@@ -10,6 +10,7 @@ output: md_document
 # Data pre-processing
 if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
 # Plot heatmap
+if (!require(pheatmap)) {biocLite("pheatmap"); library("pheatmap")}
 if (!require(gplots)) {biocLite("gplots"); library("gplots")}
 # Heatmap colors
 if (!require(viridis)) {biocLite("viridis"); library("viridis")}
@@ -53,7 +54,6 @@ tbx.pv.dn.mat <- AM.NT %>%
   select("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43") %>%
   as.matrix()
 rownames(tbx.pv.dn.mat) <- AM.NT$Gene_name
-
 ```
 
 # Convert the TBX binding-sites p-values matrix to binary
@@ -71,42 +71,6 @@ tbx.pv.dn.mat <- tbx.pv.dn.mat[TBXTFBM != 0,]
 tbx.bool.dn.mat <- tbx.bool.dn.mat[TBXTFBM != 0,]
 ```
 
-```{r}
-
-#plot(row_dend)
-#stats::cutree(row_dend,k=6)
-
-# Plot Heatmap
-heatmap.2(tbx.bool.dn.mat*1,
-          
-          # Define the color range
-          breaks = c(0,0.5,1),
-          col = c("white","black"),
-
-          # Hierarch clustering rows 1-Pearson correlation distance with complete linkage
-          distfun = function(x) dist(x, method = "binary"), 
-          hclustfun = function(x) hclust(x, method="complete"),
-          
-          # Remove the cyan trace
-          trace = "none",
-          density.info = "none",
-          
-          # Separate the columns
-          colsep = c(2,3),
-          
-          # Column labels formatting
-          srtCol = 45,
-          offsetCol = 0,
-          
-          # Color Key
-          keysize = 1.5,
-          key.title = ""
-          )
-if (!require(pheatmap)) {biocLite("pheatmap"); library("pheatmap")}
- 
-
-```
-
 ## Plotting Heatmaps
 Setting the path for saving the heatmaps
 ```{r}
@@ -121,17 +85,27 @@ chrm = "Chromatin-related"
 prts = "Proteostasis-related"
 fb = "F-box protein-related"
 
-ann <- c(tbtf, tf, chrm, prts, prts, tf, tf, tbtf, "", "",
-         tf, "", "", "", "", "", "", tf, "", "",
-         tf, fb, "", "", chrm, tf, "", "", fb, "", 
-         tbtf, "", "", "", fb, "", "", "", "", fb,
-         chrm, "", prts, tf, "", "", ""
+Function <- c(tbtf, tf, chrm, prts, prts, tf, tf, tbtf, "", "",
+              tf, "", "", "", "", "", "", tf, "", "",
+              tf, fb, "", "", chrm, tf, "", "", fb, "", 
+              tbtf, "", "", "", fb, "", "", "", "", fb,
+              chrm, "", prts, tf, "", "", ""
 )
+# Decided not to include the expression changes
+#FC.N2 <- AM.NT$log2FoldChange.N2[AM.NT$Gene_name %in% rownames(tbx.bool.dn.mat)]
+#FC.AM <- AM.NT$log2FoldChange.AM140[AM.NT$Gene_name %in% rownames(tbx.bool.dn.mat)]
 
-ann <- data.frame(Function = ann)
+ann <- data.frame("Function" = Function
+                  #"Fold-Change (WT)" = FC.N2
+                  #"Fold-Change (polyQ35)" = FC.AM
+)
 rownames(ann) <- rownames(tbx.bool.dn.mat)
+
+# Fold-change levels of the selected genes
+
 ```
 
+Heatmap of T-box transcription factors binding sites binary presence
 ```{r}
 row_dend <- hclust(dist(tbx.bool.dn.mat, method = "binary"),
                    method = "complete") # row clustering
@@ -172,9 +146,7 @@ pheatmap(tbx.bool.dn.mat*1,
          )
 ```
 
-
-
-Matrix of p-values
+Heatmap of T-box transcription factors binding sites p-values
 ```{r}
 cairo_pdf(paste0(path,"2018-12-30-hm",".pdf"),
     width = 2,
