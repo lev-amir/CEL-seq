@@ -4,135 +4,79 @@ author: "Amir Levine"
 date: "2018-10-25"
 output: md_document
 ---
-Load packages and datasets.
-PWMEnrich object of Tbox transcrption factors motifs enrichement in the promoters of anc-1 RNAi regulateed genes.
-```{r}
-if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
-if (!require(dendextend)) {install.packages("dendextend"); library("dendextend")}
-if (!require(ComplexHeatmap)) {biocLite("ComplexHeatmap"); library("ComplexHeatmap")}
-if (!require(viridis)) {biocLite("viridis"); library("viridis")}
+<!-- Load packages and datasets. -->
+<!-- ```{r} -->
+<!-- if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)} -->
+<!-- #if (!require(dendextend)) {install.packages("dendextend"); library("dendextend")} -->
+<!-- #if (!require(ComplexHeatmap)) {biocLite("ComplexHeatmap"); library("ComplexHeatmap")} -->
+<!-- if (!require(gplots)) {biocLite("gplots"); library("gplots")} -->
+<!-- if (!require(viridis)) {biocLite("viridis"); library("viridis")} -->
 
-load("data/geneExpression.rdata")
-load("experiments/2018-07-11-tbx-motifs/data/Tbox-anc1-reg-enriched.Rdata")
+<!-- load("data/geneExpression.rdata") -->
+<!-- load("experiments/2018-07-11-tbx-motifs/data/Tbox-anc1-reg-enriched.Rdata") -->
+<!-- ``` -->
+
+<!-- # Data Pre-Processing -->
+<!-- ```{r} -->
+<!-- # Separate AM140 and N2 data. -->
+<!-- # Separate data that may be relevant for clustering. -->
+<!-- AM <- BOTH %>% select(Gene_stable_ID,Gene_name,strain,baseMean,log2FoldChange, -->
+<!--                 lfcSE, stat,pvalue,padj) %>% filter(strain == "AM140") -->
+<!-- NT <- BOTH %>% select(Gene_stable_ID,Gene_name,strain,baseMean,log2FoldChange, -->
+<!--                 lfcSE, stat,pvalue,padj) %>% filter(strain == "N2") -->
+<!-- AM.NT <- full_join(NT,AM,by = c('Gene_stable_ID','Gene_name'), suffix = c(".N2",".AM140")) -->
+
+<!-- # Create p-values matrix -->
+<!-- # Obtain the *p*-values of motifs per sequence. -->
+<!-- # * Rows correspond to the different input sequences and the columns correspond to motifs. -->
+<!-- # * `sequence.nobg` contains the raw affinity scores. -->
+<!-- # * `sequence.bg` contains the corresponding P-values. -->
+
+<!-- pvals.dn.mat <- res.dn$sequence.bg -->
+
+<!-- # Rename the column names to be the T-box protein names. -->
+<!-- colnames(pvals.dn.mat) <- c("TBX33","TBX38","TBX39","TBX40","TBX43") -->
+
+<!-- # Covert the *p*-values matrix to a tibble to merge with the previous data-object. -->
+<!-- pvals.dn <- as.tibble(pvals.dn.mat) -->
+<!-- pvals.dn <- mutate(pvals.dn, Gene_stable_ID = rownames((pvals.dn.mat))) -->
+
+<!-- # Combine the TBX binding-sties p-values with the previous data-object. -->
+<!-- DEG.TBX <- inner_join(AM.NT, pvals.dn, by='Gene_stable_ID') -->
+<!-- ``` -->
+
+<!-- # Convert the dataframes to matrices of TBX p-values -->
+<!-- ```{r} -->
+<!-- # TBX binding motifs Matrix -->
+<!-- DEG.TBX.MAT <- DEG.TBX %>%  -->
+<!--   select("TBX33","TBX38","TBX39","TBX40","TBX43") %>% -->
+<!--   as.matrix() -->
+<!-- rownames(DEG.TBX.MAT) <- DEG.TBX$Gene_name -->
+<!-- # Scaling???!?? -->
+<!-- ``` -->
+
+<!-- # Convert the TBX p-values matrix to binary -->
+<!-- ```{r} -->
+<!-- # Change *p*-value to boolean. TRUE is statistically significant (*p*-value < 0.05). -->
+<!-- DEG.TBX.MAT.BOOL <- (DEG.TBX.MAT < 0.1) -->
+
+<!-- # Index of amount of T-box transcription factors binding motif -->
+<!-- TBXTFBM <- rowSums(DEG.TBX.MAT.BOOL*1)  -->
+
+<!-- # Filter genes w/o T-box transcription factors binding motifs from the Boolean matrix -->
+<!-- DEG.TBX.MAT.BOOL <- DEG.TBX.MAT.BOOL[TBXTFBM != 0,] -->
+
+<!-- # Filter genes w/o T-box transcription factors binding motifs from the p-values matrix -->
+<!-- DEG.TBX.MAT <- DEG.TBX.MAT[TBXTFBM != 0,] -->
+<!-- ``` -->
+
+
+----
+
+# Convert the dataframe to matrices of Log2Fold-Change
+```{r}
+DEG.MAT <- DEG.TBX %>% select(log2FoldChange.N2,log2FoldChange.AM140) %>%
+  as.matrix()
+rownames(DEG.MAT) <- DEG.TBX$Gene_name
 ```
 
-## Create p-values matrix
-Obtain the *p*-values of motifs per sequence.
-* Rows correspond to the different input sequences and the columns correspond to motifs.
-* `sequence.nobg` contains the raw affinity scores.
-* `sequence.bg` contains the corresponding P-values.
-```{r}
-pvals.dn.mat <- res.dn$sequence.bg
-```
-
-Rename the column names to be the T-box protein names.
-```{r}
-colnames(pvals.dn.mat) <- c("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43")
-```
-
-Change *p*-value to boolean. TRUE is statistically significant (*p*-value < 0.05).
-```{r}
-pvals.dn.sig <- (pvals.dn.mat < 0.05)
-```
-
-Count the number of T-box motifs (*p*-value < 0.05) in each gene
-```{r}
-n_motifs <- rowSums(pvals.dn.sig)
-```
-
-
-## Reshape gene expression data
-Extract the expression fold-change of genes in both strains
-```{r}
-df <- BOTH %>% 
-  spread(key = strain, value = log2FoldChange) %>% 
-  filter(Gene_stable_ID %in% rownames(pvals.dn.mat)) %>%
-  group_by(Gene_stable_ID,Gene_name) %>%
-  summarise(N2 = sum(N2,na.rm = TRUE),AM140 = sum(AM140,na.rm = TRUE))
-fc <- cbind(N2 = df$N2, AM140 = df$AM140)
-rownames(fc) <- df$Gene_stable_ID
-```
-
-Check that the gene IDs match.
-```{r}
-sum(rownames(pvals.dn.sig) == rownames(fc))
-```
-
-
-## Prepare the matrices for heatmap visualization
-
-Filter genes w/o T-box transcription factors binding motifs.
-Rename Gene IDs to Gene Names for visualization.
-Cluster analysis (Eucleadean).
-```{r}
-gene.names.w.tbx <- df$Gene_name[n_motifs != 0]
-
-p.w.tbx <- pvals.dn.mat[n_motifs != 0,]
-rownames(p.w.tbx) <- gene.names.w.tbx
-
-sig.w.tbx <- pvals.dn.sig[n_motifs != 0,]
-col_dend <- hclust(dist(t(sig.w.tbx))) # column clustering
-sig.w.tbx <- ifelse(sig.w.tbx,"p-value < 0.05","ns")
-rownames(sig.w.tbx) <- gene.names.w.tbx
-
-fc.w.tbx <- fc[n_motifs != 0,]
-row_dend <- hclust(dist(fc.w.tbx)) # row clustering
-rownames(fc.w.tbx) <- gene.names.w.tbx
-
-n_motifs.w.tbx <- n_motifs[n_motifs != 0]
-n_motifs.w.tbx <- factor(n_motifs.w.tbx)
-names(n_motifs.w.tbx) <- gene.names.w.tbx
-```
-
-
-```{r}
-write(rownames(pvals.dn.mat[n_motifs != 0,]), file = "a.txt")
-```
-
-
-## Plot heatmap of p-values
-Based on (Heatmap - Static and Interactive: Absolute Guide
-)[http://www.sthda.com/english/articles/28-hierarchical-clustering-essentials/93-heatmap-static-and-interactive-absolute-guide/]
-```{r}
-sig.w.tbx
-fc.w.tbx
-p.w.tbx
-n_motifs.w.tbx
-
-ht1 <- Heatmap(fc.w.tbx,
-               name = "Expression fold-change\n(log2)",
-               col = magma(10),
-               rect_gp = gpar(col = "black"),
-               row_title = "Genes downregulated by anc-1 RNAi",
-               column_names_side = "top",
-               cluster_columns = FALSE,
-               cluster_rows = TRUE,
-               column_dend_reorder = FALSE,
-               row_names_gp = gpar(fontsize = 6),
-               show_row_dend = FALSE,
-               width = unit(0.6, "cm"),
-               row_names_side = "left",
-               column_names_gp = gpar(fontsize = 7)) # Text size for row names
-# ht.sig[unlist(row_order(ht1)),] ## must be done to reorder the next two heatmaps to match the clustering that was performed.
-ht2 <- Heatmap(sig.w.tbx,
-               name = "Motif presence",
-               col = c("white","black"),
-               rect_gp = gpar(col = "black"),
-               width = unit(1.5, "cm"),
-               show_column_dend = TRUE,
-               show_row_names = FALSE,
-               cluster_columns = col_dend,
-               column_names_side = "top",
-               column_names_gp = gpar(fontsize = 7))
-ht3 <- Heatmap(n_motifs.w.tbx,
-               col = viridisLite::viridis(5),
-               rect_gp = gpar(col = "black"),
-               width = unit(0.3, "cm"),
-               name = "T-box transcription factors\nbinding motifs",
-               show_row_names = FALSE,
-               show_column_names = FALSE,
-               column_names_side = "top",
-               column_names_gp = gpar(fontsize = 7))
-
-ht1 + ht2 + ht3
-```

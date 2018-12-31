@@ -1,326 +1,211 @@
 ---
-title: "Descriptive statistics and correlations of T-box transcription factors motifs in *anc-1* regulated genes"
+title: "T-box transcription factors heatmap"
 author: "Amir Levine"
-date: '2018-10-28'
+date: "2018-12-31"
 output: md_document
 ---
-Load packages and datasets.
-PWMEnrich object of Tbox transcrption factors motifs enrichement in the promoters of *anc-1* RNAi regulated genes.
+
+## Load packages and datasets.
 ```{r}
+# Data pre-processing
 if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
-if (!require(Hmisc)) {install.packages("Hmisc"); library(Hmisc)} # To calculate correlations and their p-values
-if (!require(corrplot)) {install.packages("corrplot"); library(corrplot)} # To plot colored correlations.
-if (!require(psych)) {install.packages("psych"); library(psych)}  # For correlation Matrix
-library(RColorBrewer) # To plot colored correlations.
+# Plot heatmap
+if (!require(gplots)) {biocLite("gplots"); library("gplots")}
+# Heatmap colors
+if (!require(viridis)) {biocLite("viridis"); library("viridis")}
 
 load("data/geneExpression.rdata")
+# PWMEnrich object of Tbox transcrption factors motifs enrichement in the promoters of anc-1 RNAi regulateed genes.
 load("experiments/2018-07-11-tbx-motifs/data/Tbox-anc1-reg-enriched.Rdata")
 ```
 
-## Create a matrix of T-box TFs enrichment *p*-values for each gene regulated by *anc-1* RNAi
-Obtain the *p*-values of the T-box PWM motifs per gene promoter sequence.  Rows correspond to the different input promoter sequences and the columns correspond to the motifs.  `sequence.bg` contains the corresponding *p*-values. (`sequence.nobg` contains the raw affinity scores).
+## Data Pre-Processing
+Focus on the genes that are down-regulated by *anc-1*, as those are enriched for TBX motifs.
 ```{r}
-res <- list(res.dn,res.up,res.reg)
-res.pvals <- sapply(res, function(x) x$sequence.bg)
-names(res.pvals) <- c("res.dn","res.up","res.reg")
+# Separate AM140 and N2 data. Data that may be relevant for clustering.
+AM <- BOTH %>% select(Gene_stable_ID,Gene_name,strain,log2FoldChange,padj) %>%
+  filter(strain == "AM140")
+NT <- BOTH %>% select(Gene_stable_ID,Gene_name,strain,log2FoldChange,padj) %>% 
+  filter(strain == "N2")
+AM.NT <- full_join(NT,AM,by = c('Gene_stable_ID','Gene_name'), suffix = c(".N2",".AM140"))
+
+# Create p-values matrix. Obtain the *p*-values of motifs per sequence. Rows correspond to the different input sequences and the columns correspond to motifs. `sequence.nobg` contains the raw affinity scores.`sequence.bg` contains the corresponding P-values.
+tbx.pv.dn.mat <- res.dn$sequence.bg
+
+# Set the gene names to serve as the background list for later annotation analysis
+bg <- rownames(tbx.pv.dn.mat)
+
+# Rename the column names to be the T-box protein names.
+colnames(tbx.pv.dn.mat) <- c("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43")
+
+# Covert the p-values matrix to a tibble to merge with the previous data-object.
+tbx.pv.dn.tbl <- as.tibble(tbx.pv.dn.mat) %>%
+  mutate(Gene_stable_ID = rownames((tbx.pv.dn.mat)))
+
+# Combine the TBX binding-sties p-values with the previous data-object.
+AM.NT <- inner_join(AM.NT, tbx.pv.dn.tbl, by='Gene_stable_ID')
 ```
 
-Rename the columns as T-box protein names.
+# Convert the dataframes back to matrices of TBX p-values
 ```{r}
-res.pvals <- lapply(res.pvals, function(x) {colnames(x) <- c("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43"); x})
+# TBX binding motifs Matrix
+tbx.pv.dn.mat <- AM.NT %>% 
+  select("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43") %>%
+  as.matrix()
+rownames(tbx.pv.dn.mat) <- AM.NT$Gene_name
+
 ```
 
-## Descriptive statistics of the T-box motifs in the *anc-1* regulated genes
-Change *p*-value to Boolean. TRUE is statistically significant (*p*-value < 0.05).
+# Convert the TBX binding-sites p-values matrix to binary
 ```{r}
-res.sig <- lapply(res.pvals,function(x) x < 0.05)
+# Change p-value to boolean. TRUE is statistically significant (*p*-value < 0.05).
+tbx.bool.dn.mat <- (tbx.pv.dn.mat < 0.01)
+
+# Index of amount of T-box transcription factors binding motif
+TBXTFBM <- rowSums(tbx.bool.dn.mat*1) 
+
+# Filter genes w/o T-box transcription factors binding motifs from the p-values matrix
+tbx.pv.dn.mat <- tbx.pv.dn.mat[TBXTFBM != 0,]
+
+# Filter genes w/o T-box transcription factors binding motifs from the Boolean matrix
+tbx.bool.dn.mat <- tbx.bool.dn.mat[TBXTFBM != 0,]
 ```
 
-In what percentage of the sequences does each T-bpx transcription factor appear?
 ```{r}
-mapply(function(p,sig) {round( colSums(sig) / nrow(p)  * 100, 2)},
-       res.pvals, res.sig)
-```
-```
-# % of genes for each T-box
-       res.dn res.up res.reg
-TBX-33   7.46   4.79    6.07
-TBX-38   8.96   5.71    7.26
-TBX-39   7.71   4.79    6.19
-TBX-40   8.71   5.02    6.79
-TBX-43   5.47   5.02    5.24
-```
-All T-box transcription factors appear to be present in 5%-9% of the *anc-1* regulated genes, more so in down-regulated genes.
 
+#plot(row_dend)
+#stats::cutree(row_dend,k=6)
 
-## Correlations of *p*-values in all *anc-1* regulated genes
-Is there a correlation in motif presence between any two motifs?
+# Plot Heatmap
+heatmap.2(tbx.bool.dn.mat*1,
+          
+          # Define the color range
+          breaks = c(0,0.5,1),
+          col = c("white","black"),
+
+          # Hierarch clustering rows 1-Pearson correlation distance with complete linkage
+          distfun = function(x) dist(x, method = "binary"), 
+          hclustfun = function(x) hclust(x, method="complete"),
+          
+          # Remove the cyan trace
+          trace = "none",
+          density.info = "none",
+          
+          # Separate the columns
+          colsep = c(2,3),
+          
+          # Column labels formatting
+          srtCol = 45,
+          offsetCol = 0,
+          
+          # Color Key
+          keysize = 1.5,
+          key.title = ""
+          )
+if (!require(pheatmap)) {biocLite("pheatmap"); library("pheatmap")}
+ 
+
+```
+
+## Plotting Heatmaps
+Setting the path for saving the heatmaps
 ```{r}
-res.cor <- lapply(res.pvals, Hmisc::rcorr)
-print(res.cor)
-#pvals.cor <- Hmisc::rcorr(pvals.dn.mat)
-```
-```
-$`res.dn`
-       TBX-33 TBX-38 TBX-39 TBX-40 TBX-43
-TBX-33   1.00   0.26   0.12   0.12   0.27
-TBX-38   0.26   1.00   0.02   0.08   0.83
-TBX-39   0.12   0.02   1.00   0.63   0.03
-TBX-40   0.12   0.08   0.63   1.00   0.08
-TBX-43   0.27   0.83   0.03   0.08   1.00
-
-n= 402 
-
-
-P
-       TBX-33 TBX-38 TBX-39 TBX-40 TBX-43
-TBX-33        0.0000 0.0154 0.0133 0.0000
-TBX-38 0.0000        0.6263 0.1289 0.0000
-TBX-39 0.0154 0.6263        0.0000 0.4903
-TBX-40 0.0133 0.1289 0.0000        0.1020
-TBX-43 0.0000 0.0000 0.4903 0.1020       
-
-$res.up
-       TBX-33 TBX-38 TBX-39 TBX-40 TBX-43
-TBX-33   1.00   0.22   0.02   0.00   0.22
-TBX-38   0.22   1.00   0.02   0.00   0.82
-TBX-39   0.02   0.02   1.00   0.51   0.03
-TBX-40   0.00   0.00   0.51   1.00   0.07
-TBX-43   0.22   0.82   0.03   0.07   1.00
-
-n= 438 
-
-
-P
-       TBX-33 TBX-38 TBX-39 TBX-40 TBX-43
-TBX-33        0.0000 0.7065 0.9966 0.0000
-TBX-38 0.0000        0.6427 0.9335 0.0000
-TBX-39 0.7065 0.6427        0.0000 0.4724
-TBX-40 0.9966 0.9335 0.0000        0.1302
-TBX-43 0.0000 0.0000 0.4724 0.1302       
-
-$res.reg
-       TBX-33 TBX-38 TBX-39 TBX-40 TBX-43
-TBX-33   1.00   0.25   0.07   0.06   0.25
-TBX-38   0.25   1.00   0.03   0.05   0.82
-TBX-39   0.07   0.03   1.00   0.57   0.04
-TBX-40   0.06   0.05   0.57   1.00   0.08
-TBX-43   0.25   0.82   0.04   0.08   1.00
-
-n= 840 
-
-
-P
-       TBX-33 TBX-38 TBX-39 TBX-40 TBX-43
-TBX-33        0.0000 0.0391 0.0604 0.0000
-TBX-38 0.0000        0.4365 0.1826 0.0000
-TBX-39 0.0391 0.4365        0.0000 0.2963
-TBX-40 0.0604 0.1826 0.0000        0.0208
-TBX-43 0.0000 0.0000 0.2963 0.0208       
-
+path = "experiments/2018-12-30-tbx-heatmap/results/"
 ```
 
-Plot correlations of *p*-values matrix.
+Annotations for matrix of binding sites presence
 ```{r}
-f_corrplot <- function(cor) {
-  corrplot::corrplot(cor$r,
-                     method = "shade",
-                     type="upper",
-                     addgrid.col = "black",
-                     #order="hclust",
-                     col=brewer.pal(n=10, name="RdBu"),
-                     tl.col="black", 
-                     tl.srt=45,
-                     cl.align.text="l",
-                     p.mat = cor$P,
-                     sig.level = 0.05,
-                     insig = "label_sig",
-                     # hide correlation coefficient on the principal diagonal
-                     diag=FALSE )
-}
+tbtf = "T-box transcription factor"
+tf = "Transcription factor"
+chrm = "Chromatin-related"
+prts = "Proteostasis-related"
+fb = "F-box protein-related"
 
-res.cor.plots <- lapply(names(res.cor), function(x) {
-  svg(filename = paste0("experiments/2018-10-28-tbx-enrich-corr/results/tbx-motifs-cor-",x,".svg"),
-      height = 2, width = 2, pointsize = 7)
-  f_corrplot(res.cor[[x]])
-  dev.off()
-})
-      
+ann <- c(tbtf, tf, chrm, prts, prts, tf, tf, tbtf, "", "",
+         tf, "", "", "", "", "", "", tf, "", "",
+         tf, fb, "", "", chrm, tf, "", "", fb, "", 
+         tbtf, "", "", "", fb, "", "", "", "", fb,
+         chrm, "", prts, tf, "", "", ""
+)
 
-# # All down-regulated genes
-# cp <- corrplot::corrplot(pvals.cor$r,
-#                          method = "shade",
-#                          type="upper",
-#                          addgrid.col = "black",
-#                          order="hclust",
-#                          col=brewer.pal(n=10, name="RdBu"),
-#                          tl.col="black", 
-#                          tl.srt=45,
-#                          cl.align.text="l",
-#                          p.mat = pvals.cor$P,
-#                          sig.level = 0.05,
-#                          insig = "label_sig",
-#                          # hide correlation coefficient on the principal diagonal
-#                          diag=FALSE)
-# dev.off()
+ann <- data.frame(Function = ann)
+rownames(ann) <- rownames(tbx.bool.dn.mat)
 ```
 
-## Descriptive statistics of the T-box motifs in the downregulated genes with at least one T-box motif
-
-Filter-out genes w/o a motif.
 ```{r}
-res.pvals.wmotif <- mapply(function(p,sig) subset(p,rowSums(sig) > 0),res.pvals,res.sig)
-res.sig.wmotif <- lapply(res.pvals.wmotif, function(x) x <0.05)
-# pvals.sig.filter <- pvals.dn.sig[rowSums(pvals.dn.sig) > 0,]
+row_dend <- hclust(dist(tbx.bool.dn.mat, method = "binary"),
+                   method = "complete") # row clustering
+col_dend <- hclust(dist(t(tbx.bool.dn.mat), method = "binary"),
+                   method = "complete") # column clustering
+
+pheatmap(tbx.bool.dn.mat*1,
+         
+         # Colors of the cells
+         color = c("white","black"),
+         border_color = "grey",
+         
+         # dimensions of the cells
+         cellwidth = 7,
+         cellheight = 7,
+         
+         # Clustering
+         cluster_rows = row_dend,
+         cluster_cols = col_dend,
+         cutree_rows = 9,
+         
+         # dendogram graphics
+         treeheight_row = 5,
+         treeheight_col = 5,
+         
+         # Remove the legend
+         legend = FALSE,
+         
+         # Fonts
+         fontsize = 7,
+         
+         # Gene annotations
+         annotation_row = ann,
+         drop_levels = TRUE,
+
+         # Export figure
+         filename = paste0(path,"2018-12-31-hm",".pdf")
+         )
 ```
 
-How many downregulated genes have at least one T-box transcription factors binding motifs?
+
+
+Matrix of p-values
 ```{r}
-res.n.wmotif <- lapply(res.pvals.wmotif, function(x) dim(x)[1])
-print(res.n.wmotif)
-#dim(pvals.sig.filter)[1] # 102
-```
-```
-$`res.dn`
-[1] 102
+cairo_pdf(paste0(path,"2018-12-30-hm",".pdf"),
+    width = 2,
+    height = 2.5,
+    pointsize = 4)
 
-$res.up
-[1] 88
+# Plot Heatmap
+heatmap.2(-log10(tbx.pv.dn.mat),
+          # Define the color range
+          breaks = c(0,1,2,3,4),
+          col = magma(4),
+          
+          # Hierarch clustering rows 1-Pearson correlation distance with complete linkage
+          distfun = function(x) as.dist(1-cor(t(x))), 
+          hclustfun = function(x) hclust(x, method="complete"),
+          
+          # Remove the cyan trace
+          trace = "none",
+          density.info = "none",
+          
+          # Separate the columns
+          colsep = c(2,3),
+          
+          # Column labels formatting
+          srtCol = 45,
+          offsetCol = 0,
+          
+          # Color Key
+          keysize = 1.5,
+          key.title = "-log10(p-value)"
+          )
 
-$res.reg
-[1] 190
-
-```
-
-What fraction of the downregulated genes have at least one T-box motif?
-```{r}
-lapply(res.sig, function(x) round(mean(rowSums(x) > 0) * 100 , 2))
-#round(dim(pvals.sig.filter)[1] / dim(pvals.dn.mat)[1] * 100,2) # 25.37%
-```
-```
-$`res.dn`
-[1] 25.37
-
-$res.up
-[1] 20.09
-
-$res.reg
-[1] 22.62
-
-```
-What is the distribution of the T-box motifs in the downregulated genes?
-```{r}
-lapply(res.sig.wmotif, rowSums) %>% 
-  map(~stack(setNames(.x,1:length(.x)))) %>% 
-  bind_rows(.id="name") %>% 
-  as.tibble() %>%
-  ggplot(aes(x = values)) + geom_histogram(binwidth = 1) + facet_grid(~name)
-
-# tibble(gnames = rownames(pvals.sig.filter),
-#        n_motifs = rowSums(pvals.sig.filter)) %>%
-#   group_by(n_motifs) %>%
-#   summarise(n_genes = n()) %>%
-#   ggplot(aes(x = n_motifs, y = n_genes)) + geom_col(position = "identity")
-```
-
-## Correlations of *p*-values in *anc-1* regulated genes with at least one T-box motif
-Is there a correlation in motif presence between any two motifs? Removing all the genes that don't possess a T-box transcription factors motif.
-```{r}
-res.cor.wmotif <- lapply(res.pvals.wmotif, Hmisc::rcorr)
-print(res.cor.wmotif)
-
-# pvals.mat.filt <- pvals.dn.mat[rowSums(pvals.dn.sig) > 0,]
-# pvals.cor.filt <- Hmisc::rcorr(pvals.mat.filt)
-```
-```
-$`res.dn`
-       TBX-33 TBX-38 TBX-39 TBX-40 TBX-43
-TBX-33   1.00   0.26   0.12   0.12   0.27
-TBX-38   0.26   1.00   0.02   0.08   0.83
-TBX-39   0.12   0.02   1.00   0.63   0.03
-TBX-40   0.12   0.08   0.63   1.00   0.08
-TBX-43   0.27   0.83   0.03   0.08   1.00
-
-n= 402 
-
-
-P
-       TBX-33 TBX-38 TBX-39 TBX-40 TBX-43
-TBX-33        0.0000 0.0154 0.0133 0.0000
-TBX-38 0.0000        0.6263 0.1289 0.0000
-TBX-39 0.0154 0.6263        0.0000 0.4903
-TBX-40 0.0133 0.1289 0.0000        0.1020
-TBX-43 0.0000 0.0000 0.4903 0.1020       
-
-$res.up
-       TBX-33 TBX-38 TBX-39 TBX-40 TBX-43
-TBX-33   1.00   0.22   0.02   0.00   0.22
-TBX-38   0.22   1.00   0.02   0.00   0.82
-TBX-39   0.02   0.02   1.00   0.51   0.03
-TBX-40   0.00   0.00   0.51   1.00   0.07
-TBX-43   0.22   0.82   0.03   0.07   1.00
-
-n= 438 
-
-
-P
-       TBX-33 TBX-38 TBX-39 TBX-40 TBX-43
-TBX-33        0.0000 0.7065 0.9966 0.0000
-TBX-38 0.0000        0.6427 0.9335 0.0000
-TBX-39 0.7065 0.6427        0.0000 0.4724
-TBX-40 0.9966 0.9335 0.0000        0.1302
-TBX-43 0.0000 0.0000 0.4724 0.1302       
-
-$res.reg
-       TBX-33 TBX-38 TBX-39 TBX-40 TBX-43
-TBX-33   1.00   0.25   0.07   0.06   0.25
-TBX-38   0.25   1.00   0.03   0.05   0.82
-TBX-39   0.07   0.03   1.00   0.57   0.04
-TBX-40   0.06   0.05   0.57   1.00   0.08
-TBX-43   0.25   0.82   0.04   0.08   1.00
-
-n= 840 
-
-
-P
-       TBX-33 TBX-38 TBX-39 TBX-40 TBX-43
-TBX-33        0.0000 0.0391 0.0604 0.0000
-TBX-38 0.0000        0.4365 0.1826 0.0000
-TBX-39 0.0391 0.4365        0.0000 0.2963
-TBX-40 0.0604 0.1826 0.0000        0.0208
-TBX-43 0.0000 0.0000 0.2963 0.0208       
-
-```
-TBX-38 and TBX-43 correlate. TBX-39 and TBX-40 correlate. Both as expected from their motifs. TBX-33 weakly correlates with all the other four transcription factors.
-
-Plot correlations of p-values matrix.
-```{r}
-lapply(names(res.cor.wmotif), function(x) {
-  pdf(file = paste0("experiments/2018-10-28-tbx-enrich-corr/results/tbx-motifs-cor-w-motif-",x,".pdf"),
-      height = 2, width = 2, pointsize = 7)
-  f_corrplot(res.cor.wmotif[[x]])
-  dev.off()
-})
-```
-
-Plot correlations matrices, scatter plots and statistical significance of correlations.
-```{r}
-f_cormatplot <- function(x) {
-  pairs.panels(-log10(x),
-               scale = FALSE,
-               density = FALSE,
-               ellipses = FALSE,
-               hist.col = "grey",
-               rug = FALSE,
-               breaks = 10,
-               stars = TRUE,
-               lm = FALSE)
-}
-
-lapply(names(res.pvals.wmotif), function(x) {
-  pdf(file = paste0("experiments/2018-10-28-tbx-enrich-corr/results/tbx-motifs-cormat-w-motif-",x,".pdf"),
-      height = 3, width = 3, pointsize = 7)
-  f_cormatplot(res.pvals.wmotif[[x]])
-  dev.off()
-})
+dev.off()
 ```
