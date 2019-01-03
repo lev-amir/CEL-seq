@@ -15,16 +15,31 @@ if (!require(org.Ce.eg.db)) {BiocManager::install("org.Ce.eg.db"); library(org.C
 if (!require(biomaRt)) {BiocManager::install("clusterProfiler"); library(clusterProfiler)}
 ```
 
-Load the Entrez ids for KEGG analysis
+Load the Entrez ids for KEGG analysis and the gene expression datasets.
 ```{r}
 load("experiments/2018-05-01-kegg-enrichment/data/2018-11-29-entrez-ids-for-kegg-enrichment.Rdata")
+load("data/2018-11-27-geneExpression-pval-thresh-0.05.rdata")
+
+path = "experiments/2018-05-01-kegg-enrichment/"
 ```
 
 Convert Entrez IDs to KEGG IDs and add the "Ensemble gene IDs"" (= Gene_stable_ID) to the final data-frame.
 ```{r}
-kegg.ids <- bitr_kegg(entrez$entrezgene, fromType='ncbi-geneid', toType='kegg', organism='cel')
-kegg.ids <- merge(kegg.ids,entrez, by.x="ncbi-geneid", by.y="entrezgene")
+kegg.ids <- clusterProfiler::bitr_kegg(entrez$entrezgene, 
+                                       fromType='ncbi-geneid', 
+                                       toType='kegg', 
+                                       organism='cel')
+kegg.ids <- merge(kegg.ids,entrez,
+                  by.x="ncbi-geneid",
+                  by.y="entrezgene")
 ```
+```
+Warning message:
+In clusterProfiler::bitr_kegg(entrez$entrezgene, fromType = "ncbi-geneid",  :
+  56.66% of input gene IDs are fail to map...
+```
+This should be fine. The Entrez gene list contains all the genes in C. elegans (~47K) while the conversion to KEGG IDs is only to protein coding genes (~20K).
+
 
 # Analysis of differential gene-expression to N2.
 ## Ranked Gene list
@@ -50,24 +65,23 @@ geneList <- merge(geneList,kegg.ids,by="ensembl_gene_id")
 geneList <- geneList[order(geneList$log2FoldChange, decreasing = TRUE),]
 
 
-rankedList <- geneList$log2FoldChange
-names(rankedList) <- geneList$kegg
+rankedList.n2 <- geneList$log2FoldChange
+names(rankedList.n2) <- geneList$kegg
 ```
 
 Perform KEGG 
 ```{r}
 set.seed(159159)
-KEGG.gsea.N2 <- gseKEGG(geneList     = rankedList,
-                        organism = 'cel',
-                        nPerm        = 10000,
-                        minGSSize    = 15,
-                        pvalueCutoff = 0.05, 
-                        verbose = TRUE)
+KEGG.gsea.N2 <- clusterProfiler::gseKEGG(geneList     = rankedList.n2,
+                                         organism = 'cel',
+                                         nPerm        = 10000,
+                                         minGSSize    = 15,
+                                         pvalueCutoff = 0.05, 
+                                         verbose = TRUE)
 ```
 
 # Analysis of differential gene-expression to AM140
 ```{r Ranked Gene List}
-#strain = "N2"
 strain = "AM140"
 
 geneList <- BOTH %>% 
@@ -82,19 +96,20 @@ geneList <- merge(geneList,kegg.ids,by="ensembl_gene_id")
 geneList <- geneList[order(geneList$log2FoldChange, decreasing = TRUE),]
 
 
-rankedList <- geneList$log2FoldChange
-names(rankedList) <- geneList$kegg
+rankedList.am <- geneList$log2FoldChange
+names(rankedList.am) <- geneList$kegg
+
 ```
 
 Perform KEGG 
 ```{r}
 set.seed(159159)
-KEGG.gsea.AM <- gseKEGG(geneList     = rankedList,
-                        organism = 'cel',
-                        nPerm        = 10000,
-                        minGSSize    = 15,
-                        pvalueCutoff = 0.05, 
-                        verbose = TRUE)
+KEGG.gsea.AM <- clusterProfiler::gseKEGG(geneList     = rankedList.am,
+                                         organism = 'cel',
+                                         nPerm        = 10000,
+                                         minGSSize    = 15,
+                                         pvalueCutoff = 0.05, 
+                                         verbose = TRUE)
 ```
 
 Save the data for the GSEA analyses
@@ -103,15 +118,62 @@ save(KEGG.gsea.N2,KEGG.gsea.AM,
      file = "experiments/2018-05-01-kegg-enrichment/data/2018-11-29-GSEA-KEGG-N2-AM-results.Rdata")
 ```
 
-
 Export KEGG GSEA enrichment Tables
 ```{r}
 write.csv(KEGG.gsea.N2@result,
-          file = "experiments/2018-05-01-kegg-enrichment/results/2018-11-29-GSEA-KEGG-N2.csv")
+          file = paste0(path,"results/2018-11-29-GSEA-N2",".csv"))
 write.csv(KEGG.gsea.AM@result,
-          file = "experiments/2018-05-01-kegg-enrichment/results/2018-11-29-GSEA-KEGG-AM.csv")
+          file = paste0(path,"results/2018-11-29-GSEA-AM",".csv"))
 ```
 
+# Consturct gsea dataset of all gene sets of interest
+
+Get the names of the gene-sets of interest
+```{r}
+# Collect the Gene-sets of interest from both strains (p<0.05)
+GS <- c(KEGG.gsea.N2@result$ID,KEGG.gsea.AM@result$ID)
+```
+
+Redo the gsea this time with no p-value threshold to get all the scores.
+```{r}
+set.seed(159159)
+gsea.all.am <- clusterProfiler::gseKEGG(geneList     = rankedList.am,
+                                        organism = 'cel',
+                                        nPerm        = 10000,
+                                        minGSSize    = 15,
+                                        pvalueCutoff = 1, 
+                                        verbose = TRUE)
+
+set.seed(159159)
+gsea.all.n2 <- clusterProfiler::gseKEGG(geneList     = rankedList.n2,
+                                         organism = 'cel',
+                                         nPerm        = 10000,
+                                         minGSSize    = 15,
+                                         pvalueCutoff = 1, 
+                                         verbose = TRUE)
+```
+
+Extract the genesets of interest with all of their scores
+```{r}
+gsea.all.n2 <- gsea.all.n2[gsea.all.n2@result$ID %in% GS,]
+gsea.all.am <- gsea.all.am[gsea.all.am@result$ID %in% GS,]
+
+# Sort by gene set name
+gsea.all.n2 <- gsea.all.n2[order(gsea.all.n2$ID),]
+gsea.all.am <- gsea.all.am[order(gsea.all.am$ID),]
+```
+
+Export the datasets to csv
+```{r}
+write.csv(gsea.all.n2,
+          file = paste0(path,"results/2019-01-03-GSEA-N2",".csv"))
+write.csv(gsea.all.am,
+          file = paste0(path,"results/2019-01-03-GSEA-AM",".csv"))
+
+```
+
+
+# Older analysis
 Older Analysis of threshold set gene list.
 ```{r}
 # Create a matrix of gene log2 fold changes
@@ -133,3 +195,46 @@ barplot(KEGG.gsea,
         font.size = 8)
 ```
 
+```{r}
+sessionInfo()
+```
+```
+R version 3.5.1 (2018-07-02)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows >= 8 x64 (build 9200)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_Israel.1252  LC_CTYPE=English_Israel.1252    LC_MONETARY=English_Israel.1252
+[4] LC_NUMERIC=C                    LC_TIME=English_Israel.1252    
+
+attached base packages:
+[1] parallel  stats4    stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] bindrcpp_0.2.2       org.Ce.eg.db_3.6.0   AnnotationDbi_1.44.0 IRanges_2.16.0       S4Vectors_0.20.0    
+ [6] Biobase_2.42.0       BiocGenerics_0.28.0  biomaRt_2.38.0       BiocInstaller_1.32.1 forcats_0.3.0       
+[11] stringr_1.3.1        dplyr_0.7.7          purrr_0.2.5          readr_1.1.1          tidyr_0.8.2         
+[16] tibble_1.4.2         ggplot2_3.1.0        tidyverse_1.2.1     
+
+loaded via a namespace (and not attached):
+ [1] nlme_3.1-137           bitops_1.0-6           enrichplot_1.2.0       lubridate_1.7.4        bit64_0.9-7           
+ [6] RColorBrewer_1.1-2     progress_1.2.0         httr_1.3.1             UpSetR_1.3.3           tools_3.5.1           
+[11] backports_1.1.2        R6_2.3.0               DBI_1.0.0              lazyeval_0.2.1         colorspace_1.3-2      
+[16] withr_2.1.2            tidyselect_0.2.5       gridExtra_2.3          prettyunits_1.0.2      bit_1.1-14            
+[21] compiler_3.5.1         cli_1.0.1              rvest_0.3.2            xml2_1.2.0             triebeard_0.3.0       
+[26] scales_1.0.0           ggridges_0.5.1         digest_0.6.18          DOSE_3.8.0             pkgconfig_2.0.2       
+[31] rlang_0.3.0.1          readxl_1.1.0           rstudioapi_0.8         RSQLite_2.1.1          gridGraphics_0.3-0    
+[36] farver_1.0             bindr_0.1.1            jsonlite_1.5           BiocParallel_1.16.0    GOSemSim_2.8.0        
+[41] RCurl_1.95-4.11        magrittr_1.5           ggplotify_0.0.3        GO.db_3.6.0            Matrix_1.2-14         
+[46] Rcpp_0.12.19           munsell_0.5.0          viridis_0.5.1          stringi_1.2.4          yaml_2.2.0            
+[51] ggraph_1.0.2           MASS_7.3-50            plyr_1.8.4             qvalue_2.14.0          grid_3.5.1            
+[56] blob_1.1.1             ggrepel_0.8.0          DO.db_2.9              crayon_1.3.4           lattice_0.20-35       
+[61] cowplot_0.9.3          haven_1.1.2            splines_3.5.1          hms_0.4.2              knitr_1.20            
+[66] pillar_1.3.0           igraph_1.2.2           fgsea_1.8.0            reshape2_1.4.3         fastmatch_1.1-0       
+[71] XML_3.98-1.16          glue_1.3.0             data.table_1.11.8      BiocManager_1.30.3     modelr_0.1.2          
+[76] urltools_1.7.1         tweenr_1.0.0           cellranger_1.1.0       gtable_0.2.0           assertthat_0.2.0      
+[81] ggforce_0.1.3          europepmc_0.3          broom_0.5.0            viridisLite_0.3.0      snow_0.4-3            
+[86] rvcheck_0.1.1          clusterProfiler_3.10.0 memoise_1.1.0          units_0.6-1           
+```
