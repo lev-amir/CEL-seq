@@ -1,0 +1,4 @@
+CAEEL|WormBase=WBGene00006547|UniProtKB=Q20257	WBGene00006547	Putative T-box protein 11;tbx-11;ortholog	T-BOX PROTEIN 11-RELATED (PTHR11267:SF59)	Rel homology transcription factor(PC00252);nucleic acid binding(PC00171)	Caenorhabditis elegans
+CAEEL|WormBase=WBGene00006557|UniProtKB=Q9XVD5	WBGene00006557	Putative T-box protein 38;tbx-38;ortholog	T-BOX PROTEIN 30/42-RELATED (PTHR11267:SF174)	Rel homology transcription factor(PC00252);nucleic acid binding(PC00171)	Caenorhabditis elegans
+CAEEL|WormBase=WBGene00006545|UniProtKB=Q22292	WBGene00006545	T-box transcription factor tbx-8;tbx-8;ortholog	T-BOX 16-RELATED (PTHR11267:SF175)	Rel homology transcription factor(PC00252);nucleic acid binding(PC00171)	Caenorhabditis elegans
+CAEEL|WormBase=WBGene00006556|UniProtKB=Q9U2C9	WBGene00006556	Putative T-box protein 37;tbx-37;ortholog	T-BOX PROTEIN 30/42-RELATED (PTHR11267:SF174)	Rel homology transcription factor(PC00252);nucleic acid binding(PC00171)	Caenorhabditis elegans
