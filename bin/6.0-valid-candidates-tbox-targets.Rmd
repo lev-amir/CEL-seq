@@ -1,0 +1,135 @@
+---
+title: "Choosing candidates for qPCR validation of T-box targets"
+author: "Amir Levine"
+date: "2019-01-09"
+output: md_document
+---
+
+## Load packages and datasets.
+```{r}
+# Data pre-processing
+if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
+
+load("data/geneExpression.rdata")
+# PWMEnrich object of Tbox transcrption factors motifs enrichement in the promoters of anc-1 RNAi regulateed genes.
+load("experiments/2018-07-11-tbx-motifs/data/Tbox-anc1-reg-enriched.Rdata")
+```
+
+## Data Pre-Processing
+Focus on the genes that are down-regulated by *anc-1*, as those are enriched for TBX motifs.
+```{r}
+# Separate AM140 and N2 data. Data that may be relevant for clustering.
+AM <- BOTH %>% select(Gene_stable_ID,Gene_name,strain,log2FoldChange,padj) %>%
+  filter(strain == "AM140")
+NT <- BOTH %>% select(Gene_stable_ID,Gene_name,strain,log2FoldChange,padj) %>% 
+  filter(strain == "N2")
+AM.NT <- full_join(NT,AM,by = c('Gene_stable_ID','Gene_name'), suffix = c(".N2",".AM140"))
+
+# Create p-values matrix. Obtain the *p*-values of motifs per sequence. Rows correspond to the different input sequences and the columns correspond to motifs. `sequence.nobg` contains the raw affinity scores.`sequence.bg` contains the corresponding P-values.
+tbx.pv.dn.mat <- res.dn$sequence.bg
+
+# Set the gene names to serve as the background list for later annotation analysis
+bg <- rownames(tbx.pv.dn.mat)
+
+# Rename the column names to be the T-box protein names.
+colnames(tbx.pv.dn.mat) <- c("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43")
+
+# Covert the p-values matrix to a tibble to merge with the previous data-object.
+tbx.pv.dn.tbl <- as.tibble(tbx.pv.dn.mat) %>%
+  mutate(Gene_stable_ID = rownames((tbx.pv.dn.mat)))
+
+# Combine the TBX binding-sties p-values with the previous data-object.
+AM.NT <- inner_join(AM.NT, tbx.pv.dn.tbl, by='Gene_stable_ID')
+```
+
+## Regulation by TBX-38
+```{r}
+AM.NT %>% filter(grepl("^fb|^skr|^tbx",Gene_name)) %>%
+  select(Gene_name,
+         log2FoldChange.N2,
+         padj.N2,
+         log2FoldChange.AM140,
+         padj.AM140,
+         starts_with("TBX")) %>%
+  ggplot(aes(x = log2FoldChange.N2,
+             y = -log10(`TBX-38`),
+             label = Gene_name)) + 
+  geom_point() + 
+  geom_text() +
+  geom_hline(aes(yintercept=1)) + # p-value threshold.
+  geom_vline(aes(xintercept=-1))  # fold-change threshold.
+```
+Genes that are regulated by TBX-38 (p<0.1) with fold-change > 1:
+- tbx-37
+- tbx-38
+- tbx-43
+- tbx-11
+
+- fbxc-25
+- fbxc-28
+
+## Regulation by TBX-39
+```{r}
+AM.NT %>% filter(grepl("^fb|^skr|^tbx",Gene_name)) %>%
+  select(Gene_name,
+         log2FoldChange.N2,
+         padj.N2,
+         log2FoldChange.AM140,
+         padj.AM140,
+         starts_with("TBX")) %>%
+  ggplot(aes(x = log2FoldChange.N2,
+             y = -log10(`TBX-39`),
+             label = Gene_name)) + 
+  geom_point() + 
+  geom_text() +
+  geom_hline(aes(yintercept=1)) + # p-value threshold.
+  geom_vline(aes(xintercept=-1))  # fold-change threshold.
+```
+Genes that are regulated by TBX-39 (p<0.1) with fold-change > 1:
+- tbx-37
+- tbx-38
+
+## Regulation by TBX-40
+```{r}
+AM.NT %>% filter(grepl("^fb|^skr|^tbx",Gene_name)) %>%
+  select(Gene_name,
+         log2FoldChange.N2,
+         padj.N2,
+         log2FoldChange.AM140,
+         padj.AM140,
+         starts_with("TBX")) %>%
+  ggplot(aes(x = log2FoldChange.N2,
+             y = -log10(`TBX-40`),
+             label = Gene_name)) + 
+  geom_point() + 
+  geom_text() +
+  geom_hline(aes(yintercept=1)) + # p-value threshold.
+  geom_vline(aes(xintercept=-1))  # fold-change threshold.
+```
+Genes that are regulated by TBX-40 (p<0.1) with fold-change > 1:
+- tbx-37
+- tbx-38
+- tbx-11
+
+- skr-8
+- skr-15
+
+## Genes to check their expression levels when knocking down various tbx genes
+- tbx-37
+- tbx-38
+- tbx-43
+- tbx-11
+(must choose 2, max 3 tbx genes)
+
+- skr-8
+- skr-15
+
+- fbxc-25
+- fbxc-28
+
+
+Focusing on highly significant genes first-
+- tbx-38 (make sure no overlap)
+- tbx-43
+- skr-8
+- fbxc-25

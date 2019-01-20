@@ -59,7 +59,7 @@ rownames(tbx.pv.dn.mat) <- AM.NT$Gene_name
 # Convert the TBX binding-sites p-values matrix to binary
 ```{r}
 # Change p-value to boolean. TRUE is statistically significant (*p*-value < 0.05).
-tbx.bool.dn.mat <- (tbx.pv.dn.mat < 0.01)
+tbx.bool.dn.mat <- (tbx.pv.dn.mat < 0.1)
 
 # Index of amount of T-box transcription factors binding motif
 TBXTFBM <- rowSums(tbx.bool.dn.mat*1) 
