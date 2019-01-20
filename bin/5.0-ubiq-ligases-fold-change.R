@@ -6,6 +6,9 @@ if (!require(egg)) {install.packages("egg"); library(egg)}
 load("data/2018-11-27-geneExpression-pval-thresh-0.05.rdata")
 load("data/celegans-biomart-database-mRNAs.Rdata") # Dataset of gene ID conversions.
 
+path = "experiments/2018-07-04-ubiquitin-foldchange/results/"
+today = Sys.Date()
+
 ## genes of interest, related to protein ubiquitination
 ubiq <- read_tsv("experiments/2018-07-04-ubiquitin-foldchange//data/KEGG_Celegans_UbiqMediateProteolysis.tab")
 ubiq$complex[is.na(ubiq$complex)] <- ubiq$enzyme[is.na(ubiq$complex)] # replace NA values w/ the name of of the enzyme (E1+E2)
@@ -32,6 +35,7 @@ pltE1E2 <-
            color = "black",
            size = 0.25,
            show.legend=FALSE) + 
+  ylim(-3,3) +
   facet_grid(~ complex, ## Separate the bar plot by complex/enzyme
              scales="free_x", 
              space="free_x") +
@@ -53,11 +57,11 @@ pltE1E2 <-
         strip.background = element_rect(colour=NA,fill=NA), # Remove facet bkrng
         panel.border=element_rect(colour="grey50"))  # Format Facet remove outline
 
-ggsave(filename = "ubiquitin-foldchange-N2-E1E2-raw.pdf",
+ggsave(filename = paste0(today,"-ubiquitin-foldchange-N2-E1E2-raw.pdf"),
        plot = pltE1E2,
        device = "pdf",
-       path = "experiments/2018-07-04-ubiquitin-foldchange/results/",
-       width = 12.7,
+       path = path,
+       width = 8.5,
        height = 4.5,
        units = "cm")
 
@@ -97,10 +101,10 @@ pltE3 <-
         strip.background = element_rect(colour=NA,fill=NA), # Remove facet bkrng
         panel.border=element_rect(colour="grey50"))  # Format Facet remove outline
 
-ggsave(filename = "ubiquitin-foldchange-N2-E3-raw.pdf",
+ggsave(filename = paste0(today,"-ubiquitin-foldchange-N2-E3-raw.pdf"),
        plot = pltE3,
        device = "pdf",
-       path = "experiments/2018-07-04-ubiquitin-foldchange/results/",
+       path = path,
        width = 16.7,
        height = 5,
        units = "cm")
@@ -108,7 +112,7 @@ ggsave(filename = "ubiquitin-foldchange-N2-E3-raw.pdf",
 ## Align the two plots vertically, is a 1:2 height ratio.
 labels = c("","E3 ubiquitin ligases")
 
-cairo_pdf(filename = "experiments/2018-07-04-ubiquitin-foldchange/results/ubiquitin-foldchange-N2-raw.pdf",
+cairo_pdf(filename = paste0(path,today,"-ubiquitin-foldchange-N2-raw.pdf"),
           width = 6.574803,
           height = 3.54331,
           pointsize = 7)
@@ -196,7 +200,7 @@ pltE3 <-
 ## Align the two plots vertically, is a 1:2 height ratio.
 labels = c("","E3 ubiquitin ligases")
 
-cairo_pdf(filename = "experiments/2018-07-04-ubiquitin-foldchange/results/ubiquitin-foldchange-AM140-raw.pdf",
+cairo_pdf(filename = paste0(path,today,"-ubiquitin-foldchange-AM140-raw.pdf"),
           width = 6.574803,
           height = 3.54331,
           pointsize = 7)
