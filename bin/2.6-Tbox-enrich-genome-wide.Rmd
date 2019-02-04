@@ -5,3 +5,16 @@ date: "2019-02-04"
 output: md_document
 ---
 
+Load packages and datasets.
+
+```{r packages}
+if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
+#if (!require(biomaRt)) {biocLite("biomaRt"); library(biomaRt)} # Ensembl biomaRt to obtain C. elegans sequences.
+```
+
+Obtain the 500 bp upstream, and 100 bp downstream, promoter regions of all the protein-coding genes in the C. elegans genome. The data was originally downloaded using the script `2.0-Celegans-promoters-BioMaRt.R`.
+```{r load-promoters}
+load("data/Celegans-promoters.rdata")
+```
+
+
