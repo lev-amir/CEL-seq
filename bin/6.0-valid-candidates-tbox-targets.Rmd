@@ -56,17 +56,14 @@ AM.NT %>% filter(grepl("^fb|^skr|^tbx",Gene_name)) %>%
              label = Gene_name)) + 
   geom_point() + 
   geom_text() +
-  geom_hline(aes(yintercept=1)) + # p-value threshold.
+  geom_hline(aes(yintercept= -log10(0.05) )) + # p-value threshold < 0.05
   geom_vline(aes(xintercept=-1))  # fold-change threshold.
 ```
 Genes that are regulated by TBX-38 (p<0.1) with fold-change > 1:
 - tbx-37
-- tbx-38
 - tbx-43
-- tbx-11
 
 - fbxc-25
-- fbxc-28
 
 ## Regulation by TBX-39
 ```{r}
@@ -82,7 +79,7 @@ AM.NT %>% filter(grepl("^fb|^skr|^tbx",Gene_name)) %>%
              label = Gene_name)) + 
   geom_point() + 
   geom_text() +
-  geom_hline(aes(yintercept=1)) + # p-value threshold.
+  geom_hline(aes(yintercept=  -log10(0.05) )) + # p-value threshold.
   geom_vline(aes(xintercept=-1))  # fold-change threshold.
 ```
 Genes that are regulated by TBX-39 (p<0.1) with fold-change > 1:
@@ -103,7 +100,7 @@ AM.NT %>% filter(grepl("^fb|^skr|^tbx",Gene_name)) %>%
              label = Gene_name)) + 
   geom_point() + 
   geom_text() +
-  geom_hline(aes(yintercept=1)) + # p-value threshold.
+  geom_hline(aes(yintercept= -log10(0.05)  )) + # p-value threshold.
   geom_vline(aes(xintercept=-1))  # fold-change threshold.
 ```
 Genes that are regulated by TBX-40 (p<0.1) with fold-change > 1:
@@ -125,7 +122,7 @@ Genes that are regulated by TBX-40 (p<0.1) with fold-change > 1:
 - skr-15
 
 - fbxc-25
-- fbxc-28
+- fbxc-56
 
 
 Focusing on highly significant genes first-
