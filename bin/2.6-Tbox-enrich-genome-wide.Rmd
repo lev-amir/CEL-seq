@@ -18,7 +18,6 @@ Obtain the PWMs from script `2.1-Celegans-TFs-PWM-clean.R`.
 ```{r load-datasets}
 #load("data/Celegans-promoters.rdata")
 #load("experiments/2018-09-02-TFs-motifs/data/TFs-PWM.rdata")
-
 #load("data/2018-11-27-geneExpression-pval-thresh-0.05.rdata") # CEL-seq processed data of anc-1 RNAi, p<0.05
 ```
 
@@ -28,65 +27,6 @@ dir.create(dir, showWarnings = FALSE)
 dir.create(paste0(dir,"results"), showWarnings = FALSE)
 dir.create(paste0(dir,"data"), showWarnings = FALSE)
 ```
-
-Scan all the promoters regions for the T-box motifs. Use as background the same sequences.
-```{r genome-wide-scan}
-useBigMemoryPWMEnrich(TRUE) # using large amount of memory
-gw = motifEnrichment(prs, bg.custom)
-useBigMemoryPWMEnrich(FALSE) # disable using large amount of memory
-```
-
-Save the scans for later retrieval.
-```{r save-gw-scan}
-save(gw, file = paste0(dir,"data/pwmEnrich-logn-genomoeWide.Rdata"))
-```
-
-```{r load-gw-scan}
-load(paste0(dir,"data/pwmEnrich-logn-genomoeWide.Rdata"))
-```
-
-
-Check the gene overlaps when different *p*-value thresholds are set. No need to check TBX-33, as it is not the focus for the rest of the manuscript.
-```{r coverage-thresholds}
-p.05 <- gw$sequence.bg[,2:5] < .05
-p.01 <- gw$sequence.bg[,2:5] < .01
-p.001 <- gw$sequence.bg[,2:5] < .001
-p.0001 <- gw$sequence.bg[,2:5] < .0001
-
-par(mfrow=c(2,2))
-plot(venn(p.05),main="p-value < .05")
-plot(venn(p.01),main="p-value < .01")
-plot(venn(p.001),main="p-value < .001")
-plot(venn(p.0001),main="p-value < .0001")
-```
-From this I conclude that `.001` and `.0001` are way too low. Both `.05` and `.01` show the overlaps well. As the next figure shows the *anc-1* RNAi regulated genes that have  T-box binding motifs with a *p*<0.01, for consistency, I'll display the `.01`-threshlod passing motifs.
-
-```{r focus-p<0.01}
-p.01 <- gw$sequence.bg[,2:5] < .01
-colnames(p.01) <- c("TBX-38","TBX-39","TBX-40","TBX-43")
-```
-
-```{r euler-plot}
-vd <- euler(p.01[,c(1,4)], shape = "ellipse") # Generate Euler
-error_plot(vd) # Errors in plotting estimates.
-
-cairo_pdf(
-  filename = paste0(dir,"results/2019-02-06-euler-TBX-four.pdf"),
-  width = 1.5, height = 1.5)
-    
-plot(
-  vd, 
-  lwd = 1,
-  # fills = list(fill = c("peachpuff","mistyrose","lightgrey")),
-  #labels = F, quantities = F
-  labels = list(fontsize = 7),
-  quantities = list(fontsize = 7)
-)
-
-dev.off()
-
-```
-
 
 Where do the *anc-1* RNAi regulated genes fall in these gene sets?
 ```{r anc1-overlap}
