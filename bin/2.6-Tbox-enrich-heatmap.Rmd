@@ -6,23 +6,35 @@ output: md_document
 ---
 
 ## Load packages and datasets.
-```{r}
-# Data pre-processing
-if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
-# Plot heatmap
-if (!require(pheatmap)) {biocLite("pheatmap"); library("pheatmap")}
+```{r packages}
+if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)} # Data pre-processing
+if (!require(pheatmap)) {biocLite("pheatmap"); library("pheatmap")} # Plot heatmap
 if (!require(gplots)) {biocLite("gplots"); library("gplots")}
-# Heatmap colors
-if (!require(viridis)) {biocLite("viridis"); library("viridis")}
+```
 
+PWMEnrich object of Tbox transcrption factors motifs enrichement in the promoters of anc-1 RNAi regulateed genes.
+```{r datasets}
 load("data/geneExpression.rdata")
-# PWMEnrich object of Tbox transcrption factors motifs enrichement in the promoters of anc-1 RNAi regulateed genes.
-load("experiments/2018-07-11-tbx-motifs/data/Tbox-anc1-reg-enriched.Rdata")
+#load("experiments/2018-07-11-tbx-motifs/data/2019-02-04-Tbox-anc1-reg-enriched.Rdata",verbose = TRUE)
+load("experiments/2018-07-11-tbx-motifs/data/2019-02-07-Tbox-anc1-reg-enriched.Rdata",verbose = TRUE)
 ```
 
 ## Data Pre-Processing
-Focus on the genes that are down-regulated by *anc-1*, as those are enriched for TBX motifs.
+Focus on the genes that are down-regulated by *anc-1*, as those are enriched for T-box motifs.
 ```{r}
+# Create p-values matrix. Obtain the *p*-values of motifs per sequence. Rows correspond to the different input sequences and the columns correspond to motifs. `sequence.nobg` contains the raw affinity scores.`sequence.bg` contains the corresponding P-values.
+tbx.pv.dn.mat <- res.dn$sequence.bg
+
+# Get the readable gene names and assign as the matrix rownames.
+gnames <- mRNA.ids$external_gene_name[which(mRNA.ids$ensembl_gene_id %in% rownames(tbx.pv.dn.mat))]
+rownames(tbx.pv.dn.mat) <- gnames
+
+# Rename the column names to be the T-box protein names.
+colnames(tbx.pv.dn.mat) <- c("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43")
+
+
+#----
+
 # Separate AM140 and N2 data. Data that may be relevant for clustering.
 AM <- BOTH %>% select(Gene_stable_ID,Gene_name,strain,log2FoldChange,padj) %>%
   filter(strain == "AM140")
@@ -32,6 +44,9 @@ AM.NT <- full_join(NT,AM,by = c('Gene_stable_ID','Gene_name'), suffix = c(".N2",
 
 # Create p-values matrix. Obtain the *p*-values of motifs per sequence. Rows correspond to the different input sequences and the columns correspond to motifs. `sequence.nobg` contains the raw affinity scores.`sequence.bg` contains the corresponding P-values.
 tbx.pv.dn.mat <- res.dn$sequence.bg
+
+
+
 
 # Set the gene names to serve as the background list for later annotation analysis
 bg <- rownames(tbx.pv.dn.mat)
@@ -49,6 +64,8 @@ AM.NT <- inner_join(AM.NT, tbx.pv.dn.tbl, by='Gene_stable_ID')
 
 # Convert the dataframes back to matrices of TBX p-values
 ```{r}
+
+#----
 # TBX binding motifs Matrix
 tbx.pv.dn.mat <- AM.NT %>% 
   select("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43") %>%
@@ -58,8 +75,22 @@ rownames(tbx.pv.dn.mat) <- AM.NT$Gene_name
 
 # Convert the TBX binding-sites p-values matrix to binary
 ```{r}
+# Change p-value to boolean. TRUE is statistically significant (*p*-value < 0.01).
+tbx.bool.dn.mat <- (tbx.pv.dn.mat < .1)
+
+# Index of amount of T-box transcription factors binding motif
+TBXTFBM <- rowSums(tbx.bool.dn.mat*1) 
+
+# Filter genes w/o T-box transcription factors binding motifs from the p-values matrix
+tbx.pv.dn.mat <- tbx.pv.dn.mat[TBXTFBM != 0,]
+
+# Filter genes w/o T-box transcription factors binding motifs from the Boolean matrix
+tbx.bool.dn.mat <- tbx.bool.dn.mat[TBXTFBM != 0,]
+
+# ----
+
 # Change p-value to boolean. TRUE is statistically significant (*p*-value < 0.05).
-tbx.bool.dn.mat <- (tbx.pv.dn.mat < 0.1)
+tbx.bool.dn.mat <- (tbx.pv.dn.mat < .1)
 
 # Index of amount of T-box transcription factors binding motif
 TBXTFBM <- rowSums(tbx.bool.dn.mat*1) 
@@ -70,6 +101,40 @@ tbx.pv.dn.mat <- tbx.pv.dn.mat[TBXTFBM != 0,]
 # Filter genes w/o T-box transcription factors binding motifs from the Boolean matrix
 tbx.bool.dn.mat <- tbx.bool.dn.mat[TBXTFBM != 0,]
 ```
+
+```{r}
+row_dend <- hclust(dist(tbx.bool.dn.mat, method = "binary"),
+                   method = "complete") # row clustering
+col_dend <- hclust(dist(t(tbx.bool.dn.mat), method = "binary"),
+                   method = "complete") # column clustering
+
+
+pheatmap(tbx.bool.dn.mat*1,
+         
+         # Colors of the cells
+         color = c("white","black"),
+         border_color = "grey",
+         
+         # dimensions of the cells
+         cellwidth = 7,
+         cellheight = 7,
+         
+         # Clustering
+         cluster_rows = row_dend,
+         cluster_cols = col_dend,
+
+         # dendogram graphics
+         treeheight_row = 5,
+         treeheight_col = 5,
+         
+         # Remove the legend
+         legend = FALSE,
+         
+         # Fonts
+         fontsize = 7
+         )
+```
+
 
 ## Plotting Heatmaps
 Setting the path for saving the heatmaps
