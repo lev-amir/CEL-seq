@@ -6,45 +6,48 @@ output: md_document
 ---
 
 Load Packages
-```{r}
-source("https://bioconductor.org/biocLite.R")
-install.packages("VennDiagram") ; library(VennDiagram)
+```{r packages}
+#source("https://bioconductor.org/biocLite.R")
+# install.packages("VennDiagram") ; library(VennDiagram)
+if (!require(eulerr)) {BiocManager::install("eulerr"); library(eulerr)} # Plotting Euler Diagrams
 ```
 
 Set experiment path
-```{r}
+```{r set-path}
 path = "experiments/2018-04-24-venn/"
 ```
 
-# Top regulated genes
-Get top 15 genes per overlap by adjusted p-values
-```{r}
-a <- NT$Gene_name[NT$Gene_stable_ID %in% intersect(DEG$AM.up,DEG$N2.up)][1:15]
-write(a, paste0(path,"results/topGenes-up.txt"))
-a <- NT$Gene_name[NT$Gene_stable_ID %in% intersect(DEG$AM.dn,DEG$N2.dn)][1:15]
-write(a, paste0(path,"results/topGenes-dn.txt"))
+## Top regulated genes
+Get top 15 genes per overlap by their adjusted *p*-values.
+```{r top-15}
+reg <- NT$Gene_name[NT$Gene_stable_ID %in% intersect(DEG$AM.up,DEG$N2.up)][1:15]
+write(reg, paste0(path,"results/topGenes-up.txt"))
+reg <- NT$Gene_name[NT$Gene_stable_ID %in% intersect(DEG$AM.dn,DEG$N2.dn)][1:15]
+write(reg, paste0(path,"results/topGenes-dn.txt"))
 ```
 
-# Genes that passed a significance threshold of 0.05
+## Genes that passed a significance threshold of adjusted *p*-value < 0.05
 
 Load Processed Data
-```{r}
+```{r load-data}
 load("data/2018-11-27-geneExpression-pval-thresh-0.05.rdata")
 ```
 
-## Hypergeometric distribution test to check if gene overlap is significant
-Check the p-values of overlaps that are equal or greater than the measured overlap
+## **Hypergeometric distribution test** to check if gene overlap is significant
+Check the *p*-values of overlaps that are equal, or greater than the measured overlap.
 
-The total population are genes that appeard in the results of either AM140 or N2 CEL-seq
-```{r}
-totalpop <- length( union(union(DEG$N2.up,DEG$N2.dn),
-                          union(DEG$AM.up,DEG$AM.dn)
-) 
+The total population are genes that appeard in the results of either AM140 or N2 CEL-seq, as these are the measured genes.
+```{r background-pop-size}
+totalpop <- length( 
+  union(
+    union(DEG$N2.up,DEG$N2.dn),
+    union(DEG$AM.up,DEG$AM.dn)
+  ) 
 )
 ```
 
 ### Upregulated genes
-```{r}
+```{r upregulated-size}
 # Genes that were upregulated in AM140 animals
 sample1 <- length(DEG$AM.up)
 # Genes that were upregulated in N2 animals
@@ -54,7 +57,7 @@ overlap <- length( intersect(DEG$AM.up,DEG$N2.up) )
 ```
 
 Hypergeometric test
-```{r}
+```{r test-overlap-upreg}
 hyper.up <- sum( dhyper(x = overlap:sample1,
                         m = sample2,
                         n = totalpop - sample2,
@@ -63,9 +66,7 @@ print(hyper.up)
 ```
 
 ### Downregulated genes
-```{r}
-# Downregulated genes
-
+```{r downregulated-size}
 # Genes that were upregulated in AM140 animals
 sample1 <- length(DEG$AM.dn)
 # Genes that were upregulated in N2 animals
@@ -75,7 +76,7 @@ overlap <- length( intersect(DEG$AM.dn,DEG$N2.dn) )
 ```
 
 Hypergeometric test
-```{r}
+```{r test-overlap-downreg}
 hyper.dn <- sum( dhyper(x = overlap:sample1,
                         m = sample2,
                         n = totalpop - sample2,
@@ -85,57 +86,55 @@ print(hyper.dn)
 
 ## Plot Venn Diagrams
 
-Venn of up-regulated genes
-```{r}
-venn.diagram(
-  x = list(AM140 = DEG$AM.up, N2 = DEG$N2.up),
-  filename = paste0(path,"results/2019-02-07-venn-anc1-up-0.05.tiff"),
-  resolution = 300,
-  imagetype = "tiff",
-  height = 2,
-  width = 2,
-  units = "in",
-  lwd = 2,
-  main = "Upregulated (p < 0.05)",
-  main.cex = 1,
-  main.fontfamily = "sans",
-  fill = c("blue", "red"),
-  cex = 1 ,# size of the areas’ labels
-  fontfamily = "sans",# the fontfamily of the areas’ labels
-  cat.cex = 1 ,#the size of the category names
-  cat.pos = c(180+30,180-30),
-  cat.dist = +0.04,
-  cat.col = c("blue", "red"),
-  cat.fontfamily = "sans",
-  print.mode = c("raw","percent"),
-  sub = "p < 0.0001",
-  sub.cex = .5,
-  sub.fontfamily = "sans"
+Upregulated genes
+```{r euler-plot-up}
+# Gene counts per category
+list = setNames(c(
+  length(setdiff(DEG$N2.up,DEG$AM.up)),
+  length(setdiff(DEG$AM.up,DEG$N2.up)),
+  length(intersect(DEG$AM.up,DEG$N2.up))
+), c("N2","AM140","N2&AM140"))
+
+vd <- euler(list, shape = "ellipse") # Generate Euler
+
+cairo_pdf(
+  filename = paste0(path,"results/2019-02-09-euler-anc1-up-0.05.pdf"),
+  width = 1, height = 1)
+
+plot(
+  vd, 
+  lwd = 1,
+  fills = list(fill = c("indianred2","royalblue2")),
+  quantities = list(fontsize = 7),
+  labels = F
 )
+
+dev.off()
 ```
 
-Venn of down-regulated genes
-```{r}
-venn.diagram(
-  x = list(AM140 = DEG$AM.dn, N2 = DEG$N2.dn),
-  filename = paste0(path,"results/venn-anc1-dn-0.05.tiff"),
-  resolution = 300,
-  imagetype = "tiff",
-  main = "Downregulated (p < 0.05)",
-  main.cex = 3,
-  main.fontfamily = "sans",
-  fill = c("blue", "red"),
-  cex = 2.5 ,# size of the areas’ labels
-  fontfamily = "sans",# the fontfamily of the areas’ labels
-  cat.cex = 3 ,#the size of the category names
-  cat.pos = c(180+30,180-30),
-  cat.dist = +0.04,
-  cat.col = c("blue", "red"),
-  cat.fontfamily = "sans",
-  print.mode = c("raw","percent"),
-  sub = "p < 0.0001",
-  sub.cex = 2,
-  sub.fontfamily = "sans"
-  #inverted = TRUE
+Downregulated genes
+```{r euler-plot-dn}
+# Gene counts per category
+list = setNames(c(
+  length(setdiff(DEG$N2.dn,DEG$AM.dn)),
+  length(setdiff(DEG$AM.dn,DEG$N2.dn)),
+  length(intersect(DEG$AM.dn,DEG$N2.dn))
+), c("N2","AM140","N2&AM140"))
+
+vd <- euler(list, shape = "ellipse") # Generate Euler
+
+cairo_pdf(
+  filename = paste0(path,"results/2019-02-09-euler-anc1-dn-0.05.pdf"),
+  width = 1, height = 1)
+
+plot(
+  vd, 
+  lwd = 1,
+  fills = list(fill = c("indianred2","royalblue2")),
+  quantities = list(fontsize = 7),
+  labels = F
 )
+
+dev.off()
 ```
+
