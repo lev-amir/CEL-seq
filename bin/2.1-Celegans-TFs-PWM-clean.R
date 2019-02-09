@@ -1,3 +1,5 @@
+## Get the Position Weight Matrices for C. elegans Transcription factor binding sites.
+
 pwm.lines <- read_lines(file = "experiments/2018-09-02-TFs-motifs/raw/CisBP_2018_09_02_12_51_pm/PWM.txt") # Read each line of the motifs file
 
 # Extract TF names-------------------------------------------------------------

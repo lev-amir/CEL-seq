@@ -1,3 +1,5 @@
+## Obtain all the C. elegans protein coding genes from Biomart
+
 #+ Load bioconductor and packages ----
 source("https://bioconductor.org/biocLite.R")
 if (!require(biomaRt)) {biocLite("biomaRt"); library(biomaRt)} # Ensembl biomaRt to obtain C. elegans sequences.
