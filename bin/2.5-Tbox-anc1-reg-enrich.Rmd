@@ -1,0 +1,92 @@
+---
+title: "Enrichment of T-box transcription factors binding motifs in the promoter regions of anc-1 RNAi regulated genes"
+author: "Amir Levine"
+date: "2019-02-04"
+output: md_document
+---
+
+```{r packages}
+if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
+if (!require(PWMEnrich)) {BiocManager::install("PWMEnrich"); library(PWMEnrich)}
+```
+
+Load packages and previously generated data of T-box transcriptions factors enrichment in each DEG set.
+```{r load-data}
+load("data/2018-11-27-geneExpression-pval-thresh-0.05.rdata",verbose = TRUE) # CEL-seq processed data of anc-1 RNAi, p<0.05
+load("data/Celegans-promoters.rdata",verbose = TRUE) # Promoter regions +500 to -100 bp of TSS
+load("experiments/2018-07-11-tbx-motifs/data/backgound-celegans-proteincoding-tbx.rdata",verbose = TRUE) # PWMEnrich background T-box TFs
+```
+
+Focus on the intersect of the two strains, with upregulated and downregulated genes analyzed separately. 
+
+## Downregulated genes 
+```{r regulated-genes}
+goi <- DEG$INTERSECT.dn # CEL-seq DEGs, query genes
+length(goi) # 308 downregulated genes in both strains (w/ p-value < 0.05)
+mRNA.seqs.promoter <- mRNA.seqs.promoter %>% mutate(CELseq.hits = ensembl_gene_id %in% goi)
+```
+
+Motif enrichment analysis in gene-sets
+```{r enrichment}
+useBigMemoryPWMEnrich(TRUE) # using large amount of memory
+res.dn = motifEnrichment(prs[mRNA.seqs.promoter$CELseq.hits], bg.custom)
+useBigMemoryPWMEnrich(FALSE) # disable using large amount of memory
+```
+
+Generate table of transcription factors that are enriched in the promoters of anc-1 downregulated genes. Export the reports as tables
+```{r export-table}
+report.dn <- groupReport(res.dn,by.top.motifs=FALSE)
+plot(report.dn)
+report.dn %>% 
+  as.data.frame() %>% 
+  mutate("enriched.motif" = report.dn$p.value < 0.05) %>%
+  write_csv(path = "experiments/2018-07-11-tbx-motifs/results/2019-02-07-Tbox-motifs-enrichment-overlapping-downregulated.csv")
+```
+
+```{r save-plot}
+#' Export the reports 
+pdf(file = "experiments/2018-07-11-tbx-motifs/results/2019-02-04-Tbox-motifs-enrichment-overlapping-downregulated.pdf",
+    height = 1.5,
+    width = 5)
+plot(report.dn, fontsize=7, id.fontsize=6)
+dev.off()
+```
+
+## Upregulated genes 
+```{r regulated-genes}
+goi <- DEG$INTERSECT.up # CEL-seq DEGs, query genes
+length(goi) # 338 downregulated genes in both strains (w/ p-value < 0.05)
+mRNA.seqs.promoter <- mRNA.seqs.promoter %>% mutate(CELseq.hits = ensembl_gene_id %in% goi)
+```
+
+Motif enrichment analysis in gene-sets
+```{r enrichment}
+useBigMemoryPWMEnrich(TRUE) # using large amount of memory
+res.up = motifEnrichment(prs[mRNA.seqs.promoter$CELseq.hits], bg.custom)
+useBigMemoryPWMEnrich(FALSE) # disable using large amount of memory
+```
+
+Generate table of transcription factors that are enriched in the promoters of anc-1 downregulated genes. Export the reports as tables
+```{r export-table}
+report.up <- groupReport(res.up,by.top.motifs=FALSE)
+plot(report.up)
+report.up %>% 
+  as.data.frame() %>% 
+  mutate("enriched.motif" = report.dn$p.value < 0.05) %>%
+  write_csv(path = "experiments/2018-07-11-tbx-motifs/results/2019-02-07-Tbox-motifs-enrichment-overlapping-upregulated.csv")
+```
+
+```{r save-plot}
+#' Export the reports 
+pdf(file = "experiments/2018-07-11-tbx-motifs/results/2019-02-04-Tbox-motifs-enrichment-overlapping-upregulated.pdf",
+    height = 1.5,
+    width = 5)
+plot(report.up, fontsize=7, id.fontsize=6)
+dev.off()
+```
+
+```{r save-data}
+save(report.up,report.dn,res.dn, res.up,
+     file = "experiments/2018-07-11-tbx-motifs/data/2019-02-07-Tbox-anc1-reg-enriched.Rdata")
+```
+
