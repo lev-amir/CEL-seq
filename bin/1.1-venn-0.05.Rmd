@@ -29,7 +29,6 @@ write(a, paste0(path,"results/topGenes-dn.txt"))
 
 Load Processed Data
 ```{r}
-# Load processed data----------------------------------------------------------
 load("data/2018-11-27-geneExpression-pval-thresh-0.05.rdata")
 ```
 
@@ -90,23 +89,27 @@ Venn of up-regulated genes
 ```{r}
 venn.diagram(
   x = list(AM140 = DEG$AM.up, N2 = DEG$N2.up),
-  filename = paste0(path,"results/venn-anc1-up-0.05.tiff"),
+  filename = paste0(path,"results/2019-02-07-venn-anc1-up-0.05.tiff"),
   resolution = 300,
   imagetype = "tiff",
+  height = 2,
+  width = 2,
+  units = "in",
+  lwd = 2,
   main = "Upregulated (p < 0.05)",
-  main.cex = 3,
+  main.cex = 1,
   main.fontfamily = "sans",
   fill = c("blue", "red"),
-  cex = 2.5 ,# size of the areas’ labels
+  cex = 1 ,# size of the areas’ labels
   fontfamily = "sans",# the fontfamily of the areas’ labels
-  cat.cex = 3 ,#the size of the category names
+  cat.cex = 1 ,#the size of the category names
   cat.pos = c(180+30,180-30),
   cat.dist = +0.04,
   cat.col = c("blue", "red"),
   cat.fontfamily = "sans",
   print.mode = c("raw","percent"),
   sub = "p < 0.0001",
-  sub.cex = 2,
+  sub.cex = .5,
   sub.fontfamily = "sans"
 )
 ```
