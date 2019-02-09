@@ -8,17 +8,17 @@ output: md_document
 Load packages and datasets.
 ```{r packages}
 if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
-#if (!require(Biostrings)) {BiocManager::install("Biostrings"); library(Biostrings)} # Aligning motifs
-#if (!require(VennDiagram)) {BiocManager::install("VennDiagram"); library(VennDiagram)} # Plotting Venn
+if (!require(Biostrings)) {BiocManager::install("Biostrings"); library(Biostrings)} # Aligning motifs
 if (!require(eulerr)) {BiocManager::install("eulerr"); library(eulerr)} # Plotting Euler Diagrams
+# if (!require(VennDiagram)) {BiocManager::install("VennDiagram"); library(VennDiagram)} # Plotting Venn
 ```
 
 Obtain the 500 bp upstream, and 100 bp downstream, promoter regions of all the protein-coding genes in the *C. elegans* genome. The data was originally downloaded using the script `1.9-Celegans-promoters-BioMaRt.R`. 
 Obtain the PWMs from script `2.1-Celegans-TFs-PWM-clean.R`.
 ```{r load-datasets}
-#load("data/Celegans-promoters.rdata")
-#load("experiments/2018-09-02-TFs-motifs/data/TFs-PWM.rdata")
-#load("data/2018-11-27-geneExpression-pval-thresh-0.05.rdata") # CEL-seq processed data of anc-1 RNAi, p<0.05
+load("data/Celegans-promoters.rdata") # Get promoters
+load("experiments/2018-09-02-TFs-motifs/data/TFs-PWM.rdata") # Get PWMs
+# load("data/2018-11-27-geneExpression-pval-thresh-0.05.rdata") # Get CEL-seq processed data of anc-1 RNAi, p<0.05
 ```
 
 ```{r dir-structure}
@@ -28,118 +28,63 @@ dir.create(paste0(dir,"results"), showWarnings = FALSE)
 dir.create(paste0(dir,"data"), showWarnings = FALSE)
 ```
 
-Where do the *anc-1* RNAi regulated genes fall in these gene sets?
-```{r anc1-overlap}
-p.01.a1 <- res.dn$sequence.bg[,2:5] < .01
-rownames(p.01.a1)[p.01.a1[,1]]
-DEG$INTERSECT.dn
-```
-
-Subset PWM list for TBX genes, and convernt to Position Count Matrix (PCM) to serve as input to the `matchPWM` function.
+Subset PWMs that belong to T-box TFs. Then, convernt PWMs to Position Count Matrix (PCM), to serve as input to the `matchPWM` function.
 ```{r PWM-to-PCM}
-#PWM <- PWM[grep("tbx-",names(PWM))]
-#PCM <- lapply(PWM,"*",100)
-#PCM <- lapply(PCM,round)
+PWM <- PWM[grep("tbx-",names(PWM))]
+PCM <- lapply(PWM,"*",100)
+PCM <- lapply(PCM,round)
 ```
 
 Scan all *C. elegans* coding gene promoter regions (+500/-100 bp of TSS) for each T-box transcription factor binding motifs.
 ```{r scan-motifs}
-# pwm.tbx33.hits <- sapply(prs,function(pseq) 
-#   matchPWM(PCM$`tbx-33`, pseq, min.score="90%", with.score = TRUE))
-# pwm.tbx38.hits <- sapply(prs,function(pseq) 
-#   matchPWM(PCM$`tbx-38`, pseq, min.score="90%", with.score = TRUE))
-# pwm.tbx39.hits <- sapply(prs,function(pseq) 
-#   matchPWM(PCM$`tbx-39`, pseq, min.score="90%", with.score = TRUE))
-# pwm.tbx40.hits <- sapply(prs,function(pseq) 
-#   matchPWM(PCM$`tbx-40`, pseq, min.score="90%", with.score = TRUE))
-# pwm.tbx43.hits <- sapply(prs,function(pseq) 
-#   matchPWM(PCM$`tbx-43`, pseq, min.score="90%", with.score = TRUE))
+pwm.tbx33.hits <- sapply(prs,function(pseq)
+  matchPWM(PCM$`tbx-33`, pseq, min.score="90%", with.score = TRUE))
+pwm.tbx38.hits <- sapply(prs,function(pseq)
+  matchPWM(PCM$`tbx-38`, pseq, min.score="90%", with.score = TRUE))
+pwm.tbx39.hits <- sapply(prs,function(pseq)
+  matchPWM(PCM$`tbx-39`, pseq, min.score="90%", with.score = TRUE))
+pwm.tbx40.hits <- sapply(prs,function(pseq)
+  matchPWM(PCM$`tbx-40`, pseq, min.score="90%", with.score = TRUE))
+pwm.tbx43.hits <- sapply(prs,function(pseq)
+  matchPWM(PCM$`tbx-43`, pseq, min.score="90%", with.score = TRUE))
 ```
 
 Save intermediate scan results for later usage.
 ```{r scan-save}
-# save(pwm.tbx33.hits,
-#      pwm.tbx38.hits,
-#      pwm.tbx39.hits,
-#      pwm.tbx40.hits,
-#      pwm.tbx43.hits, 
-#      file = paste0(dir,"data/2019-02-05-promoters-scan-90p.Rdata"))
+save(pwm.tbx33.hits,
+     pwm.tbx38.hits,
+     pwm.tbx39.hits,
+     pwm.tbx40.hits,
+     pwm.tbx43.hits,
+     file = paste0(dir,"data/2019-02-05-promoters-scan-90p.Rdata"))
 ```
 
 
 ```{r}
-# load(paste0(dir,"data/2019-02-05-promoters-scan.Rdata"))
+load(paste0(dir,"data/2019-02-05-promoters-scan-90p.Rdata"), verbose = TRUE)
 ```
 
 Change the strucutre from one that details the position of each motifs on each sequence, to a count of positions, and merge to a single matrix, where the rows are genes, and columns are T-box binding sites.
 ```{r ignore-positions}
-# counts <- cbind(sapply(pwm.tbx33.hits, length),
-#                 sapply(pwm.tbx38.hits, length),
-#                 sapply(pwm.tbx39.hits, length),
-#                 sapply(pwm.tbx40.hits, length),
-#                 sapply(pwm.tbx43.hits, length))
-# colnames(counts) <- c("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43")
+counts <- cbind(sapply(pwm.tbx33.hits, length),
+                sapply(pwm.tbx38.hits, length),
+                sapply(pwm.tbx39.hits, length),
+                sapply(pwm.tbx40.hits, length),
+                sapply(pwm.tbx43.hits, length))
+colnames(counts) <- c("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43")
 ```
 
 Consider every promoter that possesses at least one motif as `TRUE`.
 ```{r counts-to-presence}
-# motifs <- counts > 0
+motifs <- counts > 0
 ```
 
 ```{r print-motifs}
-# colSums(motifs)
-```
-
-Prepare the input to create Venns that describe genes that possess similar motifs in their promoter region.
-Combine the TBX-38 list to TBX-43, and the TBX-39 list to TBX-4.
-```{r venn-prep}
-# TBX38.43 <- list(
-#   "TBX-38" = rownames(motifs)[motifs[,"TBX38"]],
-#   "TBX-43" = rownames(motifs)[motifs[,"TBX43"]]
-# )
-# 
-# TBX3843.39.40 <- list(
-#   "TBX-39" = rownames(motifs)[motifs[,"TBX39"]],
-#   "TBX-40" = rownames(motifs)[motifs[,"TBX40"]],
-#   "TBX-38/TBX-43" = unique(unlist(TBX38.43))
-# )
-# 
-# TBX33.3843.3940 <- list(
-#   "TBX-33" = rownames(motifs)[motifs[,"TBX33"]],
-#   "TBX-39/TBX-40" = unique(unlist(TBX3940)),
-#   "TBX-38/TBX-43" = unique(unlist(TBX3843))
-# )
-# 
-# TBX <- list(
-#   "TBX-38" = rownames(motifs)[motifs[,"TBX38"]],
-#   "TBX-39" = rownames(motifs)[motifs[,"TBX39"]],
-#   "TBX-40" = rownames(motifs)[motifs[,"TBX40"]],
-#   "TBX-43" = rownames(motifs)[motifs[,"TBX43"]]
-# )
-# 
-# TBX <- list(
-#   "TBX-38" = rownames(motifs)[motifs[,"TBX38"]],
-#   "TBX-39" = rownames(motifs)[motifs[,"TBX39"]],
-#   "TBX-43" = rownames(motifs)[motifs[,"TBX43"]],
-#   "TBX-40" = rownames(motifs)[motifs[,"TBX40"]]
-#   
-# )
-```
-
-
-```{r hyper-geom-test}
-# bk <- dim(mRNA.seqs.promoter)[1] # Background list of genes, Whole genome.
-# sm <- sapply(TBX, length) # Sampling of genes that possess a certain motif
-# ol <- 105# Overlap between the two samples.
-# 
-# hyper <- sum( dhyper(x = ol:sm["TBX-39"],
-#                      m = sm["TBX-40"],
-#                      n = bk - sm["TBX-40"],
-#                      k = sm["TBX-39"]) )
-# print(hyper)
+colSums(motifs)
 ```
 
 ```{r euler-plot}
+## TBX39-TBX40-TBX3843
 
 motifs2 <- motifs[,3:4]
 motifs2 <- cbind(motifs2,motifs[,2]|motifs[,5])
@@ -183,75 +128,3 @@ plot(
 
 dev.off()
 ```
-
-```{r venn-plot}
-venn.diagram(
-  x = TBX3843,
-  filename = paste0(dir,"results/2019-02-05-venn-tbx3843-motifs.tiff"),
-  height = 1.5,
-  width = 1.5,
-  units = "in",
-  resolution = 300,
-  imagetype = "tiff",
-  fill = c("lightgrey", "darkgrey"),
-  cex = .75 ,# font size of the quantity
-  fontfamily = "sans",# the fontfamily of the quantitiy
-  cat.cex = .75 ,# font size of the area labels
-  cat.pos = c(0,90), # Angle of position relative to circle.
-  cat.default.pos = "outer",
-  cat.dist = c(+.04,.11),
-  cat.fontfamily = "sans" # the fontfamily of the area labels
-)
-
-
-venn.diagram(
-  x = TBX,
-  filename = paste0(dir,"results/2019-02-05-venn-tbx-four-motifs.tiff"),
-  resolution = 300,
-  imagetype = "tiff",
-  lwd = 5, # Line width
-  fill = c("magenta", "cyan", "yellow","black"),
-  cex = 2.5 ,# font size of the quantity
-  fontfamily = "sans",# the fontfamily of the quantitiy
-  cat.cex = 3 ,# font size of the area labels
-  #cat.pos = c(0,0,0,0),
-  cat.dist = c(.2,.2,.1,.1),
-  #cat.col = c("black", "black"), # Color of area labels
-  cat.fontfamily = "sans" # the fontfamily of the area labels
-  #sub = "p < ???",
-  #sub.cex = 2,
-  #sub.fontfamily = "sans"
-)
-```
-
-
-## Genes that are downregulated by *anc-1* RNAi
-
-```{r}
-rownames(motifs)[motifs[,"TBX-38"]|motifs[,"TBX-43"]]
-sum(a %in% DEG$INTERSECT.dn)
-
-TBX3843.a1 <- sapply(a, function(x) x[x %in% DEG$INTERSECT.dn])
-TBX3843.a1 <- sapply(TBX3843.a1, 
-                     function(x) 
-                       mRNA.seqs.promoter$external_gene_name[which(mRNA.seqs.promoter$ensembl_gene_id %in% x)])
-
-TBX3940.a1 <- sapply(TBX3940, function(x) x[x %in% DEG$INTERSECT.dn])
-TBX3940.a1 <- sapply(TBX3940.a1, 
-                     function(x) 
-                       mRNA.seqs.promoter$external_gene_name[which(mRNA.seqs.promoter$ensembl_gene_id %in% x)])
-
-
-TBX33.a1 <- rownames(motifs)[motifs[,"TBX-33"]]
-TBX38.a1 <- rownames(motifs)[motifs[,"TBX-38"]]
-TBX39.a1 <- rownames(motifs)[motifs[,"TBX-39"]]
-TBX40.a1 <- rownames(motifs)[motifs[,"TBX-40"]]
-TBX43.a1 <- rownames(motifs)[motifs[,"TBX-43"]]
-
-a1.dn <- DEG$INTERSECT.dn
-
-
-```
-
-
-
