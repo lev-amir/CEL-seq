@@ -127,3 +127,31 @@ plot(
 
 dev.off()
 ```
+
+```{r session-info}
+sessionInfo()
+```
+```
+R version 3.5.1 (2018-07-02)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows >= 8 x64 (build 9200)
+
+Matrix products: default
+
+locale:
+[1] LC_COLLATE=English_United States.1252  LC_CTYPE=English_United States.1252   
+[3] LC_MONETARY=English_United States.1252 LC_NUMERIC=C                          
+[5] LC_TIME=English_United States.1252    
+
+attached base packages:
+ [1] stats4    parallel  grid      stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] PWMEnrich_4.18.0    Biostrings_2.50.0   XVector_0.22.0      IRanges_2.16.0      S4Vectors_0.20.0   
+[6] BiocGenerics_0.28.0 eulerr_5.1.0       
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.19       gtools_3.8.1       zlibbioc_1.28.0    gdata_2.18.0       tools_3.5.1       
+ [6] polyclip_1.9-1     polylabelr_0.1.0   yaml_2.2.0         compiler_3.5.1     seqLogo_1.48.0    
+[11] BiocManager_1.30.3 evd_2.3-3          knitr_1.20        
+```
