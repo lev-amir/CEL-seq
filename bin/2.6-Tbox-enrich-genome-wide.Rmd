@@ -10,7 +10,6 @@ Load packages and datasets.
 if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
 if (!require(Biostrings)) {BiocManager::install("Biostrings"); library(Biostrings)} # Aligning motifs
 if (!require(eulerr)) {BiocManager::install("eulerr"); library(eulerr)} # Plotting Euler Diagrams
-# if (!require(VennDiagram)) {BiocManager::install("VennDiagram"); library(VennDiagram)} # Plotting Venn
 ```
 
 Obtain the 500 bp upstream, and 100 bp downstream, promoter regions of all the protein-coding genes in the *C. elegans* genome. The data was originally downloaded using the script `1.9-Celegans-promoters-BioMaRt.R`. 
