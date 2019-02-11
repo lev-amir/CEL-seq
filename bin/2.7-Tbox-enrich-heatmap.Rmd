@@ -9,88 +9,34 @@ output: md_document
 ```{r packages}
 if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)} # Data pre-processing
 if (!require(pheatmap)) {biocLite("pheatmap"); library("pheatmap")} # Plot heatmap
-if (!require(gplots)) {biocLite("gplots"); library("gplots")}
 ```
 
-PWMEnrich object of Tbox transcrption factors motifs enrichement in the promoters of anc-1 RNAi regulateed genes.
+PWMEnrich object of Tbox transcrption factors motifs enrichement in the promoters of *anc-1* RNAi regulateed genes. 
+Note that the `PWMEnrich object` refers to anc-1 RNAi regulated genes set by a p < 0.1 threshold, in order to get a broader coverage of possible regulated genes.
 ```{r datasets}
-load("data/geneExpression.rdata")
-#load("experiments/2018-07-11-tbx-motifs/data/2019-02-04-Tbox-anc1-reg-enriched.Rdata",verbose = TRUE)
+load("data/Celegans-promoters.rdata",verbose = TRUE)
+#load("experiments/2018-07-11-tbx-motifs/data/2018-10-25-Tbox-anc1-reg-enriched-pval.1.Rdata",verbose = TRUE)
 load("experiments/2018-07-11-tbx-motifs/data/2019-02-07-Tbox-anc1-reg-enriched.Rdata",verbose = TRUE)
 ```
 
 ## Data Pre-Processing
 Focus on the genes that are down-regulated by *anc-1*, as those are enriched for T-box motifs.
-```{r}
+```{r pval-matrix}
 # Create p-values matrix. Obtain the *p*-values of motifs per sequence. Rows correspond to the different input sequences and the columns correspond to motifs. `sequence.nobg` contains the raw affinity scores.`sequence.bg` contains the corresponding P-values.
 tbx.pv.dn.mat <- res.dn$sequence.bg
 
-# Get the readable gene names and assign as the matrix rownames.
+# Get the "human-readable" gene names and assign as the matrix rownames.
 gnames <- mRNA.ids$external_gene_name[which(mRNA.ids$ensembl_gene_id %in% rownames(tbx.pv.dn.mat))]
 rownames(tbx.pv.dn.mat) <- gnames
 
 # Rename the column names to be the T-box protein names.
 colnames(tbx.pv.dn.mat) <- c("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43")
-
-
-#----
-
-# Separate AM140 and N2 data. Data that may be relevant for clustering.
-AM <- BOTH %>% select(Gene_stable_ID,Gene_name,strain,log2FoldChange,padj) %>%
-  filter(strain == "AM140")
-NT <- BOTH %>% select(Gene_stable_ID,Gene_name,strain,log2FoldChange,padj) %>% 
-  filter(strain == "N2")
-AM.NT <- full_join(NT,AM,by = c('Gene_stable_ID','Gene_name'), suffix = c(".N2",".AM140"))
-
-# Create p-values matrix. Obtain the *p*-values of motifs per sequence. Rows correspond to the different input sequences and the columns correspond to motifs. `sequence.nobg` contains the raw affinity scores.`sequence.bg` contains the corresponding P-values.
-tbx.pv.dn.mat <- res.dn$sequence.bg
-
-
-
-
-# Set the gene names to serve as the background list for later annotation analysis
-bg <- rownames(tbx.pv.dn.mat)
-
-# Rename the column names to be the T-box protein names.
-colnames(tbx.pv.dn.mat) <- c("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43")
-
-# Covert the p-values matrix to a tibble to merge with the previous data-object.
-tbx.pv.dn.tbl <- as.tibble(tbx.pv.dn.mat) %>%
-  mutate(Gene_stable_ID = rownames((tbx.pv.dn.mat)))
-
-# Combine the TBX binding-sties p-values with the previous data-object.
-AM.NT <- inner_join(AM.NT, tbx.pv.dn.tbl, by='Gene_stable_ID')
-```
-
-# Convert the dataframes back to matrices of TBX p-values
-```{r}
-
-#----
-# TBX binding motifs Matrix
-tbx.pv.dn.mat <- AM.NT %>% 
-  select("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43") %>%
-  as.matrix()
-rownames(tbx.pv.dn.mat) <- AM.NT$Gene_name
 ```
 
 # Convert the TBX binding-sites p-values matrix to binary
-```{r}
+```{r tbx-matrix}
 # Change p-value to boolean. TRUE is statistically significant (*p*-value < 0.01).
-tbx.bool.dn.mat <- (tbx.pv.dn.mat < .1)
-
-# Index of amount of T-box transcription factors binding motif
-TBXTFBM <- rowSums(tbx.bool.dn.mat*1) 
-
-# Filter genes w/o T-box transcription factors binding motifs from the p-values matrix
-tbx.pv.dn.mat <- tbx.pv.dn.mat[TBXTFBM != 0,]
-
-# Filter genes w/o T-box transcription factors binding motifs from the Boolean matrix
-tbx.bool.dn.mat <- tbx.bool.dn.mat[TBXTFBM != 0,]
-
-# ----
-
-# Change p-value to boolean. TRUE is statistically significant (*p*-value < 0.05).
-tbx.bool.dn.mat <- (tbx.pv.dn.mat < .1)
+tbx.bool.dn.mat <- (tbx.pv.dn.mat < .01)
 
 # Index of amount of T-box transcription factors binding motif
 TBXTFBM <- rowSums(tbx.bool.dn.mat*1) 
@@ -102,6 +48,41 @@ tbx.pv.dn.mat <- tbx.pv.dn.mat[TBXTFBM != 0,]
 tbx.bool.dn.mat <- tbx.bool.dn.mat[TBXTFBM != 0,]
 ```
 
+## Plotting Heatmaps
+
+Setting the path for saving the heatmaps
+```{r}
+path = "experiments/2018-12-30-tbx-heatmap/results/"
+```
+
+### Plotting the p<0.01 from the PWMEnrich of p<0.05 by anc-1 RNAi
+Annotations for matrix of binding sites presence
+```{r}
+rownames(tbx.bool.dn.mat)
+
+tbtf = "T-box transcription factor"
+tf = "Transcription factor"
+fb = "F-box protein-related"
+
+
+Function <- c(
+  NA,tf,NA,tf,NA,NA,NA,NA,tbtf,tf,
+  tf,tf,NA,fb,NA,NA,NA,fb,NA,NA,
+  fb,NA,NA,NA,fb,NA,NA,NA,NA,NA,
+  NA,tbtf,NA,NA
+)
+
+ann <- data.frame("Function" = Function
+                  #"Fold-Change (WT)" = FC.N2
+                  #"Fold-Change (polyQ35)" = FC.AM
+)
+rownames(ann) <- rownames(tbx.bool.dn.mat)
+
+# Fold-change levels of the selected genes
+
+```
+
+Heatmap of T-box transcription factors binding sites binary presence
 ```{r}
 row_dend <- hclust(dist(tbx.bool.dn.mat, method = "binary"),
                    method = "complete") # row clustering
@@ -109,39 +90,43 @@ col_dend <- hclust(dist(t(tbx.bool.dn.mat), method = "binary"),
                    method = "complete") # column clustering
 
 
-pheatmap(tbx.bool.dn.mat*1,
-         
-         # Colors of the cells
-         color = c("white","black"),
-         border_color = "grey",
-         
-         # dimensions of the cells
-         cellwidth = 7,
-         cellheight = 7,
-         
-         # Clustering
-         cluster_rows = row_dend,
-         cluster_cols = col_dend,
-
-         # dendogram graphics
-         treeheight_row = 5,
-         treeheight_col = 5,
-         
-         # Remove the legend
-         legend = FALSE,
-         
-         # Fonts
-         fontsize = 7
-         )
+pheatmap(
+  tbx.bool.dn.mat*1,
+  
+  # Colors of the cells
+  color = c("white","black"),
+  border_color = "grey",
+  
+  # dimensions of the cells
+  cellwidth = 7,
+  cellheight = 7,
+  
+  # Clustering
+  cluster_rows = row_dend,
+  cluster_cols = col_dend,
+  
+  # dendogram graphics
+  treeheight_row = 5,
+  treeheight_col = 5,
+  cutree_rows = 8,
+  
+  # Remove the legend
+  legend = FALSE,
+  
+  # Fonts
+  fontsize = 7,
+  
+  # Gene annotations
+  annotation_row = ann,
+  drop_levels = TRUE,
+  
+  # Export figure
+  filename = paste0(path,"2019-02-10-hm",".pdf")
+)
 ```
 
 
-## Plotting Heatmaps
-Setting the path for saving the heatmaps
-```{r}
-path = "experiments/2018-12-30-tbx-heatmap/results/"
-```
-
+### Plotting the p<0.01 from the PWMEnrich of p<0.1 by anc-1 RNAi
 Annotations for matrix of binding sites presence
 ```{r}
 tbtf = "T-box transcription factor"
@@ -210,43 +195,6 @@ pheatmap(tbx.bool.dn.mat*1,
          filename = paste0(path,"2018-12-31-hm",".pdf")
          )
 ```
-
-Heatmap of T-box transcription factors binding sites p-values
-```{r}
-cairo_pdf(paste0(path,"2018-12-30-hm",".pdf"),
-    width = 2,
-    height = 2.5,
-    pointsize = 4)
-
-# Plot Heatmap
-heatmap.2(-log10(tbx.pv.dn.mat),
-          # Define the color range
-          breaks = c(0,1,2,3,4),
-          col = magma(4),
-          
-          # Hierarch clustering rows 1-Pearson correlation distance with complete linkage
-          distfun = function(x) as.dist(1-cor(t(x))), 
-          hclustfun = function(x) hclust(x, method="complete"),
-          
-          # Remove the cyan trace
-          trace = "none",
-          density.info = "none",
-          
-          # Separate the columns
-          colsep = c(2,3),
-          
-          # Column labels formatting
-          srtCol = 45,
-          offsetCol = 0,
-          
-          # Color Key
-          keysize = 1.5,
-          key.title = "-log10(p-value)"
-          )
-
-dev.off()
-```
-
 
 ```
 > sessionInfo()
