@@ -26,7 +26,7 @@ Focus on the genes that are down-regulated by *anc-1*, as those are enriched for
 tbx.pv.dn.mat <- res.dn$sequence.bg
 
 # Get the "human-readable" gene names and assign as the matrix rownames.
-gnames <- mRNA.ids$external_gene_name[which(mRNA.ids$ensembl_gene_id %in% rownames(tbx.pv.dn.mat))]
+gnames <- mRNA.seqs.promoter$external_gene_name[which(mRNA.seqs.promoter$ensembl_gene_id %in% rownames(tbx.pv.dn.mat))]
 rownames(tbx.pv.dn.mat) <- gnames
 
 # Rename the column names to be the T-box protein names.
@@ -39,13 +39,30 @@ colnames(tbx.pv.dn.mat) <- c("TBX-33","TBX-38","TBX-39","TBX-40","TBX-43")
 tbx.bool.dn.mat <- (tbx.pv.dn.mat < .01)
 
 # Index of amount of T-box transcription factors binding motif
-TBXTFBM <- rowSums(tbx.bool.dn.mat*1) 
+TBXTFBM <- rowSums(tbx.bool.dn.mat*1) != 0
 
 # Filter genes w/o T-box transcription factors binding motifs from the p-values matrix
-tbx.pv.dn.mat <- tbx.pv.dn.mat[TBXTFBM != 0,]
+tbx.pv.dn.mat <- tbx.pv.dn.mat[TBXTFBM,]
 
 # Filter genes w/o T-box transcription factors binding motifs from the Boolean matrix
-tbx.bool.dn.mat <- tbx.bool.dn.mat[TBXTFBM != 0,]
+tbx.bool.dn.mat <- tbx.bool.dn.mat[TBXTFBM,]
+```
+
+```{r}
+### For new version only, can delete if irrelevant
+
+tbx.pv.dn.mat <- apply(tbx.pv.dn.mat, c(1,2), FUN = function(x) {
+  if (x<.01) {
+    x <- 0
+  } else if (x<.05) {
+    x <- .5
+  } else {
+    x <- 1
+  }
+}
+)
+
+tbx.pv.dn.mat <- tbx.pv.dn.mat[TBXTFBM,]
 ```
 
 ## Plotting Heatmaps
@@ -63,12 +80,13 @@ rownames(tbx.bool.dn.mat)
 tbtf = "T-box transcription factor"
 tf = "Transcription factor"
 fb = "F-box protein-related"
+pr = "Proteostasis-related"
 
 
 Function <- c(
-  NA,tf,NA,tf,NA,NA,NA,NA,tbtf,tf,
+  NA,tf,NA,tf,NA,NA,NA,pr,tbtf,tf,
   tf,tf,NA,fb,NA,NA,NA,fb,NA,NA,
-  fb,NA,NA,NA,fb,NA,NA,NA,NA,NA,
+  fb,NA,pr,NA,fb,NA,NA,NA,NA,NA,
   NA,tbtf,NA,NA
 )
 
@@ -84,18 +102,19 @@ rownames(ann) <- rownames(tbx.bool.dn.mat)
 
 Heatmap of T-box transcription factors binding sites binary presence
 ```{r}
+### Old Version - no p< .05
+
 row_dend <- hclust(dist(tbx.bool.dn.mat, method = "binary"),
                    method = "complete") # row clustering
 col_dend <- hclust(dist(t(tbx.bool.dn.mat), method = "binary"),
                    method = "complete") # column clustering
 
-
 pheatmap(
-  tbx.bool.dn.mat*1,
+  tbx.pv.dn.mat*1,
   
   # Colors of the cells
   color = c("white","black"),
-  border_color = "grey",
+  border_color = "lightgrey",
   
   # dimensions of the cells
   cellwidth = 7,
@@ -121,7 +140,48 @@ pheatmap(
   drop_levels = TRUE,
   
   # Export figure
-  filename = paste0(path,"2019-02-10-hm",".pdf")
+  filename = paste0(path,"2019-02-12-hm",".pdf")
+)
+
+### New Version - w/ p< .05
+
+row_dend <- hclust(dist(tbx.bool.dn.mat, method = "binary"),
+                   method = "complete") # row clustering
+col_dend <- hclust(dist(t(tbx.bool.dn.mat), method = "binary"),
+                   method = "complete") # column clustering
+
+pheatmap(
+  tbx.pv.dn.mat,
+  
+  # Colors of the cells
+  color = c("black","darkgrey","white"),
+  border_color = "lightgrey",
+  
+  # dimensions of the cells
+  cellwidth = 7,
+  cellheight = 7,
+  
+  # Clustering
+  cluster_rows = row_dend,
+  cluster_cols = col_dend,
+  
+  # dendogram graphics
+  treeheight_row = 5,
+  treeheight_col = 5,
+  cutree_rows = 8,
+  
+  # Remove the legend
+  legend = FALSE,
+  
+  # Fonts
+  fontsize = 7,
+  
+  # Gene annotations
+  annotation_row = ann,
+  drop_levels = TRUE,
+  
+  # Export figure
+  filename = paste0(path,"2019-02-12-w.05-hm",".pdf")
 )
 ```
 
