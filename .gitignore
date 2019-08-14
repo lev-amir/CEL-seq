@@ -2,4 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
+*.pzfx
+*.ai
+*.log
+*.pdf
 doc
