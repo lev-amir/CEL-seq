@@ -1,6 +1,11 @@
 #+ Load bioconductor and packages ----
-source("https://bioconductor.org/biocLite.R")
-if (!require(biomaRt)) {biocLite("biomaRt"); library(biomaRt)} # Ensembl biomaRt to obtain C. elegans sequences.
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install()
+require(BiocManager)
+
+if (!require(biomaRt)) {BiocManager::install("biomaRt"); library(biomaRt)} # Ensembl biomaRt to obtain C. elegans sequences.
+if (!require(Biostrings)) {BiocManager::install("Biostrings"); library(Biostrings)}
 if (!require(tidyverse)) {install.packages("tidyverse"); library(tidyverse)}
 
 # Obtain promoters of C. elegans genes-----------------------------------------
@@ -21,6 +26,6 @@ mRNA.seqs.TSS.up <- biomaRt::getSequence(
 # convert promoter sequences dataframe to DNAStringSet-------------------------
 # DNAStringSet is a common input to the motif analysis packages. 
 # Associate gene id to each promoter sequence
-prs <- Biostrings::DNAStringSet(x = mRNA.seqs.promoter$promoter)
-names(prs) <- mRNA.seqs.promoter$ensembl_gene_id
-save(mRNA.seqs.promoter,prs, file = "data/Celegans-promoters.rdata")
+prs <- Biostrings::DNAStringSet(x = mRNA.seqs.TSS.up$gene_flank)
+names(prs) <- mRNA.seqs.TSS.up$ensembl_gene_id
+save(mRNA.seqs.TSS.up,prs, file = "data/Celegans-promoters-3000up.rdata")
